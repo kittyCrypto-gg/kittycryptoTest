@@ -1,6 +1,6 @@
 {
   "mainMenu": {
-    "Main": "./main.html",
+    "Main": "./index.html",
     "About": "./about.html",
     "My Projects": "./projects.html",
     "Guestbook": "./guestbook.html",
