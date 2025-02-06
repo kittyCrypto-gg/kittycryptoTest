@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitty Crypto Chat</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script>
+    ["main.js", "chat.js"].forEach(scriptName => {
+      const script = document.createElement('script');
+      script.src = `./${scriptName}?v=${Date.now()}`;
+      script.defer = true;
+      document.head.appendChild(script);
+    });
+  </script>
+</head>
+<body>
+  <div class="frame">
+    <nav id="main-menu"></nav>
+    <header id="main-header">Kitty Crypto Chat</header>
+    <main id="main-content">
+      <textarea id="chatroom" readonly></textarea>
+      <div class="chat-inputs">
+        <input type="text" id="nickname" placeholder="Enter your nickname">
+        <input type="text" id="message" placeholder="Type your message here">
+        <button id="send-button">Send</button>
+      </div>
+    </main>
+    <footer id="main-footer"></footer>
+  </div>
+</body>
+</html>
