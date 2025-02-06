@@ -5,12 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kitty Crypto's Page</title>
   <link rel="stylesheet" href="./styles.css">
-  <script defer src="./main.js"></script>
+  <script>
+    // Dynamically set the script source with a version parameter to avoid caching
+    const script = document.createElement('script');
+    script.src = `./main.js?v=${Date.now()}`;
+    script.defer = true;
+    document.head.appendChild(script);
+  </script>
 </head>
 <body>
-  <nav id="main-menu"></nav>
-  <header id="main-header"></header>
-  <main id="main-content"></main>
-  <footer id="main-footer"></footer>
+  <div class="frame">
+    <nav id="main-menu"></nav>
+    <header id="main-header"></header>
+    <main id="main-content"></main>
+    <footer id="main-footer"></footer>
+  </div>
 </body>
 </html>
