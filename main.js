@@ -34,9 +34,9 @@ fetch('./main.json')
     footer.textContent = data.footer.replace('${year}', currentYear);
 
     // Populate the body
-    const bodyContent = document.getElementById('main-content');
-    if (!bodyContent) throw new Error('Element #main-content not found!');
-    bodyContent.textContent = data.body;
+    //const bodyContent = document.getElementById('main-content');
+    //if (!bodyContent) throw new Error('Element #main-content not found!');
+    //bodyContent.textContent = data.body;
   })
   .catch(error => {
     console.error('Error loading JSON or updating DOM:', error);
