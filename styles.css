@@ -7,6 +7,17 @@ body {
   color: #333;
 }
 
+/* Frame styles */
+.frame {
+  background-color: #ffffff; /* White background for the frame */
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for a floating effect */
+  padding: 20px;
+  max-width: 80%; /* Restrict the width */
+  margin: 40px auto; /* Centre align with auto margin */
+  overflow: hidden; /* Ensure no content spills out */
+}
+
 /* Header styles */
 header {
   background-color: #b2ebf2; /* Light turquoise */
@@ -58,9 +69,6 @@ footer {
   color: #01579b; /* Dark blue */
   text-align: center;
   padding: 10px;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
   font-size: 0.9rem;
   border-top: 2px solid #01579b;
 }
