@@ -1,0 +1,66 @@
+/* General styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #e8f8f5;
+  color: #333;
+}
+
+/* Header styles */
+header {
+  background-color: #b2ebf2; /* Light turquoise */
+  color: #004d40; /* Dark teal */
+  padding: 20px;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Menu styles */
+nav {
+  background-color: #a7ffeb; /* Mint green */
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  border-bottom: 2px solid #004d40;
+}
+
+.menu-button {
+  text-decoration: none;
+  color: #004d40;
+  background-color: #80deea; /* Cyan */
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.menu-button:hover {
+  background-color: #4dd0e1; /* Darker cyan */
+  transform: scale(1.1);
+}
+
+/* Body content styles */
+main {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+/* Footer styles */
+footer {
+  background-color: #b3e5fc; /* Light blue */
+  color: #01579b; /* Dark blue */
+  text-align: center;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: 0.9rem;
+  border-top: 2px solid #01579b;
+}
