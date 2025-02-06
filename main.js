@@ -3,7 +3,7 @@ fetch('./main.json')
   .then(response => response.json())
   .then(data => {
     // Populate the menu
-    const menu = document.getElementById('menu');
+    const menu = document.getElementById('main-menu');
     for (const [text, link] of Object.entries(data.mainMenu)) {
       const button = document.createElement('a');
       button.href = link;
@@ -13,16 +13,16 @@ fetch('./main.json')
     }
 
     // Populate the header
-    const header = document.getElementById('header');
+    const header = document.getElementById('main-header');
     header.textContent = data.header;
 
     // Populate the footer
-    const footer = document.getElementById('footer');
+    const footer = document.getElementById('main-footer');
     const currentYear = new Date().getFullYear();
     footer.textContent = data.footer.replace('${year}', currentYear);
 
     // Populate the body
-    const bodyContent = document.getElementById('body-content');
+    const bodyContent = document.getElementById('main-content');
     bodyContent.textContent = data.body;
   })
   .catch(error => {
