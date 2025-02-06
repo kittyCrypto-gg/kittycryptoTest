@@ -7,6 +7,5 @@
     "Email me": "./email.html"
   },
   "header": "Kitty Crypto's Page!",
-  "footer": "Kitty's website is open-source. 1991 - ${year}",
-  "body": "Welcome to my personal website! Stay tuned for updates as I build this space into something amazing!"
+  "footer": "Kitty's website is open-source. 1991 - ${year}"
 }
