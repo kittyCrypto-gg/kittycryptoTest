@@ -1,12 +1,16 @@
 fetch('./main.json')
   .then(response => {
-    if (!response.ok) {
+    if (!response.ok)
       throw new Error(`HTTP error! status: ${response.status}`);
-    }
     return response.json();
   })
   .then(data => {
     console.log('Loaded JSON data:', data); // Log data to verify
+    console.log(document.getElementById('main-menu')); // Should not be null
+    console.log(document.getElementById('main-header'));
+    console.log(document.getElementById('main-content'));
+    console.log(document.getElementById('main-footer'));
+
     // Populate the menu
     const menu = document.getElementById('main-menu');
     if (!menu) throw new Error('Element #main-menu not found!');
