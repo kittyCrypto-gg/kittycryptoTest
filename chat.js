@@ -1,5 +1,5 @@
 const CHAT_SERVER = "https://kittycrypto.ddns.net:7619/chat";
-const CHAT_JSON_URL = "https://kittycrypto.ddns.net/chat/chat.json";
+const CHAT_JSON_URL = "https://kittycrypto.ddns.net:7619/chat/chat.json";
 
 const chatroom = document.getElementById("chatroom");
 const nicknameInput = document.getElementById("nickname");
