@@ -29,9 +29,13 @@ const sendMessage = async () => {
   }
 
   try {
+    console.log("Fetching IP address...");
     const ipResponse = await fetch("https://api64.ipify.org?format=json");
+    if (!ipResponse.ok) throw new Error(`Failed to fetch IP: ${ipResponse.status} ${ipResponse.statusText}`);
+
     const ipData = await ipResponse.json();
     const userIp = ipData.ip;
+    console.log(`User IP: ${userIp}`);
 
     const chatRequest = {
       chatRequest: {
@@ -41,6 +45,7 @@ const sendMessage = async () => {
       }
     };
 
+    console.log("Sending chat request:", chatRequest);
     const response = await fetch(CHAT_SERVER, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -48,33 +53,37 @@ const sendMessage = async () => {
     });
 
     if (!response.ok) {
-      throw new Error(`Server error: ${await response.text()}`);
+      const errorText = await response.text();
+      throw new Error(`Server error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
+    console.log("Message sent successfully.");
     messageInput.value = ""; // Clear message input after sending
   } catch (error) {
-    console.error("Error sending message:", error);
-    alert("Failed to send message. Check console for details.");
+    console.error("❌ Error sending message:", error);
+    alert(`Failed to send message: ${error.message}`);
   }
 };
 
 // Fetches and updates chat messages
 const updateChat = async () => {
   try {
+    console.log(`Fetching chat data from: ${CHAT_JSON_URL}`);
     const response = await fetch(CHAT_JSON_URL, { cache: "no-store" });
-    
+
     if (!response.ok) {
-      console.error(`Error fetching chat: ${response.status} ${response.statusText}`);
-      return;
+      throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
     }
 
     const chatData = await response.text();
+    console.log("Chat data fetched:", chatData);
+
     if (chatData !== lastChatData) {
       lastChatData = chatData;
       displayChat(JSON.parse(chatData));
     }
   } catch (error) {
-    console.error("Error fetching chat:", error);
+    console.error("❌ Error fetching chat:", error);
   }
 };
 
