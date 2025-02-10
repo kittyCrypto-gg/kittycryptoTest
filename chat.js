@@ -105,36 +105,45 @@ const updateChat = async () => {
 
 // Displays chat messages in the chatroom
 const displayChat = (messages) => {
-  let chatContent = "";
-
-  messages.forEach(({ nick, id, msg, timestamp }) => {
-    const color = getColorForNick(nick);
-    chatContent += `%c${nick} - (${id}): %c${timestamp}\n  ${msg}\n`;
-  });
+  let logMessages = [];
 
   chatroom.value = messages.map(({ nick, id, msg, timestamp }) => {
     const color = getColorForNick(nick);
-    return `%c${nick} - (${id}): %c${timestamp}\n  ${msg}\n`;
+    const formattedDate = new Date(timestamp)
+      .toISOString()
+      .replace("T", " ")
+      .slice(0, 19)
+      .replace(/-/g, "."); // Format YYYY.mm.dd HH:MM:SS
+
+    logMessages.push([`${nick} - (${id}): ${formattedDate}\n  ${msg}\n`, `color: ${color}; font-weight: bold;`, "color: grey; font-size: 0.9em;"]);
+
+    return `${nick} - (${id}): ${formattedDate}\n  ${msg}\n`;
   }).join("\n");
 
-  // Apply colors
-  const formattedMessages = messages.map(({ nick, id, msg, timestamp }) => {
-    const color = getColorForNick(nick);
-    return [
-      `${nick} - (${id}): ${timestamp}\n  ${msg}\n`,
-      `color: ${color}; font-weight: bold;`,
-      "color: grey; font-size: 0.9em;"
-    ];
-  });
-
   console.clear();
-  formattedMessages.forEach(([text, color1, color2]) => console.log(text, color1, color2));
+  logMessages.forEach(([text, color1, color2]) => console.log(text, color1, color2));
 
-  // Auto-scroll only if user is already at bottom
-  const isAtBottom = chatroom.scrollHeight - chatroom.scrollTop <= chatroom.clientHeight + 50;
-  if (isAtBottom) {
-    chatroom.scrollTop = chatroom.scrollHeight;
-  }
+  chatroom.scrollTop = chatroom.scrollHeight;
+};
+
+// Apply colours
+const formattedMessages = messages.map(({ nick, id, msg, timestamp }) => {
+  const color = getColorForNick(nick);
+  return [
+    `${nick} - (${id}): ${timestamp}\n  ${msg}\n`,
+    `color: ${color}; font-weight: bold;`,
+    "color: grey; font-size: 0.9em;"
+  ];
+});
+
+console.clear();
+formattedMessages.forEach(([text, color1, color2]) => console.log(text, color1, color2));
+
+// Auto-scroll only if user is already at bottom
+const isAtBottom = chatroom.scrollHeight - chatroom.scrollTop <= chatroom.clientHeight + 50;
+if (isAtBottom) {
+  chatroom.scrollTop = chatroom.scrollHeight;
+}
 };
 
 // Attach event listeners
