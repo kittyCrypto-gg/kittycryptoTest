@@ -40,12 +40,19 @@ nav {
   background-color: #a7ffeb; /* Mint green */
   padding: 15px;
   display: flex;
-  justify-content: center;
   gap: 15px;
   border-bottom: 2px solid #004d40;
-  flex-wrap: wrap; /* Ensure menu items wrap on smaller screens */
+  overflow-x: auto; /* Enables horizontal scrolling */
+  white-space: nowrap; /* Prevents buttons from wrapping */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
 }
 
+/* Hide scrollbar on some browsers */
+nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Menu buttons */
 .menu-button {
   text-decoration: none;
   color: #004d40;
@@ -55,6 +62,7 @@ nav {
   transition: background-color 0.3s, transform 0.2s;
   font-size: 1rem;
   font-weight: bold;
+  flex: 0 0 auto; /* Prevents buttons from stretching */
 }
 
 .menu-button:hover {
