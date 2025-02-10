@@ -97,29 +97,43 @@ footer {
 /* Chat input box */
 .chat-inputs {
   display: flex;
-  gap: 10px;
+  gap: 2%; /* Small gap between inputs */
   margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensure it takes full width */
 }
 
+/* Chat input fields */
 .chat-inputs input {
-  padding: 8px;
+  padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  flex-grow: 1;
+  flex-grow: 1; /* Makes them scale automatically */
+  width: 40%; /* Inputs take 40% each */
+  min-width: 100px; /* Prevents extreme shrinking */
+  box-sizing: border-box;
 }
 
+/* Send button */
 .chat-inputs button {
-  padding: 8px 12px;
+  padding: 10px;
   font-size: 14px;
   background: #4CAF50;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  width: 15%; /* Button is a fixed portion */
+  min-width: 80px;
+  box-sizing: border-box;
 }
 
-.chat-inputs button:hover {
-  background: #45a049;
+/* Ensuring fluid design for very small screens */
+.chat-inputs input,
+.chat-inputs button {
+  max-width: 100%; /* Prevents any weird overflowing */
 }
+
 
