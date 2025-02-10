@@ -3,6 +3,7 @@
     "Main": "./index.html",
     "About": "./about.html",
     "My Projects": "./projects.html",
+    "Chat": "./chat.html",
     "Guestbook": "./guestbook.html",
     "Email me": "./email.html"
   },
