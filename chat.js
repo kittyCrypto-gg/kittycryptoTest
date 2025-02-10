@@ -29,7 +29,7 @@ const sendMessage = async () => {
   }
 
   try {
-    //console.log("📡 Fetching IP address...");
+    console.log("📡 Fetching IP address...");
     const ipResponse = await fetch("https://api64.ipify.org?format=json");
 
     if (!ipResponse.ok) {
@@ -38,7 +38,7 @@ const sendMessage = async () => {
 
     const ipData = await ipResponse.json();
     const userIp = ipData.ip;
-    //console.log(`🌍 User IP: ${userIp}`);
+    console.log(`🌍 User IP: ${userIp}`);
 
     const chatRequest = {
       chatRequest: {
@@ -48,7 +48,7 @@ const sendMessage = async () => {
       }
     };
 
-    //console.log("📡 Sending chat message:", chatRequest);
+    console.log("📡 Sending chat message:", chatRequest);
 
     const response = await fetch(CHAT_SERVER, {
       method: "POST",
@@ -61,7 +61,7 @@ const sendMessage = async () => {
       throw new Error(`Server error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
-    //console.log("✅ Message sent successfully.");
+    console.log("✅ Message sent successfully.");
     messageInput.value = ""; // Clear message input after sending
   } catch (error) {
     console.error("❌ Error sending message:", error);
@@ -72,7 +72,7 @@ const sendMessage = async () => {
 // Fetches and updates chat messages
 const updateChat = async () => {
   try {
-    //console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
+    console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
 
     const response = await fetch(CHAT_JSON_URL, {
       method: "GET",
@@ -84,7 +84,7 @@ const updateChat = async () => {
     }
 
     const chatData = await response.text();
-    //console.log("📜 Chat data fetched:", chatData);
+    console.log("📜 Chat data fetched:", chatData);
 
     if (chatData !== lastChatData) {
       lastChatData = chatData;
@@ -120,8 +120,8 @@ const displayChat = (messages) => {
     return `${nick} - (${id}): ${formattedDate}\n  ${msg}\n`;
   }).join("\n");
 
-  //console.clear();
-  //logMessages.forEach(([text, colour1, colour2]) => console.log(text, colour1, colour2));
+  console.clear();
+  logMessages.forEach(([text, colour1, colour2]) => console.log(text, colour1, colour2));
 
   chatroom.scrollTop = chatroom.scrollHeight;
 };
