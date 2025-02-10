@@ -8,14 +8,14 @@ const sendButton = document.getElementById("send-button");
 
 let lastChatData = "";
 
-// Generates a consistent color for each nickname (non-white)
-const getColorForNick = (nick) => {
+// Generates a consistent colour for each nickname (non-white)
+const getColourForNick = (nick) => {
   const hash = [...nick].reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const colors = [
+  const colours = [
     "#ff5733", "#33ff57", "#3357ff", "#ff33a6", "#a633ff",
     "#33fff5", "#ff8c33", "#57ff33", "#f5ff33", "#ff3357"
   ];
-  return colors[hash % colors.length];
+  return colours[hash % colours.length];
 };
 
 // Sends a chat message
@@ -29,7 +29,7 @@ const sendMessage = async () => {
   }
 
   try {
-    console.log("📡 Fetching IP address...");
+    //console.log("📡 Fetching IP address...");
     const ipResponse = await fetch("https://api64.ipify.org?format=json");
 
     if (!ipResponse.ok) {
@@ -38,7 +38,7 @@ const sendMessage = async () => {
 
     const ipData = await ipResponse.json();
     const userIp = ipData.ip;
-    console.log(`🌍 User IP: ${userIp}`);
+    //console.log(`🌍 User IP: ${userIp}`);
 
     const chatRequest = {
       chatRequest: {
@@ -48,7 +48,7 @@ const sendMessage = async () => {
       }
     };
 
-    console.log("📡 Sending chat message:", chatRequest);
+    //console.log("📡 Sending chat message:", chatRequest);
 
     const response = await fetch(CHAT_SERVER, {
       method: "POST",
@@ -61,7 +61,7 @@ const sendMessage = async () => {
       throw new Error(`Server error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
-    console.log("✅ Message sent successfully.");
+    //console.log("✅ Message sent successfully.");
     messageInput.value = ""; // Clear message input after sending
   } catch (error) {
     console.error("❌ Error sending message:", error);
@@ -72,7 +72,7 @@ const sendMessage = async () => {
 // Fetches and updates chat messages
 const updateChat = async () => {
   try {
-    console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
+    //console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
 
     const response = await fetch(CHAT_JSON_URL, {
       method: "GET",
@@ -84,7 +84,7 @@ const updateChat = async () => {
     }
 
     const chatData = await response.text();
-    console.log("📜 Chat data fetched:", chatData);
+    //console.log("📜 Chat data fetched:", chatData);
 
     if (chatData !== lastChatData) {
       lastChatData = chatData;
@@ -108,42 +108,22 @@ const displayChat = (messages) => {
   let logMessages = [];
 
   chatroom.value = messages.map(({ nick, id, msg, timestamp }) => {
-    const color = getColorForNick(nick);
+    const colour = getColourForNick(nick);
     const formattedDate = new Date(timestamp)
       .toISOString()
       .replace("T", " ")
       .slice(0, 19)
       .replace(/-/g, "."); // Format YYYY.mm.dd HH:MM:SS
 
-    logMessages.push([`${nick} - (${id}): ${formattedDate}\n  ${msg}\n`, `color: ${color}; font-weight: bold;`, "color: grey; font-size: 0.9em;"]);
+    logMessages.push([`${nick} - (${id}): ${formattedDate}\n  ${msg}\n`, `colour: ${colour}; font-weight: bold;`, "colour: grey; font-size: 0.9em;"]);
 
     return `${nick} - (${id}): ${formattedDate}\n  ${msg}\n`;
   }).join("\n");
 
-  console.clear();
-  logMessages.forEach(([text, color1, color2]) => console.log(text, color1, color2));
+  //console.clear();
+  //logMessages.forEach(([text, colour1, colour2]) => console.log(text, colour1, colour2));
 
   chatroom.scrollTop = chatroom.scrollHeight;
-};
-
-// Apply colours
-const formattedMessages = messages.map(({ nick, id, msg, timestamp }) => {
-  const color = getColorForNick(nick);
-  return [
-    `${nick} - (${id}): ${timestamp}\n  ${msg}\n`,
-    `color: ${color}; font-weight: bold;`,
-    "color: grey; font-size: 0.9em;"
-  ];
-});
-
-console.clear();
-formattedMessages.forEach(([text, color1, color2]) => console.log(text, color1, color2));
-
-// Auto-scroll only if user is already at bottom
-const isAtBottom = chatroom.scrollHeight - chatroom.scrollTop <= chatroom.clientHeight + 50;
-if (isAtBottom) {
-  chatroom.scrollTop = chatroom.scrollHeight;
-}
 };
 
 // Attach event listeners
@@ -152,5 +132,8 @@ messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
-// Update chat every second
+// ✅ Load chat immediately when the page loads
+updateChat();
+
+// ✅ Continue updating chat every second
 setInterval(updateChat, 1000);
