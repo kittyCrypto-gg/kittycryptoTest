@@ -1,5 +1,5 @@
 const CHAT_SERVER = "https://kittycrypto.ddns.net:7619/chat";
-const CHAT_JSON_URL = "./chat.json";
+const CHAT_JSON_URL = "https://kittycrypto.ddns.net/chat/chat.json";
 
 const chatroom = document.getElementById("chatroom");
 const nicknameInput = document.getElementById("nickname");
@@ -41,16 +41,20 @@ const sendMessage = async () => {
       }
     };
 
-    await fetch(CHAT_SERVER, {
+    const response = await fetch(CHAT_SERVER, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(chatRequest)
     });
 
+    if (!response.ok) {
+      throw new Error(`Server error: ${await response.text()}`);
+    }
+
     messageInput.value = ""; // Clear message input after sending
   } catch (error) {
     console.error("Error sending message:", error);
-    alert("Failed to send message. Please try again.");
+    alert("Failed to send message. Check console for details.");
   }
 };
 
@@ -58,8 +62,13 @@ const sendMessage = async () => {
 const updateChat = async () => {
   try {
     const response = await fetch(CHAT_JSON_URL, { cache: "no-store" });
-    const chatData = await response.text();
+    
+    if (!response.ok) {
+      console.error(`Error fetching chat: ${response.status} ${response.statusText}`);
+      return;
+    }
 
+    const chatData = await response.text();
     if (chatData !== lastChatData) {
       lastChatData = chatData;
       displayChat(JSON.parse(chatData));
@@ -71,6 +80,13 @@ const updateChat = async () => {
 
 // Displays chat messages in the chatroom
 const displayChat = (messages) => {
+  let chatContent = "";
+
+  messages.forEach(({ nick, id, msg, timestamp }) => {
+    const color = getColorForNick(nick);
+    chatContent += `%c${nick} - (${id}): %c${timestamp}\n  ${msg}\n`;
+  });
+
   chatroom.value = messages.map(({ nick, id, msg, timestamp }) => {
     const color = getColorForNick(nick);
     return `%c${nick} - (${id}): %c${timestamp}\n  ${msg}\n`;
@@ -89,7 +105,11 @@ const displayChat = (messages) => {
   console.clear();
   formattedMessages.forEach(([text, color1, color2]) => console.log(text, color1, color2));
 
-  chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to latest message
+  // Auto-scroll only if user is already at bottom
+  const isAtBottom = chatroom.scrollHeight - chatroom.scrollTop <= chatroom.clientHeight + 50;
+  if (isAtBottom) {
+    chatroom.scrollTop = chatroom.scrollHeight;
+  }
 };
 
 // Attach event listeners
