@@ -114,13 +114,15 @@ const displayChat = (messages) => {
       .replace(/-/g, "."); // Format YYYY.mm.dd HH:MM:SS
 
     return `
-      <p><strong style="color: ${colour};">${nick} - (${id}):</strong> 
-      <span style="color: grey; font-size: 0.9em;">${formattedDate}</span><br>
-      ${msg}</p>
+      <div class="chat-message">
+        <span class="chat-nick" style="color: ${colour}; font-weight: bold;">${nick} - (${id}):</span>
+        <span class="chat-timestamp">${formattedDate}</span>
+        <div class="chat-text">${msg}</div>
+      </div>
     `;
   }).join("");
 
-  chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to the bottom
+  chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to the latest message
 };
 
 // Attach event listeners
