@@ -105,9 +105,7 @@ const updateChat = async () => {
 
 // Displays chat messages in the chatroom
 const displayChat = (messages) => {
-  let logMessages = [];
-
-  chatroom.value = messages.map(({ nick, id, msg, timestamp }) => {
+  chatroom.innerHTML = messages.map(({ nick, id, msg, timestamp }) => {
     const colour = getColourForNick(nick);
     const formattedDate = new Date(timestamp)
       .toISOString()
@@ -115,15 +113,14 @@ const displayChat = (messages) => {
       .slice(0, 19)
       .replace(/-/g, "."); // Format YYYY.mm.dd HH:MM:SS
 
-    logMessages.push([`${nick} - (${id}): ${formattedDate}\n  ${msg}\n`, `colour: ${colour}; font-weight: bold;`, "colour: grey; font-size: 0.9em;"]);
+    return `
+      <p><strong style="color: ${colour};">${nick} - (${id}):</strong> 
+      <span style="color: grey; font-size: 0.9em;">${formattedDate}</span><br>
+      ${msg}</p>
+    `;
+  }).join("");
 
-    return `${nick} - (${id}): ${formattedDate}\n  ${msg}\n`;
-  }).join("\n");
-
-  console.clear();
-  logMessages.forEach(([text, colour1, colour2]) => console.log(text, colour1, colour2));
-
-  chatroom.scrollTop = chatroom.scrollHeight;
+  chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to the bottom
 };
 
 // Attach event listeners
