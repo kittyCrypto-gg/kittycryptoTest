@@ -12,17 +12,17 @@ let lastChatData = "";
 const getColourForNick = (nick) => {
   const hash = [...nick].reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const colours = [
-    "#b56576", // Muted Rose
-    "#6a0572", // Deep Purple
-    "#457b9d", // Soft Blue
-    "#1d3557", // Darker Blue
-    "#588157", // Olive Green
-    "#d4a373", // Soft Brown
-    "#ff924c", // Warm Orange
-    "#b5838d", // Dusty Pink
-    "#8d99ae", // Slate Grey-Blue
-    "#e76f51"  // Warm Coral
-  ];
+    "#9370DB", "#228B22", "#4682B4", "#FF8C00", "#FFDB58",
+    "#2E8B57", "#6B4226", "#D2691E", "#5F9EA0", "#556B2F",
+    "#708090", "#8B4513", "#DAA520", "#C71585", "#B22222",
+    "#4169E1", "#468499", "#CD853F", "#32CD32", "#9932CC",
+    "#DC143C", "#8FBC8F", "#E9967A", "#6495ED", "#FFD700",
+    "#66CDAA", "#DDA0DD", "#4682B4", "#20B2AA", "#8A2BE2",
+    "#D2691E", "#87CEEB", "#6A5ACD", "#00CED1", "#FA8072",
+    "#2E8B57", "#FFDAB9", "#48D1CC", "#FF4500", "#DA70D6",
+    "#BA55D3", "#CD5C5C", "#FF69B4", "#40E0D0", "#7B68EE",
+    "#DB7093", "#AFEEEE", "#B0E0E6", "#7CFC00", "#32CD32",
+    "#00FA9A", "#F4A460", "#FF6347", "#B8860B", "#BC8F8F"];
   return colours[hash % colours.length];
 };
 
