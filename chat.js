@@ -12,8 +12,8 @@ let lastChatData = "";
 const getColourForNick = (nick) => {
   const hash = [...nick].reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const colours = [
-    "#9370DB", "#228B22", "#4682B4", "#FF8C00", "#FFDB58",
-    "#2E8B57", "#6B4226", "#D2691E", "#5F9EA0", "#556B2F",
+    "#9B26B6", "#9370DB", "#D6001C", "#008AD8", "#FEDD00",
+    "#FFA400", "#6B4226", "#D2691E", "#5F9EA0", "#556B2F",
     "#708090", "#8B4513", "#DAA520", "#C71585", "#B22222",
     "#4169E1", "#468499", "#CD853F", "#32CD32", "#9932CC",
     "#DC143C", "#8FBC8F", "#E9967A", "#6495ED", "#FFD700",
