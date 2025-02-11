@@ -12,8 +12,16 @@ let lastChatData = "";
 const getColourForNick = (nick) => {
   const hash = [...nick].reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const colours = [
-    "#ff5733", "#33ff57", "#3357ff", "#ff33a6", "#a633ff",
-    "#33fff5", "#ff8c33", "#57ff33", "#f5ff33", "#ff3357"
+    "#b56576", // Muted Rose
+    "#6a0572", // Deep Purple
+    "#457b9d", // Soft Blue
+    "#1d3557", // Darker Blue
+    "#588157", // Olive Green
+    "#d4a373", // Soft Brown
+    "#ff924c", // Warm Orange
+    "#b5838d", // Dusty Pink
+    "#8d99ae", // Slate Grey-Blue
+    "#e76f51"  // Warm Coral
   ];
   return colours[hash % colours.length];
 };
