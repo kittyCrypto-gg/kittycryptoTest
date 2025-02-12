@@ -24,7 +24,7 @@ fetch('./main.json')
     return response.json();
   })
   .then(data => {
-    console.log('Loaded JSON data:', data);
+    //console.log('Loaded JSON data:', data);
 
     // Populate the menu
     const menu = document.getElementById('main-menu');
