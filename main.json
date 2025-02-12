@@ -10,7 +10,7 @@
   "header": "Kitty Crypto's Website!",
   "footer": "Kitty's website is open-source. 1991 - ${year}",
   "themeToggle": {
-    "default": "☀️", 
-    "dark": "🌙"
+    "default": "🌙", 
+    "dark": "☀️"
   }
 }
