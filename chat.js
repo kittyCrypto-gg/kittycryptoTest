@@ -9,6 +9,7 @@ const sendButton = document.getElementById("send-button");
 
 let lastChatData = "";
 let sessionToken = null; // Store session token
+let sessionExpired = false; // Track session expiry
 
 /* Fetch Session Token */
 const fetchSessionToken = async () => {
@@ -113,7 +114,7 @@ const updateChat = async () => {
   }
 
   try {
-    console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
+    //console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
 
     const response = await fetch(CHAT_JSON_URL, {
       method: "GET",
@@ -122,11 +123,13 @@ const updateChat = async () => {
     });
 
     if (!response.ok) {
+      sessionExpired = true; // Mark session as expired
       throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
     }
 
+    sessionExpired = false; // Reset if successful
     const chatData = await response.text();
-    console.log("📜 Chat data fetched:", chatData);
+    //console.log("📜 Chat data fetched:", chatData);
 
     if (chatData !== lastChatData) {
       lastChatData = chatData;
@@ -142,6 +145,7 @@ const updateChat = async () => {
     if (error.message.includes("Failed to fetch")) {
       console.error("❗ Possible network issue or CORS restriction.");
     }
+    displaySessionExpiredMessage();
   }
 };
 
@@ -167,7 +171,32 @@ const displayChat = async (messages) => {
     chatroom.innerHTML += messageHtml;
   }
 
+  if (sessionExpired) {
+    displaySessionExpiredMessage();
+  }
+
   chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to latest message
+};
+
+/* Injects Session Expired Message */
+const displaySessionExpiredMessage = () => {
+  const timestamp = new Date()
+    .toISOString()
+    .replace("T", " ")
+    .slice(0, 19)
+    .replace(/-/g, ".");
+
+  const messageHtml = `
+    <div class="chat-message">
+      <span class="chat-nick" style="color: gray; font-weight: bold;">system - (0x0000000000):</span>
+      <span class="chat-timestamp">${timestamp}</span>
+      <div class="chat-text">
+        Your session has expired and so the chat has been encrypted. Please 
+        <a href="#" onclick="location.reload(); return false;" style="color: blue; text-decoration: underline;">refresh</a> the page to renew your session.
+      </div>
+    </div>
+  `;
+  chatroom.innerHTML += messageHtml;
 };
 
 /* Attach Event Listeners */
