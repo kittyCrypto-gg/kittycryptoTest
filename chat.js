@@ -76,7 +76,13 @@ const connectToChatStream = () => {
   };
 
   eventSource.onmessage = (event) => {
-    console.log("📩 Raw SSE Data:", event.data); // Debugging log
+    try {
+      const parsedData = JSON.parse(event.data);
+      console.log("📩 Raw SSE Data:", parsedData); // Logs as an object (collapsible)
+    } catch (error) {
+      console.error("❌ Error parsing chat update:", error, "\n📩 Raw data received:", event.data);
+    }
+
 
     try {
       const messages = JSON.parse(event.data);
