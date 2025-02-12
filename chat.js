@@ -162,6 +162,7 @@ const updateChat = async () => {
     console.error("❌ Error fetching chat:", error);
     if (error.message.includes("Failed to fetch")) {
       console.error("❗ Possible network issue or CORS restriction.");
+      alert('The Server seems to be down!');
     }
   }
 };
