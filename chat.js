@@ -114,6 +114,20 @@ async function getColourForUser(nick, id) {
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
+const fetchUserIP = async () => {
+  try {
+    const response = await fetch("https://kittycrypto.ddns.net:7619/get-ip");
+    if (!response.ok) throw new Error(`Failed to fetch IP: ${response.status}`);
+
+    const data = await response.json();
+    console.log(`🌍 User IP: ${data.ip}`);
+    return data.ip;
+  } catch (error) {
+    console.error("❌ Error fetching IP:", error);
+    return null;
+  }
+};
+
 // Sends a chat message 
 const sendMessage = async () => {
   const nick = nicknameInput.value.trim();
@@ -128,15 +142,12 @@ const sendMessage = async () => {
 
   try {
     console.log("📡 Fetching IP address...");
-    const ipResponse = await fetch("https://api64.ipify.org?format=json");
 
-    if (!ipResponse.ok) {
-      throw new Error(`Failed to fetch IP: ${ipResponse.status} ${ipResponse.statusText}`);
+    const userIp = await fetchUserIP();
+    if (!userIp) {
+      alert("❌ Unable to retrieve IP. Please try again.");
+      return;
     }
-
-    const ipData = await ipResponse.json();
-    const userIp = ipData.ip;
-    console.log(`🌍 User IP: ${userIp}`);
 
     const chatRequest = {
       chatRequest: {
