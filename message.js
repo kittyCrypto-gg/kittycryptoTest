@@ -1,4 +1,4 @@
-if (!window.CHAT_SERVER) const CHAT_SERVER = "https://kittycrypto.ddns.net:7619";
+if (!window.CHAT_SERVER) window.CHAT_SERVER = "https://kittycrypto.ddns.net:7619";
 const GET_IP_HASH_URL = `${CHAT_SERVER}/get-ip/sha256`;
 const nicknameInput = document.getElementById("nickname");
 
