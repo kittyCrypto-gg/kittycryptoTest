@@ -10,7 +10,12 @@ let lastChatData = "";
 
 // Generates a consistent colour for each nickname (non-white)
 const getColourForNick = (nick) => {
-  const hash = [...nick].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  let hash = 0;
+  for (let i = 0; i < nick.length; i++) {
+    hash = nick.charCodeAt(i) + ((hash << 5) - hash); // More unique distribution
+  }
+  hash = hash & 0xfffffff; // Keep it within a reasonable range
+
   const colours = [
     "#9B26B6", "#9370DB", "#D6001C", "#008AD8", "#FEDD00",
     "#FFA400", "#6B4226", "#D2691E", "#5F9EA0", "#556B2F",
@@ -22,8 +27,10 @@ const getColourForNick = (nick) => {
     "#2E8B57", "#FFDAB9", "#48D1CC", "#FF4500", "#DA70D6",
     "#BA55D3", "#CD5C5C", "#FF69B4", "#40E0D0", "#7B68EE",
     "#DB7093", "#AFEEEE", "#B0E0E6", "#7CFC00", "#32CD32",
-    "#00FA9A", "#F4A460", "#FF6347", "#B8860B", "#BC8F8F"];
-  return colours[hash % colours.length];
+    "#00FA9A", "#F4A460", "#FF6347", "#B8860B", "#BC8F8F"
+  ];
+
+  return colours[Math.abs(hash) % colours.length];
 };
 
 // Sends a chat message
