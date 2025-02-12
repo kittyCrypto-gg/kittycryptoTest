@@ -113,7 +113,7 @@ const updateChat = async () => {
   }
 
   try {
-    console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
+    //console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
 
     const response = await fetch(CHAT_JSON_URL, {
       method: "GET",
@@ -126,7 +126,7 @@ const updateChat = async () => {
     }
 
     const chatData = await response.text();
-    console.log("📜 Chat data fetched:", chatData);
+    //console.log("📜 Chat data fetched:", chatData);
 
     if (chatData !== lastChatData) {
       lastChatData = chatData;
