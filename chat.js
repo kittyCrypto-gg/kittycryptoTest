@@ -1,5 +1,6 @@
 const CHAT_SERVER = "https://kittycrypto.ddns.net:7619/chat";
 const CHAT_JSON_URL = "https://kittycrypto.ddns.net:7619/chat/chat.json";
+const SESSION_TOKEN_URL = "https://kittycrypto.ddns.net:7619/session-token";
 
 const chatroom = document.getElementById("chatroom");
 const nicknameInput = document.getElementById("nickname");
@@ -7,8 +8,23 @@ const messageInput = document.getElementById("message");
 const sendButton = document.getElementById("send-button");
 
 let lastChatData = "";
+let sessionToken = null; // Store session token
 
-/* 🔹 Seeded PRNG (Mulberry32) */
+/* Fetch Session Token */
+const fetchSessionToken = async () => {
+  try {
+    const response = await fetch(SESSION_TOKEN_URL);
+    if (!response.ok) throw new Error(`Failed to fetch session token: ${response.status}`);
+    
+    const data = await response.json();
+    sessionToken = data.sessionToken;
+    console.log("🔑 Session Token received:", sessionToken);
+  } catch (error) {
+    console.error("❌ Error fetching session token:", error);
+  }
+};
+
+/* Seeded PRNG (Mulberry32) */
 function seededRandom(seed) {
   let t = seed += 0x6D2B79F5;
   t = Math.imul(t ^ (t >>> 15), t | 1);
@@ -16,7 +32,7 @@ function seededRandom(seed) {
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296; // Scales to [0, 1)
 }
 
-/* 🔹 Generates a Unique Seed for Each User */
+/* Generates a Unique Seed for Each User */
 async function hashUser(nick, id) {
   const encoder = new TextEncoder();
   const data = encoder.encode(nick + id); // Salting nick with hashed IP
@@ -25,7 +41,7 @@ async function hashUser(nick, id) {
   return hashArray.slice(0, 4).reduce((acc, val) => (acc << 8) + val, 0); // Convert first 4 bytes to int
 }
 
-/* 🔹 Generates a Consistent Colour */
+/* Generates a Consistent Colour */
 async function getColourForUser(nick, id) {
   const seed = await hashUser(nick, id);
   const rng = seededRandom(seed);
@@ -38,7 +54,7 @@ async function getColourForUser(nick, id) {
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Return valid HSL colour
 }
 
-/* 🔹 Sends a chat message */
+/* Sends a chat message */
 const sendMessage = async () => {
   const nick = nicknameInput.value.trim();
   const msg = messageInput.value.trim();
@@ -89,13 +105,19 @@ const sendMessage = async () => {
   }
 };
 
-/* 🔹 Fetches and Updates Chat Messages */
+/* Fetches and Updates Chat Messages */
 const updateChat = async () => {
+  if (!sessionToken) {
+    console.warn("⚠️ No session token found. Fetching a new one...");
+    await fetchSessionToken();
+  }
+
   try {
-    //console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
+    console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
 
     const response = await fetch(CHAT_JSON_URL, {
       method: "GET",
+      headers: { "Authorization": sessionToken }, // Pass session token
       cache: "no-store"
     });
 
@@ -104,7 +126,7 @@ const updateChat = async () => {
     }
 
     const chatData = await response.text();
-    //console.log("📜 Chat data fetched:", chatData);
+    console.log("📜 Chat data fetched:", chatData);
 
     if (chatData !== lastChatData) {
       lastChatData = chatData;
@@ -123,7 +145,7 @@ const updateChat = async () => {
   }
 };
 
-/* 🔹 Displays Chat Messages in the Chatroom */
+/* Displays Chat Messages in the Chatroom */
 const displayChat = async (messages) => {
   chatroom.innerHTML = "";
 
@@ -148,14 +170,15 @@ const displayChat = async (messages) => {
   chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to latest message
 };
 
-/* 🔹 Attach Event Listeners */
+/* Attach Event Listeners */
 sendButton.addEventListener("click", sendMessage);
 messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
-/* ✅ Load chat immediately when the page loads */
-updateChat();
+(async () => {
+  await fetchSessionToken();
+  updateChat();
+})();
 
-/* ✅ Continue updating chat every second */
 setInterval(updateChat, 1000);
