@@ -7,6 +7,10 @@
     "Guestbook": "./guestbook.html",
     "Email me": "./email.html"
   },
-  "header": "Kitty Crypto's Page!",
-  "footer": "Kitty's website is open-source. 1991 - ${year}"
+  "header": "Kitty Crypto's Website!",
+  "footer": "Kitty's website is open-source. 1991 - ${year}",
+  "themeToggle": {
+    "default": "☀️", 
+    "dark": "🌙"
+  }
 }
