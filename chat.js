@@ -8,6 +8,7 @@ const messageInput = document.getElementById("message");
 const sendButton = document.getElementById("send-button");
 
 let sessionToken = null;
+let eventSource = null; // Track SSE connection
 let alerted = false;
 
 // Utility: Get Cookie
@@ -60,7 +61,19 @@ function seededRandom(seed) {
 const connectToChatStream = () => {
   if (!sessionToken) return;
 
-  const eventSource = new EventSource(CHAT_STREAM_URL, { withCredentials: true });
+  if (eventSource) {
+    console.log("⚠️ SSE connection already exists, closing old connection...");
+    eventSource.close();
+  }
+
+  console.log("🔄 Attempting to connect to chat stream...");
+
+  // Use query parameter for token since EventSource does not support headers
+  eventSource = new EventSource(`${CHAT_STREAM_URL}?token=${sessionToken}`);
+
+  eventSource.onopen = () => {
+    console.log("✅ Successfully connected to chat stream.");
+  };
 
   eventSource.onmessage = (event) => {
     try {
