@@ -9,6 +9,7 @@ const sendButton = document.getElementById("send-button");
 
 let lastChatData = "";
 let sessionToken = null; // Store session token
+let alerted = false;
 
 /* Utility: Get Cookie */
 const getChatCookie = (name) => {
@@ -162,7 +163,7 @@ const updateChat = async () => {
     console.error("❌ Error fetching chat:", error);
     if (error.message.includes("Failed to fetch")) {
       console.error("❗ Possible network issue or CORS restriction.");
-      alert('The Server seems to be down!');
+      alerted || (alert('The Server seems to be down!'), (alerted = true));
     }
   }
 };
