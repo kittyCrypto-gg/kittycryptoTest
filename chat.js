@@ -8,32 +8,37 @@ const sendButton = document.getElementById("send-button");
 
 let lastChatData = "";
 
-// Generates a consistent colour for each nickname (non-white)
-const getColourForNick = (nick) => {
-  let hash = 0;
-  for (let i = 0; i < nick.length; i++) {
-    hash = nick.charCodeAt(i) + ((hash << 5) - hash); // More unique distribution
-  }
-  hash = hash & 0xfffffff; // Keep it within a reasonable range
+/* 🔹 Seeded PRNG (Mulberry32) */
+function seededRandom(seed) {
+  let t = seed += 0x6D2B79F5;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296; // Scales to [0, 1)
+}
 
-  const colours = [
-    "#9B26B6", "#9370DB", "#D6001C", "#008AD8", "#FEDD00",
-    "#FFA400", "#6B4226", "#D2691E", "#5F9EA0", "#556B2F",
-    "#708090", "#8B4513", "#DAA520", "#C71585", "#B22222",
-    "#4169E1", "#468499", "#CD853F", "#32CD32", "#9932CC",
-    "#DC143C", "#8FBC8F", "#E9967A", "#6495ED", "#FFD700",
-    "#66CDAA", "#DDA0DD", "#4682B4", "#20B2AA", "#8A2BE2",
-    "#D2691E", "#87CEEB", "#6A5ACD", "#00CED1", "#FA8072",
-    "#2E8B57", "#FFDAB9", "#48D1CC", "#FF4500", "#DA70D6",
-    "#BA55D3", "#CD5C5C", "#FF69B4", "#40E0D0", "#7B68EE",
-    "#DB7093", "#AFEEEE", "#B0E0E6", "#7CFC00", "#32CD32",
-    "#00FA9A", "#F4A460", "#FF6347", "#B8860B", "#BC8F8F"
-  ];
+/* 🔹 Generates a Unique Seed for Each User */
+async function hashUser(nick, id) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(nick + id); // Salting nick with hashed IP
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.slice(0, 4).reduce((acc, val) => (acc << 8) + val, 0); // Convert first 4 bytes to int
+}
 
-  return colours[Math.abs(hash) % colours.length];
-};
+/* 🔹 Generates a Consistent Colour */
+async function getColourForUser(nick, id) {
+  const seed = await hashUser(nick, id);
+  const rng = seededRandom(seed);
 
-// Sends a chat message
+  // Generate HSL values with controlled saturation & brightness
+  const hue = Math.floor(rng * 360); // Full hue range
+  const saturation = Math.floor(50 + rng * 30); // 50-80%
+  const lightness = Math.floor(40 + rng * 30); // 40-70% (avoids white/black)
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Return valid HSL colour
+}
+
+/* 🔹 Sends a chat message */
 const sendMessage = async () => {
   const nick = nicknameInput.value.trim();
   const msg = messageInput.value.trim();
@@ -84,7 +89,7 @@ const sendMessage = async () => {
   }
 };
 
-// Fetches and updates chat messages
+/* 🔹 Fetches and Updates Chat Messages */
 const updateChat = async () => {
   try {
     console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
@@ -118,36 +123,39 @@ const updateChat = async () => {
   }
 };
 
-// Displays chat messages in the chatroom
-const displayChat = (messages) => {
-  chatroom.innerHTML = messages.map(({ nick, id, msg, timestamp }) => {
-    const colour = getColourForNick(nick);
+/* 🔹 Displays Chat Messages in the Chatroom */
+const displayChat = async (messages) => {
+  chatroom.innerHTML = "";
+
+  for (const { nick, id, msg, timestamp } of messages) {
+    const colour = await getColourForUser(nick, id);
     const formattedDate = new Date(timestamp)
       .toISOString()
       .replace("T", " ")
       .slice(0, 19)
       .replace(/-/g, "."); // Format YYYY.mm.dd HH:MM:SS
 
-    return `
+    const messageHtml = `
       <div class="chat-message">
         <span class="chat-nick" style="color: ${colour}; font-weight: bold;">${nick} - (${id}):</span>
         <span class="chat-timestamp">${formattedDate}</span>
         <div class="chat-text">${msg}</div>
       </div>
     `;
-  }).join("");
+    chatroom.innerHTML += messageHtml;
+  }
 
-  chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to the latest message
+  chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to latest message
 };
 
-// Attach event listeners
+/* 🔹 Attach Event Listeners */
 sendButton.addEventListener("click", sendMessage);
 messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
-// ✅ Load chat immediately when the page loads
+/* ✅ Load chat immediately when the page loads */
 updateChat();
 
-// ✅ Continue updating chat every second
+/* ✅ Continue updating chat every second */
 setInterval(updateChat, 1000);
