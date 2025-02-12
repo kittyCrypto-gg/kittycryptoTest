@@ -11,7 +11,7 @@ let lastChatData = "";
 let sessionToken = null; // Store session token
 
 /* Utility: Get Cookie */
-const getCookie = (name) => {
+const getChatCookie = (name) => {
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
   return match ? decodeURIComponent(match[2]) : null;
 };
@@ -25,7 +25,7 @@ const setCookie = (name, value, days = 365) => {
 
 /* Load Nickname from Cookie */
 const loadNickname = () => {
-  const savedNick = getCookie("nickname");
+  const savedNick = getChatCookie("nickname");
   if (savedNick) {
     nicknameInput.value = savedNick;
   }
