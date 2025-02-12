@@ -11,7 +11,7 @@ let lastChatData = "";
 let sessionToken = null; // Store session token
 let sessionExpired = false; // Track session expiry
 
-/* Fetch Session Token */
+/* 🔹 Fetch Session Token */
 const fetchSessionToken = async () => {
   try {
     const response = await fetch(SESSION_TOKEN_URL);
@@ -25,7 +25,7 @@ const fetchSessionToken = async () => {
   }
 };
 
-/* Seeded PRNG (Mulberry32) */
+/* 🔹 Seeded PRNG (Mulberry32) */
 function seededRandom(seed) {
   let t = seed += 0x6D2B79F5;
   t = Math.imul(t ^ (t >>> 15), t | 1);
@@ -33,7 +33,7 @@ function seededRandom(seed) {
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296; // Scales to [0, 1)
 }
 
-/* Generates a Unique Seed for Each User */
+/* 🔹 Generates a Unique Seed for Each User */
 async function hashUser(nick, id) {
   const encoder = new TextEncoder();
   const data = encoder.encode(nick + id); // Salting nick with hashed IP
@@ -42,7 +42,7 @@ async function hashUser(nick, id) {
   return hashArray.slice(0, 4).reduce((acc, val) => (acc << 8) + val, 0); // Convert first 4 bytes to int
 }
 
-/* Generates a Consistent Colour */
+/* 🔹 Generates a Consistent Colour */
 async function getColourForUser(nick, id) {
   const seed = await hashUser(nick, id);
   const rng = seededRandom(seed);
@@ -55,58 +55,7 @@ async function getColourForUser(nick, id) {
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Return valid HSL colour
 }
 
-/* Sends a chat message */
-const sendMessage = async () => {
-  const nick = nicknameInput.value.trim();
-  const msg = messageInput.value.trim();
-
-  if (!nick || !msg) {
-    alert("Please enter a nickname and a message.");
-    return;
-  }
-
-  try {
-    console.log("📡 Fetching IP address...");
-    const ipResponse = await fetch("https://api64.ipify.org?format=json");
-
-    if (!ipResponse.ok) {
-      throw new Error(`Failed to fetch IP: ${ipResponse.status} ${ipResponse.statusText}`);
-    }
-
-    const ipData = await ipResponse.json();
-    const userIp = ipData.ip;
-    console.log(`🌍 User IP: ${userIp}`);
-
-    const chatRequest = {
-      chatRequest: {
-        nick,
-        msg,
-        ip: userIp
-      }
-    };
-
-    console.log("📡 Sending chat message:", chatRequest);
-
-    const response = await fetch(CHAT_SERVER, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(chatRequest)
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Server error: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    console.log("✅ Message sent successfully.");
-    messageInput.value = ""; // Clear message input after sending
-  } catch (error) {
-    console.error("❌ Error sending message:", error);
-    alert(`Failed to send message: ${error.message}`);
-  }
-};
-
-/* Fetches and Updates Chat Messages */
+/* 🔹 Fetches and Updates Chat Messages */
 const updateChat = async () => {
   if (!sessionToken) {
     console.warn("⚠️ No session token found. Fetching a new one...");
@@ -114,7 +63,7 @@ const updateChat = async () => {
   }
 
   try {
-    //console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
+    console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
 
     const response = await fetch(CHAT_JSON_URL, {
       method: "GET",
@@ -127,9 +76,9 @@ const updateChat = async () => {
       throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
     }
 
-    sessionExpired = false; // Reset if successful
+    sessionExpired = false; // Reset session expiry if request is successful
     const chatData = await response.text();
-    //console.log("📜 Chat data fetched:", chatData);
+    console.log("📜 Chat data fetched:", chatData);
 
     if (chatData !== lastChatData) {
       lastChatData = chatData;
@@ -145,16 +94,16 @@ const updateChat = async () => {
     if (error.message.includes("Failed to fetch")) {
       console.error("❗ Possible network issue or CORS restriction.");
     }
-    displaySessionExpiredMessage();
+    displaySessionExpiredMessage(); // Inject expiry message
   }
 };
 
-/* Displays Chat Messages in the Chatroom */
+/* 🔹 Displays Chat Messages in the Chatroom */
 const displayChat = async (messages) => {
   chatroom.innerHTML = "";
 
   for (const { nick, id, msg, timestamp } of messages) {
-    const colour = await getColourForUser(nick, id);
+    const colour = await getColourForUser(nick, id); // 🎨 Restore colour logic
     const formattedDate = new Date(timestamp)
       .toISOString()
       .replace("T", " ")
@@ -178,16 +127,18 @@ const displayChat = async (messages) => {
   chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll to latest message
 };
 
-/* Injects Session Expired Message */
-const displaySessionExpiredMessage = () => {
+/* 🔹 Injects Session Expired Message */
+const displaySessionExpiredMessage = async () => {
+  if (document.getElementById("session-expired-msg")) return; // Prevent duplicates
+
   const timestamp = new Date()
     .toISOString()
     .replace("T", " ")
     .slice(0, 19)
     .replace(/-/g, ".");
 
-  const messageHtml = `
-    <div class="chat-message">
+  const systemMessageHtml = `
+    <div class="chat-message" id="session-expired-msg">
       <span class="chat-nick" style="color: gray; font-weight: bold;">system - (0x0000000000):</span>
       <span class="chat-timestamp">${timestamp}</span>
       <div class="chat-text">
@@ -196,18 +147,22 @@ const displaySessionExpiredMessage = () => {
       </div>
     </div>
   `;
-  chatroom.innerHTML += messageHtml;
+  
+  chatroom.innerHTML += systemMessageHtml;
+  chatroom.scrollTop = chatroom.scrollHeight; // Auto-scroll
 };
 
-/* Attach Event Listeners */
+/* 🔹 Attach Event Listeners */
 sendButton.addEventListener("click", sendMessage);
 messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
+/* 🔹 Load chat & session on startup */
 (async () => {
   await fetchSessionToken();
   updateChat();
 })();
 
+/* 🔹 Refresh chat every second */
 setInterval(updateChat, 1000);
