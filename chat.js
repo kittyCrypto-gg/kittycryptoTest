@@ -1,10 +1,6 @@
 const CHAT_SERVER = "https://kittycrypto.ddns.net:7619/chat";
 const CHAT_JSON_URL = "https://kittycrypto.ddns.net:7619/chat/chat.json";
 
-// Encryption Keys (set from environment variables)
-const CHAT_SECRET = "YOUR_GITHUB_SECRET"; // This should be set dynamically
-const CHAT_KEY = "YOUR_GITHUB_KEY"; // This should be set dynamically
-
 const chatroom = document.getElementById("chatroom");
 const nicknameInput = document.getElementById("nickname");
 const messageInput = document.getElementById("message");
@@ -12,72 +8,37 @@ const sendButton = document.getElementById("send-button");
 
 let lastChatData = "";
 
-/* 🔹 Generates a Cryptographic Key from a Secret */
-async function deriveKey(secret) {
+/* 🔹 Seeded PRNG (Mulberry32) */
+function seededRandom(seed) {
+  let t = seed += 0x6D2B79F5;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296; // Scales to [0, 1)
+}
+
+/* 🔹 Generates a Unique Seed for Each User */
+async function hashUser(nick, id) {
   const encoder = new TextEncoder();
-  const keyMaterial = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(secret),
-    { name: "PBKDF2" },
-    false,
-    ["deriveKey"]
-  );
-
-  return crypto.subtle.deriveKey(
-    {
-      name: "PBKDF2",
-      salt: encoder.encode("chat-salt"),
-      iterations: 100000,
-      hash: "SHA-256"
-    },
-    keyMaterial,
-    { name: "AES-GCM", length: 256 },
-    false,
-    ["encrypt", "decrypt"]
-  );
+  const data = encoder.encode(nick + id); // Salting nick with hashed IP
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.slice(0, 4).reduce((acc, val) => (acc << 8) + val, 0); // Convert first 4 bytes to int
 }
 
-/* 🔹 Encrypts Data Using AES-256-GCM */
-async function encryptData(data, secret) {
-  const key = await deriveKey(secret);
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-  const encoder = new TextEncoder();
-  const encodedData = encoder.encode(JSON.stringify(data));
+/* 🔹 Generates a Consistent Colour */
+async function getColourForUser(nick, id) {
+  const seed = await hashUser(nick, id);
+  const rng = seededRandom(seed);
 
-  const encryptedData = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
-    key,
-    encodedData
-  );
+  // Generate HSL values with controlled saturation & brightness
+  const hue = Math.floor(rng * 360); // Full hue range
+  const saturation = Math.floor(50 + rng * 30); // 50-80%
+  const lightness = Math.floor(40 + rng * 30); // 40-70% (avoids white/black)
 
-  return {
-    iv: Array.from(iv),
-    encryptedData: Array.from(new Uint8Array(encryptedData))
-  };
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Return valid HSL colour
 }
 
-/* 🔹 Decrypts Data Using AES-256-GCM */
-async function decryptData(encryptedObject, secret) {
-  const key = await deriveKey(secret);
-  const iv = new Uint8Array(encryptedObject.iv);
-  const encryptedData = new Uint8Array(encryptedObject.encryptedData);
-
-  try {
-    const decryptedBuffer = await crypto.subtle.decrypt(
-      { name: "AES-GCM", iv },
-      key,
-      encryptedData
-    );
-
-    const decoder = new TextDecoder();
-    return JSON.parse(decoder.decode(decryptedBuffer));
-  } catch (error) {
-    console.error("❌ Error decrypting data:", error);
-    return null;
-  }
-}
-
-/* 🔹 Sends a Chat Message (Encrypts before sending) */
+/* 🔹 Sends a chat message */
 const sendMessage = async () => {
   const nick = nicknameInput.value.trim();
   const msg = messageInput.value.trim();
@@ -100,19 +61,19 @@ const sendMessage = async () => {
     console.log(`🌍 User IP: ${userIp}`);
 
     const chatRequest = {
-      nick,
-      msg,
-      ip: userIp
+      chatRequest: {
+        nick,
+        msg,
+        ip: userIp
+      }
     };
 
-    const encryptedChatRequest = await encryptData(chatRequest, CHAT_SECRET);
-
-    console.log("📡 Sending encrypted chat message:", encryptedChatRequest);
+    console.log("📡 Sending chat message:", chatRequest);
 
     const response = await fetch(CHAT_SERVER, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chatRequest: encryptedChatRequest })
+      body: JSON.stringify(chatRequest)
     });
 
     if (!response.ok) {
@@ -128,10 +89,10 @@ const sendMessage = async () => {
   }
 };
 
-/* 🔹 Fetches and Decrypts Chat Messages */
+/* 🔹 Fetches and Updates Chat Messages */
 const updateChat = async () => {
   try {
-    console.log(`📡 Fetching encrypted chat history from: ${CHAT_JSON_URL}`);
+    console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
 
     const response = await fetch(CHAT_JSON_URL, {
       method: "GET",
@@ -142,24 +103,23 @@ const updateChat = async () => {
       throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
     }
 
-    const encryptedChatData = await response.json();
-    console.log("📜 Encrypted chat data fetched:", encryptedChatData);
+    const chatData = await response.text();
+    console.log("📜 Chat data fetched:", chatData);
 
-    const decryptedChatData = await decryptData(encryptedChatData, CHAT_KEY);
-
-    if (!decryptedChatData) {
-      console.error("❌ Error: Could not decrypt chat data.");
-      return;
-    }
-
-    console.log("✅ Chat data decrypted:", decryptedChatData);
-
-    if (JSON.stringify(decryptedChatData) !== lastChatData) {
-      lastChatData = JSON.stringify(decryptedChatData);
-      displayChat(decryptedChatData);
+    if (chatData !== lastChatData) {
+      lastChatData = chatData;
+      try {
+        const parsedData = JSON.parse(chatData);
+        displayChat(parsedData);
+      } catch (jsonError) {
+        console.error("❌ Error parsing chat JSON:", jsonError);
+      }
     }
   } catch (error) {
     console.error("❌ Error fetching chat:", error);
+    if (error.message.includes("Failed to fetch")) {
+      console.error("❗ Possible network issue or CORS restriction.");
+    }
   }
 };
 
@@ -194,8 +154,8 @@ messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
-// ✅ Load chat immediately
+/* ✅ Load chat immediately when the page loads */
 updateChat();
 
-// ✅ Continue updating chat every second
+/* ✅ Continue updating chat every second */
 setInterval(updateChat, 1000);
