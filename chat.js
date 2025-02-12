@@ -10,6 +10,27 @@ const sendButton = document.getElementById("send-button");
 let lastChatData = "";
 let sessionToken = null; // Store session token
 
+/* Utility: Get Cookie */
+const getCookie = (name) => {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? decodeURIComponent(match[2]) : null;
+};
+
+/* Utility: Set Cookie (expires in 1 year) */
+const setCookie = (name, value, days = 365) => {
+  const date = new Date();
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
+};
+
+/* Load Nickname from Cookie */
+const loadNickname = () => {
+  const savedNick = getCookie("nickname");
+  if (savedNick) {
+    nicknameInput.value = savedNick;
+  }
+};
+
 /* Fetch Session Token */
 const fetchSessionToken = async () => {
   try {
@@ -64,6 +85,9 @@ const sendMessage = async () => {
     return;
   }
 
+  // Save nickname to a cookie
+  setCookie("nickname", nick);
+
   try {
     console.log("📡 Fetching IP address...");
     const ipResponse = await fetch("https://api64.ipify.org?format=json");
@@ -113,8 +137,6 @@ const updateChat = async () => {
   }
 
   try {
-    //console.log(`📡 Fetching chat history from: ${CHAT_JSON_URL}`);
-
     const response = await fetch(CHAT_JSON_URL, {
       method: "GET",
       headers: { "Authorization": sessionToken }, // Pass session token
@@ -126,7 +148,6 @@ const updateChat = async () => {
     }
 
     const chatData = await response.text();
-    //console.log("📜 Chat data fetched:", chatData);
 
     if (chatData !== lastChatData) {
       lastChatData = chatData;
@@ -175,6 +196,9 @@ sendButton.addEventListener("click", sendMessage);
 messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
+
+/* Load nickname on startup */
+loadNickname();
 
 (async () => {
   await fetchSessionToken();
