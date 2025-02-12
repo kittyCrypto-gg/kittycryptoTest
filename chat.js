@@ -17,7 +17,7 @@ const getChatCookie = (name) => {
 };
 
 /* Utility: Set Cookie (expires in 1 year) */
-const setCookie = (name, value, days = 365) => {
+const setChatCookie = (name, value, days = 365) => {
   const date = new Date();
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
@@ -86,7 +86,7 @@ const sendMessage = async () => {
   }
 
   // Save nickname to a cookie
-  setCookie("nickname", nick);
+  setChatCookie("nickname", nick);
 
   try {
     console.log("📡 Fetching IP address...");
