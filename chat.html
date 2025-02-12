@@ -6,7 +6,7 @@
   <title>Kitty Crypto Chat</title>
   <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
   <script>
-    ["main.js", "chat.js"].forEach(scriptName => {
+    ["main.js", "chat.js", "message.js"].forEach(scriptName => {
       const script = document.createElement('script');
       script.src = `./${scriptName}?v=${Date.now()}`;
       script.defer = true;
