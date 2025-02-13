@@ -2,10 +2,6 @@ window.CHAT_SERVER = window.CHAT_SERVER || "https://kittycrypto.ddns.net:7619";
 window.GET_IP_HASH_URL = window.GET_IP_HASH_URL || `${window.CHAT_SERVER}/get-ip/sha256`;
 window.nicknameInput = window.nicknameInput || document.getElementById("nickname");
 
-nicknameInput.addEventListener("input", () => {
-  setChatCookie("nickname", nicknameInput.value.trim());
-});
-
 let userHashedIp = null; // Store the user's hashed IP
 
 // Fetch user's hashed IP on load
