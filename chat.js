@@ -11,6 +11,10 @@ let sessionToken = null;
 let eventSource = null; // Track SSE connection
 let alerted = false;
 
+nicknameInput.addEventListener("input", () => {
+  setChatCookie("nickname", nicknameInput.value.trim());
+});
+
 // Utility: Get Cookie
 const getChatCookie = (name) => {
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
