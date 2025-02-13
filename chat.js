@@ -219,7 +219,7 @@ const displayChat = async (messages, isLocalUpdate = false) => {
     messageDiv.classList.add("chat-message");
     if (pending) messageDiv.classList.add("pending"); // Add pending style
 
-    // Create a container for the nickname, timestamp, and buttons
+    // Create a container for the nickname and buttons
     const headerContainer = document.createElement("div");
     headerContainer.classList.add("chat-header");
 
@@ -228,15 +228,7 @@ const displayChat = async (messages, isLocalUpdate = false) => {
     headerSpan.style.color = colour;
     headerSpan.innerHTML = `${nick} - (${id}):`;
 
-    const timestampSpan = document.createElement("span");
-    timestampSpan.classList.add("chat-timestamp");
-    timestampSpan.textContent = formattedDate;
-
-    // Add nickname and timestamp inside the header container
-    headerContainer.appendChild(headerSpan);
-    headerContainer.appendChild(timestampSpan);
-
-    // Add edit and delete buttons next to the timestamp if the message belongs to the user
+    // Add edit and delete buttons if the message belongs to the user
     if (userHashedIp === id && nicknameInput.value.trim() === nick) {
       const editButton = document.createElement("span");
       editButton.innerHTML = " ✏️";
@@ -250,18 +242,23 @@ const displayChat = async (messages, isLocalUpdate = false) => {
       deleteButton.title = "Delete Message";
       deleteButton.onclick = () => deleteMessage(id);
 
-      // Append the buttons after the timestamp
       headerContainer.appendChild(editButton);
       headerContainer.appendChild(deleteButton);
     }
 
-    // Create the message text container
+    // Timestamp below nickname
+    const timestampSpan = document.createElement("div");
+    timestampSpan.classList.add("chat-timestamp");
+    timestampSpan.textContent = formattedDate;
+
+    // Message text container
     const textDiv = document.createElement("div");
     textDiv.classList.add("chat-text");
     textDiv.textContent = msg;
 
-    // Append elements to the message container
+    // Append elements in correct order
     messageDiv.appendChild(headerContainer);
+    messageDiv.appendChild(timestampSpan);
     messageDiv.appendChild(textDiv);
 
     // Append the message to the chatroom
