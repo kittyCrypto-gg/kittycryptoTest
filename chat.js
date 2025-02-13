@@ -146,25 +146,38 @@ const sendMessage = async () => {
 
   setChatCookie("nickname", nick);
 
-  try {
-    console.log("📡 Fetching IP address...");
+  console.log("📡 Fetching IP address...");
+  const userIp = await fetchUserIP();
+  if (!userIp) {
+    alert("❌ Unable to retrieve IP. Please try again.");
+    return;
+  }
 
-    const userIp = await fetchUserIP();
-    if (!userIp) {
-      alert("❌ Unable to retrieve IP. Please try again.");
-      return;
+  // Create a unique temporary ID for the pending message
+  const tempId = `pending-${Date.now()}`;
+
+  // Inject the pending message into the chatroom
+  const pendingMessage = {
+    nick,
+    id: tempId,
+    msg,
+    timestamp: new Date().toISOString(),
+    pending: true,
+  };
+
+  displayChat([pendingMessage], true); // Display it as pending
+
+  const chatRequest = {
+    chatRequest: {
+      nick,
+      msg,
+      ip: userIp
     }
+  };
 
-    const chatRequest = {
-      chatRequest: {
-        nick,
-        msg,
-        ip: userIp
-      }
-    };
+  console.log("📡 Sending chat message:", chatRequest);
 
-    console.log("📡 Sending chat message:", chatRequest);
-
+  try {
     const response = await fetch(CHAT_SERVER, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -172,41 +185,71 @@ const sendMessage = async () => {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Server error: ${response.status} ${response.statusText} - ${errorText}`);
+      throw new Error(`Server error: ${response.status} ${response.statusText}`);
     }
 
     console.log("✅ Message sent successfully.");
     messageInput.value = "";
+
   } catch (error) {
     console.error("❌ Error sending message:", error);
     alert(`Failed to send message: ${error.message}`);
+
+    // Remove the pending message on failure
+    removePendingMessage(tempId);
   }
 };
 
 // Displays Chat Messages 
-const displayChat = async (messages) => {
-  chatroom.innerHTML = "";
-
-  for (const { nick, id, msg, timestamp } of messages) {
-    const colour = await getColourForUser(nick, id);
-    const formattedDate = new Date(timestamp)
-      .toISOString()
-      .replace("T", " ")
-      .slice(0, 19)
-      .replace(/-/g, ".");
-
-    const messageHtml = `
-      <div class="chat-message">
-        <span class="chat-nick" style="color: ${colour}; font-weight: bold;">${nick} - (${id}):</span>
-        <span class="chat-timestamp">${formattedDate}</span>
-        <div class="chat-text">${msg}</div>
-      </div>
-    `;
-    chatroom.innerHTML += messageHtml;
+const displayChat = async (messages, isLocalUpdate = false) => {
+  if (!isLocalUpdate) {
+    // Remove all pending messages if we are updating from the server
+    document.querySelectorAll(".chat-message.pending").forEach(el => el.remove());
   }
 
+  messages.forEach(({ nick, id, msg, timestamp, pending }) => {
+    const colour = `hsl(${parseInt(id, 16) % 360}, 61%, 51%)`;
+    const formattedDate = timestamp.replace("T", " ").slice(0, 19).replace(/-/g, ".");
+
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("chat-message");
+    if (pending) messageDiv.classList.add("pending"); // Add pending style
+
+    const headerSpan = document.createElement("span");
+    headerSpan.classList.add("chat-nick");
+    headerSpan.style.color = colour;
+    headerSpan.innerHTML = `${nick} - (${id}):`;
+
+    const timestampSpan = document.createElement("span");
+    timestampSpan.classList.add("chat-timestamp");
+    timestampSpan.textContent = formattedDate;
+
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("chat-text");
+    textDiv.textContent = msg;
+
+    messageDiv.appendChild(headerSpan);
+    messageDiv.appendChild(timestampSpan);
+    messageDiv.appendChild(textDiv);
+
+    // Add a loading indicator for pending messages
+    if (pending) {
+      const pendingIndicator = document.createElement("span");
+      pendingIndicator.classList.add("pending-indicator");
+      pendingIndicator.innerHTML = "⏳ Moderating...";
+      messageDiv.appendChild(pendingIndicator);
+    }
+
+    chatroom.appendChild(messageDiv);
+  });
+
   chatroom.scrollTop = chatroom.scrollHeight;
+};
+
+// Remove pending message on failure
+const removePendingMessage = (tempId) => {
+  const pendingMessage = document.querySelector(`.chat-message[data-id="${tempId}"]`);
+  if (pendingMessage) pendingMessage.remove();
 };
 
 // Attach Event Listeners 
