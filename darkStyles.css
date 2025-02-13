@@ -218,6 +218,27 @@ footer {
   transform: scale(1.1);
 }
 
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chat-action {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.chat-nick {
+  font-weight: bold;
+}
+
+.chat-timestamp {
+  margin-left: 5px;
+  color: #aaa;
+}
+
 /* Dark mode */
 body.dark-mode .theme-toggle-button {
   background: #222;
