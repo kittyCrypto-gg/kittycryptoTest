@@ -258,6 +258,15 @@ messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
+console.log({
+  messageNick: nick,
+  messageId: id,
+  userNick: nicknameInput.value.trim(),
+  userHashedIp,
+  match: userHashedIp === id && nicknameInput.value.trim() === nick,
+});
+
+
 // Load nickname on startup 
 loadNickname();
 fetchSessionToken();
