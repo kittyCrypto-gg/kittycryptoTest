@@ -215,56 +215,66 @@ const displayChat = async (messages, isLocalUpdate = false) => {
     const colour = `hsl(${parseInt(id, 16) % 360}, 61%, 51%)`;
     const formattedDate = timestamp.replace("T", " ").slice(0, 19).replace(/-/g, ".");
 
+    // Message container
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-message");
     if (pending) messageDiv.classList.add("pending"); // Add pending style
 
-    // Create a container for the nickname, timestamp, and buttons
-    const headerContainer = document.createElement("div");
-    headerContainer.classList.add("chat-header");
+    // Header container (nickname, ID, and action buttons)
+    const headerDiv = document.createElement("div");
+    headerDiv.classList.add("chat-header");
 
+    // Nickname and ID
     const headerSpan = document.createElement("span");
     headerSpan.classList.add("chat-nick");
     headerSpan.style.color = colour;
     headerSpan.innerHTML = `${nick} - (${id}):`;
 
+    // Timestamp (separate line)
     const timestampSpan = document.createElement("span");
     timestampSpan.classList.add("chat-timestamp");
     timestampSpan.textContent = formattedDate;
 
-    // Add nickname and timestamp inside the header container
-    headerContainer.appendChild(headerSpan);
-    headerContainer.appendChild(timestampSpan);
-
-    // Add edit and delete buttons next to the timestamp if the message belongs to the user
+    // Action buttons (edit & delete)
     if (userHashedIp === id && nicknameInput.value.trim() === nick) {
       const editButton = document.createElement("span");
-      editButton.innerHTML = " ✏️";
       editButton.classList.add("chat-action");
+      editButton.innerHTML = " ✏️";
       editButton.title = "Edit Message";
+      editButton.style.cursor = "pointer";
       editButton.onclick = () => openEditModal(id, msg);
 
       const deleteButton = document.createElement("span");
-      deleteButton.innerHTML = " ❌";
       deleteButton.classList.add("chat-action");
+      deleteButton.innerHTML = " ❌";
       deleteButton.title = "Delete Message";
+      deleteButton.style.cursor = "pointer";
       deleteButton.onclick = () => deleteMessage(id);
 
-      // Append the buttons after the timestamp
-      headerContainer.appendChild(editButton);
-      headerContainer.appendChild(deleteButton);
+      // Append buttons to header
+      headerDiv.appendChild(editButton);
+      headerDiv.appendChild(deleteButton);
     }
 
-    // Create the message text container
+    // Message text
     const textDiv = document.createElement("div");
     textDiv.classList.add("chat-text");
     textDiv.textContent = msg;
 
-    // Append elements to the message container
-    messageDiv.appendChild(headerContainer);
+    // Append elements
+    headerDiv.appendChild(headerSpan);
+    messageDiv.appendChild(headerDiv);
+    messageDiv.appendChild(timestampSpan);
     messageDiv.appendChild(textDiv);
 
-    // Append the message to the chatroom
+    // Add pending indicator if necessary
+    if (pending) {
+      const pendingIndicator = document.createElement("span");
+      pendingIndicator.classList.add("pending-indicator");
+      pendingIndicator.innerHTML = "⏳ Moderating...";
+      messageDiv.appendChild(pendingIndicator);
+    }
+
     chatroom.appendChild(messageDiv);
   });
 
