@@ -227,9 +227,8 @@ footer {
 }
 
 .chat-timestamp {
-  font-size: 0.9em;
+  margin-left: 5px;
   color: #aaa;
-  margin-bottom: 5px;
 }
 
 /* Dark mode */
