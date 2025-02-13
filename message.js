@@ -104,6 +104,16 @@ const deleteMessage = async (id) => {
   }
 };
 
+const editButton = document.createElement("span");
+editButton.innerHTML = "✏️";
+editButton.classList.add("chat-action"); // Assigns hover effect
+editButton.onclick = () => openEditModal(id, msg);
+
+const deleteButton = document.createElement("span");
+deleteButton.innerHTML = "❌";
+deleteButton.classList.add("chat-action"); // Assigns hover effect
+deleteButton.onclick = () => deleteMessage(id);
+
 // Fetch user IP on script load and enhance messages after chat updates
 fetchUserHashedIp();
 document.addEventListener("chatUpdated", enhanceMessages);
