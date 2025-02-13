@@ -213,19 +213,34 @@ footer {
 .chat-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  gap: 6px; /* Adjust spacing */
 }
 
 .chat-actions {
   display: flex;
-  gap: 8px;
+  gap: 4px;
+}
+
+.chat-actions span {
+  display: inline-block;
+  padding: 4px 6px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.chat-actions span:hover {
+  background-color: rgba(255, 255, 255, 0.15); /* Lightens background */
+  cursor: pointer;
 }
 
 .chat-timestamp {
   font-size: 0.85em;
   color: #999;
   margin-top: 2px;
+}
+
+.chat-nick {
+  flex-shrink: 0; /* Prevents shrinking */
 }
 
 .chat-text {
