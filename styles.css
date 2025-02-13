@@ -242,6 +242,7 @@ footer {
 
 .chat-nick {
   flex-shrink: 0; /* Prevents shrinking */
+  font-size: 95%;
 }
 
 .chat-text {
