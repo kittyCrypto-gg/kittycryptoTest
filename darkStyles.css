@@ -225,18 +225,19 @@ footer {
   width: 100%;
 }
 
-.chat-action {
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.chat-nick {
-  font-weight: bold;
+.chat-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .chat-timestamp {
-  margin-left: 5px;
-  color: #aaa;
+  font-size: 0.85em;
+  color: #999;
+  margin-top: 2px;
+}
+
+.chat-text {
+  margin-top: 5px;
 }
 
 /* Dark mode */
