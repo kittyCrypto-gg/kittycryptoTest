@@ -205,15 +205,23 @@ const sendMessage = async () => {
 };
 
 // Displays Chat Messages 
-const displayChat = (messages) => {
-  chatroom.innerHTML = "";
+const displayChat = async (messages, isLocalUpdate = false) => {
+  if (!isLocalUpdate) {
+    // Remove all pending messages if we are updating from the server
+    document.querySelectorAll(".chat-message.pending").forEach(el => el.remove());
+  }
 
-  messages.forEach(({ nick, id, msg, timestamp }) => {
+  messages.forEach(({ nick, id, msg, timestamp, pending }) => {
     const colour = `hsl(${parseInt(id, 16) % 360}, 61%, 51%)`;
     const formattedDate = timestamp.replace("T", " ").slice(0, 19).replace(/-/g, ".");
 
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-message");
+    if (pending) messageDiv.classList.add("pending"); // Add pending style
+
+    // Create a container for the nickname, timestamp, and buttons
+    const headerContainer = document.createElement("div");
+    headerContainer.classList.add("chat-header");
 
     const headerSpan = document.createElement("span");
     headerSpan.classList.add("chat-nick");
@@ -224,44 +232,39 @@ const displayChat = (messages) => {
     timestampSpan.classList.add("chat-timestamp");
     timestampSpan.textContent = formattedDate;
 
-    const textDiv = document.createElement("div");
-    textDiv.classList.add("chat-text");
-    textDiv.textContent = msg;
+    // Add nickname and timestamp inside the header container
+    headerContainer.appendChild(headerSpan);
+    headerContainer.appendChild(timestampSpan);
 
-    messageDiv.appendChild(headerSpan);
-    messageDiv.appendChild(timestampSpan);
-    messageDiv.appendChild(textDiv);
-
-    console.log({
-      messageNick: nick,
-      messageId: id,
-      userNick: nicknameInput.value.trim(),
-      userHashedIp,
-      match: userHashedIp === id && nicknameInput.value.trim() === nick,
-    });
-
-    // Check if the message belongs to the user
-    if (userHashedIp && id === userHashedIp && nicknameInput.value.trim() === nick) {
-      console.log("✅ Match found! Adding buttons to message:", msg);
-
+    // Add edit and delete buttons next to the timestamp if the message belongs to the user
+    if (userHashedIp === id && nicknameInput.value.trim() === nick) {
       const editButton = document.createElement("span");
       editButton.innerHTML = " ✏️";
-      editButton.style.cursor = "pointer";
+      editButton.classList.add("chat-action");
       editButton.title = "Edit Message";
       editButton.onclick = () => openEditModal(id, msg);
 
       const deleteButton = document.createElement("span");
       deleteButton.innerHTML = " ❌";
-      deleteButton.style.cursor = "pointer";
+      deleteButton.classList.add("chat-action");
       deleteButton.title = "Delete Message";
       deleteButton.onclick = () => deleteMessage(id);
 
-      messageDiv.appendChild(editButton);
-      messageDiv.appendChild(deleteButton);
-    } else {
-      console.log("❌ No match, buttons not added.");
+      // Append the buttons after the timestamp
+      headerContainer.appendChild(editButton);
+      headerContainer.appendChild(deleteButton);
     }
 
+    // Create the message text container
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("chat-text");
+    textDiv.textContent = msg;
+
+    // Append elements to the message container
+    messageDiv.appendChild(headerContainer);
+    messageDiv.appendChild(textDiv);
+
+    // Append the message to the chatroom
     chatroom.appendChild(messageDiv);
   });
 
