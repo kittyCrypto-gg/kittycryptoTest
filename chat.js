@@ -230,12 +230,10 @@ const displayChat = async (messages, isLocalUpdate = false) => {
     headerSpan.style.color = colour;
     headerSpan.innerHTML = `${nick} - (${id}):`;
 
-    // Timestamp (separate line)
-    const timestampSpan = document.createElement("span");
-    timestampSpan.classList.add("chat-timestamp");
-    timestampSpan.textContent = formattedDate;
-
     // Action buttons (edit & delete)
+    const actionSpan = document.createElement("span");
+    actionSpan.classList.add("chat-actions");
+
     if (userHashedIp === id && nicknameInput.value.trim() === nick) {
       const editButton = document.createElement("span");
       editButton.classList.add("chat-action");
@@ -251,10 +249,14 @@ const displayChat = async (messages, isLocalUpdate = false) => {
       deleteButton.style.cursor = "pointer";
       deleteButton.onclick = () => deleteMessage(id);
 
-      // Append buttons to header
-      headerDiv.appendChild(editButton);
-      headerDiv.appendChild(deleteButton);
+      actionSpan.appendChild(editButton);
+      actionSpan.appendChild(deleteButton);
     }
+
+    // Timestamp
+    const timestampSpan = document.createElement("div");
+    timestampSpan.classList.add("chat-timestamp");
+    timestampSpan.textContent = formattedDate;
 
     // Message text
     const textDiv = document.createElement("div");
@@ -263,6 +265,7 @@ const displayChat = async (messages, isLocalUpdate = false) => {
 
     // Append elements
     headerDiv.appendChild(headerSpan);
+    headerDiv.appendChild(actionSpan);
     messageDiv.appendChild(headerDiv);
     messageDiv.appendChild(timestampSpan);
     messageDiv.appendChild(textDiv);
