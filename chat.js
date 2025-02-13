@@ -205,19 +205,15 @@ const sendMessage = async () => {
 };
 
 // Displays Chat Messages 
-const displayChat = async (messages, isLocalUpdate = false) => {
-  if (!isLocalUpdate) {
-    // Remove all pending messages if we are updating from the server
-    document.querySelectorAll(".chat-message.pending").forEach(el => el.remove());
-  }
+const displayChat = (messages) => {
+  chatroom.innerHTML = "";
 
-  messages.forEach(({ nick, id, msg, timestamp, pending }) => {
+  messages.forEach(({ nick, id, msg, timestamp }) => {
     const colour = `hsl(${parseInt(id, 16) % 360}, 61%, 51%)`;
     const formattedDate = timestamp.replace("T", " ").slice(0, 19).replace(/-/g, ".");
 
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-message");
-    if (pending) messageDiv.classList.add("pending"); // Add pending style
 
     const headerSpan = document.createElement("span");
     headerSpan.classList.add("chat-nick");
@@ -236,12 +232,34 @@ const displayChat = async (messages, isLocalUpdate = false) => {
     messageDiv.appendChild(timestampSpan);
     messageDiv.appendChild(textDiv);
 
-    // Add a loading indicator for pending messages
-    if (pending) {
-      const pendingIndicator = document.createElement("span");
-      pendingIndicator.classList.add("pending-indicator");
-      pendingIndicator.innerHTML = "⏳ Moderating...";
-      messageDiv.appendChild(pendingIndicator);
+    console.log({
+      messageNick: nick,
+      messageId: id,
+      userNick: nicknameInput.value.trim(),
+      userHashedIp,
+      match: userHashedIp === id && nicknameInput.value.trim() === nick,
+    });
+
+    // Check if the message belongs to the user
+    if (userHashedIp && id === userHashedIp && nicknameInput.value.trim() === nick) {
+      console.log("✅ Match found! Adding buttons to message:", msg);
+
+      const editButton = document.createElement("span");
+      editButton.innerHTML = " ✏️";
+      editButton.style.cursor = "pointer";
+      editButton.title = "Edit Message";
+      editButton.onclick = () => openEditModal(id, msg);
+
+      const deleteButton = document.createElement("span");
+      deleteButton.innerHTML = " ❌";
+      deleteButton.style.cursor = "pointer";
+      deleteButton.title = "Delete Message";
+      deleteButton.onclick = () => deleteMessage(id);
+
+      messageDiv.appendChild(editButton);
+      messageDiv.appendChild(deleteButton);
+    } else {
+      console.log("❌ No match, buttons not added.");
     }
 
     chatroom.appendChild(messageDiv);
