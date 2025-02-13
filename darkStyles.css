@@ -221,13 +221,12 @@ footer {
 .chat-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  gap: 6px; /* Adjust spacing */
 }
 
 .chat-actions {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .chat-timestamp {
@@ -238,6 +237,10 @@ footer {
 
 .chat-text {
   margin-top: 5px;
+}
+
+.chat-nick {
+  flex-shrink: 0; /* Prevents shrinking */
 }
 
 /* Dark mode */
