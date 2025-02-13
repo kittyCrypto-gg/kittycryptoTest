@@ -195,6 +195,17 @@ footer {
   justify-content: center;
 }
 
+.chat-message.pending {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.pending-indicator {
+  color: orange;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
 .theme-toggle-button:hover {
   transform: scale(1.1);
 }
