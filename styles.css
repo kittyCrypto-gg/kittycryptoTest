@@ -217,8 +217,18 @@ footer {
 }
 
 .chat-actions {
-  display: flex;
+  display: none;
   gap: 4px;
+}
+
+/* Show buttons when hovering over the name line */
+.chat-header:hover .chat-actions {
+  display: inline-flex;
+}
+
+/* Show buttons when the message is active (controlled via JS) */
+.chat-message.active .chat-actions {
+  display: inline-flex;
 }
 
 .chat-actions span {
