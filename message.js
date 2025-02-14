@@ -18,34 +18,34 @@ const fetchUserHashedIp = async () => {
 };
 
 // Enhance chat messages with edit/delete buttons
-const enhanceMessages = () => {
-  document.querySelectorAll(".chat-message").forEach((messageDiv) => {
-    const nickSpan = messageDiv.querySelector(".chat-nick");
-    const idMatch = nickSpan.textContent.match(/\((0x[a-f0-9]+)\)/);
-    if (!idMatch) return;
+// const enhanceMessages = () => {
+//   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
+//     const nickSpan = messageDiv.querySelector(".chat-nick");
+//     const idMatch = nickSpan.textContent.match(/\((0x[a-f0-9]+)\)/);
+//     if (!idMatch) return;
 
-    const messageId = idMatch[1];
-    const messageTextDiv = messageDiv.querySelector(".chat-text");
-    const messageText = messageTextDiv.textContent;
+//     const messageId = idMatch[1];
+//     const messageTextDiv = messageDiv.querySelector(".chat-text");
+//     const messageText = messageTextDiv.textContent;
 
-    if (userHashedIp && messageId === userHashedIp && nicknameInput.value.trim() === nickSpan.textContent.split(" - ")[0]) {
-      const editButton = document.createElement("span");
-      editButton.innerHTML = " ✏️";
-      editButton.style.cursor = "pointer";
-      editButton.title = "Edit Message";
-      editButton.onclick = () => openEditModal(messageId, messageText);
+//     if (userHashedIp && messageId === userHashedIp && nicknameInput.value.trim() === nickSpan.textContent.split(" - ")[0]) {
+//       const editButton = document.createElement("span");
+//       editButton.innerHTML = " ✏️";
+//       editButton.style.cursor = "pointer";
+//       editButton.title = "Edit Message";
+//       editButton.onclick = () => openEditModal(messageId, messageText);
 
-      const deleteButton = document.createElement("span");
-      deleteButton.innerHTML = " ❌";
-      deleteButton.style.cursor = "pointer";
-      deleteButton.title = "Delete Message";
-      deleteButton.onclick = () => deleteMessage(messageId);
+//       const deleteButton = document.createElement("span");
+//       deleteButton.innerHTML = " ❌";
+//       deleteButton.style.cursor = "pointer";
+//       deleteButton.title = "Delete Message";
+//       deleteButton.onclick = () => deleteMessage(messageId);
 
-      messageDiv.appendChild(editButton);
-      messageDiv.appendChild(deleteButton);
-    }
-  });
-};
+//       messageDiv.appendChild(editButton);
+//       messageDiv.appendChild(deleteButton);
+//     }
+//   });
+// };
 
 // Open modal for editing messages
 const openEditModal = (id, oldMessage) => {
@@ -104,15 +104,15 @@ const deleteMessage = async (id) => {
   }
 };
 
-const editButton = document.createElement("span");
-editButton.innerHTML = "✏️";
-editButton.classList.add("chat-action"); // Assigns hover effect
-editButton.onclick = () => openEditModal(id, msg);
+// const editButton = document.createElement("span");
+// editButton.innerHTML = "✏️";
+// editButton.classList.add("chat-action"); // Assigns hover effect
+// editButton.onclick = () => openEditModal(id, msg);
 
-const deleteButton = document.createElement("span");
-deleteButton.innerHTML = "❌";
-deleteButton.classList.add("chat-action"); // Assigns hover effect
-deleteButton.onclick = () => deleteMessage(id);
+// const deleteButton = document.createElement("span");
+// deleteButton.innerHTML = "❌";
+// deleteButton.classList.add("chat-action"); // Assigns hover effect
+// deleteButton.onclick = () => deleteMessage(id);
 
 // Fetch user IP on script load and enhance messages after chat updates
 fetchUserHashedIp();
