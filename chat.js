@@ -207,81 +207,46 @@ const sendMessage = async () => {
 // Displays Chat Messages 
 const displayChat = async (messages, isLocalUpdate = false) => {
   if (!isLocalUpdate) {
-    // Remove all pending messages if we are updating from the server
     document.querySelectorAll(".chat-message.pending").forEach(el => el.remove());
   }
+
+  //chatroom.innerHTML = "";
 
   messages.forEach(({ nick, id, msg, timestamp, pending }) => {
     const colour = `hsl(${parseInt(id, 16) % 360}, 61%, 51%)`;
     const formattedDate = timestamp.replace("T", " ").slice(0, 19).replace(/-/g, ".");
 
-    // Message container
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-message");
-    if (pending) messageDiv.classList.add("pending"); // Add pending style
+    if (pending) messageDiv.classList.add("pending");
 
-    // Header container (nickname, ID, and action buttons)
-    const headerDiv = document.createElement("div");
-    headerDiv.classList.add("chat-header");
-
-    // Nickname and ID
     const headerSpan = document.createElement("span");
     headerSpan.classList.add("chat-nick");
     headerSpan.style.color = colour;
     headerSpan.innerHTML = `${nick} - (${id}):`;
 
-    // Action buttons (edit & delete)
-    const actionSpan = document.createElement("span");
-    actionSpan.classList.add("chat-actions");
-
-    if (userHashedIp === id && nicknameInput.value.trim() === nick) {
-      const editButton = document.createElement("span");
-      editButton.classList.add("chat-action");
-      editButton.innerHTML = " ✏️";
-      editButton.title = "Edit Message";
-      editButton.style.cursor = "pointer";
-      editButton.onclick = () => openEditModal(id, msg);
-
-      const deleteButton = document.createElement("span");
-      deleteButton.classList.add("chat-action");
-      deleteButton.innerHTML = " ❌";
-      deleteButton.title = "Delete Message";
-      deleteButton.style.cursor = "pointer";
-      deleteButton.onclick = () => deleteMessage(id);
-
-      actionSpan.appendChild(editButton);
-      actionSpan.appendChild(deleteButton);
-    }
-
-    // Timestamp
     const timestampSpan = document.createElement("div");
     timestampSpan.classList.add("chat-timestamp");
     timestampSpan.textContent = formattedDate;
 
-    // Message text
     const textDiv = document.createElement("div");
     textDiv.classList.add("chat-text");
     textDiv.textContent = msg;
 
-    // Append elements
+    const headerDiv = document.createElement("div");
+    headerDiv.classList.add("chat-header");
     headerDiv.appendChild(headerSpan);
-    headerDiv.appendChild(actionSpan);
+
     messageDiv.appendChild(headerDiv);
     messageDiv.appendChild(timestampSpan);
     messageDiv.appendChild(textDiv);
-
-    // Add pending indicator if necessary
-    if (pending) {
-      const pendingIndicator = document.createElement("span");
-      pendingIndicator.classList.add("pending-indicator");
-      pendingIndicator.innerHTML = "⏳ Moderating...";
-      messageDiv.appendChild(pendingIndicator);
-    }
 
     chatroom.appendChild(messageDiv);
   });
 
   chatroom.scrollTop = chatroom.scrollHeight;
+
+  document.dispatchEvent(new Event("chatUpdated"));
 };
 
 // Remove pending message on failure
