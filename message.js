@@ -29,11 +29,17 @@ const enhanceMessages = () => {
     const messageId = idMatch[1];
     const messageTextDiv = messageDiv.querySelector(".chat-text");
     const messageText = messageTextDiv.textContent;
+    const msgNick = nickSpan.textContent.split(" - ")[0]
 
     // Avoid duplicating buttons if they already exist
     if (messageDiv.querySelector(".chat-actions")) return;
 
-    if (userHashedIp && messageId === userHashedIp && nicknameInput.value.trim() === nickSpan.textContent.split(" - ")[0]) {
+    
+    console.log(`Nick: ${msgNick}`);
+    console.log(`ID: ${messageId}`);
+
+    if (userHashedIp && messageId === userHashedIp && nicknameInput.value.trim() === msgNick) {
+      console.log(`Match`);
       const actionSpan = document.createElement("span");
       actionSpan.classList.add("chat-actions");
 
@@ -53,7 +59,7 @@ const enhanceMessages = () => {
 
       actionSpan.appendChild(editButton);
       actionSpan.appendChild(deleteButton);
-      messageDiv.appendChild(actionSpan);
+      messageDiv.appendChild(actionSpan); // Change it so it is appended before the message
     }
   });
 };
