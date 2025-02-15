@@ -231,7 +231,7 @@ footer {
 
 /* Show buttons when hovering over the name line */
 .chat-header:hover .chat-actions {
-  display: inline-flex;
+  display: flex;
 }
 
 /* Show buttons when the message is active (controlled via JS) */
