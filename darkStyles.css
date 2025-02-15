@@ -225,7 +225,7 @@ footer {
 }
 
 .chat-actions {
-  display: none;
+  display: flex;
   gap: 4px;
 }
 
