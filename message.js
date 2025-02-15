@@ -35,11 +35,11 @@ const enhanceMessages = () => {
     if (messageDiv.querySelector(".chat-actions")) return;
 
     
-    console.log(`Nick: ${msgNick}`);
-    console.log(`ID: ${messageId}`);
+    //console.log(`Nick: ${msgNick}`);
+    //console.log(`ID: ${messageId}`);
 
     if (userHashedIp && messageId === userHashedIp && nicknameInput.value.trim() === msgNick) {
-      console.log(`Match`);
+      //console.log(`Match`);
       const actionSpan = document.createElement("span");
       actionSpan.classList.add("chat-actions");
 
