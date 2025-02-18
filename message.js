@@ -20,6 +20,7 @@ const fetchUserHashedIp = async () => {
 // Enhance chat messages with edit/delete buttons
 const enhanceMessages = () => {
   console.log("🔒 Enhancing messages...");
+  console.log("🔒 Session Token:", sessionToken);
   if (!sessionToken) return;
 
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
@@ -28,7 +29,6 @@ const enhanceMessages = () => {
     if (!msgId) return;
 
     console.log("🔒 Message ID:", msgId);
-    console.log("🔒 Session Token:", sessionToken);
 
     // Ensure the msgId is a multiple of the session token
     if (msgId % BigInt(sessionToken) !== BigInt(0)){
