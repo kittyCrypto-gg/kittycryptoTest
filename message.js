@@ -26,10 +26,14 @@ const enhanceMessages = () => {
     const msgId = messageDiv.dataset.msgid ? BigInt(messageDiv.dataset.msgid) : null;
     if (!msgId) return;
 
-    // Ensure the msgId is a multiple of the session token
-    if (msgId % BigInt(sessionToken) !== BigInt(0)) return;
     console.log("🔒 Message ID:", msgId);
     console.log("🔒 Session Token:", sessionToken);
+
+    // Ensure the msgId is a multiple of the session token
+    if (msgId % BigInt(sessionToken) !== BigInt(0)){
+      console.error(`❌ Invalid Message ID: ${msgId}. Residue: ${msgId % BigInt(sessionToken)}`);
+      return;
+    }
     console.log("🔒 Valid Message ID");
 
     // Avoid duplicating buttons if they already exist
