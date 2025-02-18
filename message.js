@@ -25,7 +25,7 @@ const enhanceMessages = () => {
   if (!sessionToken) return;
 
   // Convert session token to an integer
-  const sessionTokenInt = BigInt(sessionToken);
+  const sessionTokenInt = BigInt("0x" + sessionToken);
   console.log("🔒 Converted Session Token:", sessionTokenInt);
 
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
