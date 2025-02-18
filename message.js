@@ -18,9 +18,10 @@ const fetchUserHashedIp = async () => {
 };
 
 // Enhance chat messages with edit/delete buttons
+// Enhance chat messages with edit/delete buttons
 const enhanceMessages = () => {
   if (!sessionToken) return;
-  // Convert session token (full) to BigInt
+  // Convert session token to an integer
   const sessionTokenInt = BigInt(`0x${sessionToken}`);
 
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
@@ -31,12 +32,12 @@ const enhanceMessages = () => {
     let rawMsgId = msgIdSpan.textContent.replace("ID: ", "").trim();
     if (!rawMsgId) return;
 
-    // Convert msgId to BigInt
-    const msgId = BigInt(`0x${rawMsgId}`);
+    // Convert msgId to a BigInt for calculations
+    const msgId = BigInt(rawMsgId);
     const residue = msgId % sessionTokenInt;
-
     // Ensure the msgId is a multiple of the session token
     if (residue !== BigInt(0)) return;
+    console.log("✨ Enhancing message:", msgId.toString());
 
     // Avoid duplicating buttons if they already exist
     if (messageDiv.querySelector(".chat-actions")) return;
