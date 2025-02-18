@@ -21,7 +21,6 @@ const fetchUserHashedIp = async () => {
 // Enhance chat messages with edit/delete buttons
 const enhanceMessages = () => {
   console.log("🔒 Enhancing messages...");
-  console.log("🔒 Session Token (Raw):", sessionToken);
   if (!sessionToken) return;
 
   // Convert session token to an integer
@@ -40,12 +39,10 @@ const enhanceMessages = () => {
     // Convert msgId to a BigInt for calculations
     const msgId = BigInt(rawMsgId);
     console.log("🔒 Extracted Message ID:", msgId);
-
+    const residue = msgId % sessionTokenInt;
+    console.log(`🔒 Operation: ${msgId} % ${sessionTokenInt} = ${residue}`);
     // Ensure the msgId is a multiple of the session token
-    if (msgId % sessionTokenInt !== BigInt(0)) {
-      //console.error(`❌ Invalid Message ID: ${msgId}. Residue: ${msgId % sessionTokenInt}`);
-      return;
-    }
+    if (residue !== BigInt(0)) return;
     console.log("🔒 Valid Message ID");
 
     // Avoid duplicating buttons if they already exist
