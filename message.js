@@ -21,7 +21,7 @@ const fetchUserHashedIp = async () => {
 const enhanceMessages = () => {
   if (!sessionToken) return;
   // Convert session token (full) to BigInt
-  const sessionTokenInt = BigInt(sessionToken);
+  const sessionTokenInt = BigInt(`0x${sessionToken}`);
 
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
     // Extract msgId from the hidden msgId span inside the messageDiv
@@ -32,7 +32,7 @@ const enhanceMessages = () => {
     if (!rawMsgId) return;
 
     // Convert msgId to BigInt
-    const msgId = BigInt(rawMsgId);
+    const msgId = BigInt(`0x${rawMsgId}`);
     const residue = msgId % sessionTokenInt;
 
     // Ensure the msgId is a multiple of the session token
