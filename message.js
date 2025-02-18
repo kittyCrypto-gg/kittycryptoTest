@@ -28,6 +28,9 @@ const enhanceMessages = () => {
 
     // Ensure the msgId is a multiple of the session token
     if (msgId % BigInt(sessionToken) !== BigInt(0)) return;
+    console.log("🔒 Message ID:", msgId);
+    console.log("🔒 Session Token:", sessionToken);
+    console.log("🔒 Valid Message ID");
 
     // Avoid duplicating buttons if they already exist
     if (messageDiv.querySelector(".chat-actions")) return;
