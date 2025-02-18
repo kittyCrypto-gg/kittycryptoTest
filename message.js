@@ -24,14 +24,17 @@ const enhanceMessages = () => {
   if (!sessionToken) return;
 
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
-    // Extract msgId from the message div's data attribute
-    const msgId = messageDiv.dataset.msgid ? BigInt(messageDiv.dataset.msgid) : null;
+    // Extract msgId from the hidden msgId span inside the messageDiv
+    const msgIdSpan = messageDiv.querySelector(".chat-msg-id");
+    if (!msgIdSpan) return;
+
+    const msgId = BigInt(msgIdSpan.textContent.replace("ID: ", "").trim());
     if (!msgId) return;
 
     console.log("🔒 Message ID:", msgId);
 
     // Ensure the msgId is a multiple of the session token
-    if (msgId % BigInt(sessionToken) !== BigInt(0)){
+    if (msgId % BigInt(sessionToken) !== BigInt(0)) {
       console.error(`❌ Invalid Message ID: ${msgId}. Residue: ${msgId % BigInt(sessionToken)}`);
       return;
     }
