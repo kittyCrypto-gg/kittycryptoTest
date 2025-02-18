@@ -19,48 +19,39 @@ const fetchUserHashedIp = async () => {
 
 // Enhance chat messages with edit/delete buttons
 const enhanceMessages = () => {
+  if (!sessionToken) return;
+
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
-    const nickSpan = messageDiv.querySelector(".chat-nick");
-    if (!nickSpan) return;
+    // Extract msgId from the message div's data attribute
+    const msgId = messageDiv.dataset.msgid ? BigInt(messageDiv.dataset.msgid) : null;
+    if (!msgId) return;
 
-    const idMatch = nickSpan.textContent.match(/\((0x[a-f0-9]+)\)/);
-    if (!idMatch) return;
-
-    const messageId = idMatch[1];
-    const messageTextDiv = messageDiv.querySelector(".chat-text");
-    const messageText = messageTextDiv.textContent;
-    const msgNick = nickSpan.textContent.split(" - ")[0]
+    // Ensure the msgId is a multiple of the session token
+    if (msgId % BigInt(sessionToken) !== BigInt(0)) return;
 
     // Avoid duplicating buttons if they already exist
     if (messageDiv.querySelector(".chat-actions")) return;
 
-    
-    //console.log(`Nick: ${msgNick}`);
-    //console.log(`ID: ${messageId}`);
+    const actionSpan = document.createElement("span");
+    actionSpan.classList.add("chat-actions");
 
-    if (userHashedIp && messageId === userHashedIp && nicknameInput.value.trim() === msgNick) {
-      //console.log(`Match`);
-      const actionSpan = document.createElement("span");
-      actionSpan.classList.add("chat-actions");
+    const editButton = document.createElement("span");
+    editButton.innerHTML = " ✏️";
+    editButton.classList.add("chat-action");
+    editButton.title = "Edit Message";
+    editButton.style.cursor = "pointer";
+    editButton.onclick = () => openEditModal(msgId.toString(), messageDiv.querySelector(".chat-text").textContent);
 
-      const editButton = document.createElement("span");
-      editButton.innerHTML = " ✏️";
-      editButton.classList.add("chat-action");
-      editButton.title = "Edit Message";
-      editButton.style.cursor = "pointer";
-      editButton.onclick = () => openEditModal(messageId, messageText);
+    const deleteButton = document.createElement("span");
+    deleteButton.innerHTML = " ❌";
+    deleteButton.classList.add("chat-action");
+    deleteButton.title = "Delete Message";
+    deleteButton.style.cursor = "pointer";
+    deleteButton.onclick = () => deleteMessage(msgId.toString());
 
-      const deleteButton = document.createElement("span");
-      deleteButton.innerHTML = " ❌";
-      deleteButton.classList.add("chat-action");
-      deleteButton.title = "Delete Message";
-      deleteButton.style.cursor = "pointer";
-      deleteButton.onclick = () => deleteMessage(messageId);
-
-      actionSpan.appendChild(editButton);
-      actionSpan.appendChild(deleteButton);
-      messageDiv.appendChild(actionSpan); // Change it so it is appended before the message
-    }
+    actionSpan.appendChild(editButton);
+    actionSpan.appendChild(deleteButton);
+    messageDiv.appendChild(actionSpan); // Append before message text
   });
 };
 
@@ -107,7 +98,7 @@ const submitEdit = async (id) => {
 // Delete message
 const deleteMessage = async (id) => {
   if (!confirm("Are you sure you want to delete this message?")) return;
-  
+
   try {
     const response = await fetch(`${CHAT_SERVER}/delete-message`, {
       method: "DELETE",
