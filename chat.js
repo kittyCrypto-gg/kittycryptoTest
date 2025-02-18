@@ -148,6 +148,11 @@ const sendMessage = async () => {
     return;
   }
 
+  if (!sessionToken) {
+    alert("Session token is missing. Please refresh the page.");
+    return;
+  }
+
   setChatCookie("nickname", nick);
 
   console.log("📡 Fetching IP address...");
@@ -175,7 +180,8 @@ const sendMessage = async () => {
     chatRequest: {
       nick,
       msg,
-      ip: userIp
+      ip: userIp,
+      sessionToken // Include session token here
     }
   };
 
