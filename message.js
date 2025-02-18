@@ -43,7 +43,7 @@ const enhanceMessages = () => {
 
     // Ensure the msgId is a multiple of the session token
     if (msgId % sessionTokenInt !== BigInt(0)) {
-      console.error(`❌ Invalid Message ID: ${msgId}. Residue: ${msgId % sessionTokenInt}`);
+      //console.error(`❌ Invalid Message ID: ${msgId}. Residue: ${msgId % sessionTokenInt}`);
       return;
     }
     console.log("🔒 Valid Message ID");
