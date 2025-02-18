@@ -171,6 +171,7 @@ const sendMessage = async () => {
     id: tempId,
     msg,
     timestamp: new Date().toISOString(),
+    msgId: "0",
     pending: true,
   };
 
