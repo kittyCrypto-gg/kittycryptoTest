@@ -18,24 +18,32 @@ const fetchUserHashedIp = async () => {
 };
 
 // Enhance chat messages with edit/delete buttons
+// Enhance chat messages with edit/delete buttons
 const enhanceMessages = () => {
   console.log("🔒 Enhancing messages...");
-  console.log("🔒 Session Token:", sessionToken);
+  console.log("🔒 Session Token (Raw):", sessionToken);
   if (!sessionToken) return;
+
+  // Convert session token to an integer
+  const sessionTokenInt = BigInt(sessionToken);
+  console.log("🔒 Converted Session Token:", sessionTokenInt);
 
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
     // Extract msgId from the hidden msgId span inside the messageDiv
     const msgIdSpan = messageDiv.querySelector(".chat-msg-id");
     if (!msgIdSpan) return;
 
-    const msgId = BigInt(msgIdSpan.textContent.replace("ID: ", "").trim());
-    if (!msgId) return;
+    let rawMsgId = msgIdSpan.textContent.replace("ID: ", "").trim();
+    if (!rawMsgId) return;
 
-    console.log("🔒 Message ID:", msgId);
+
+    // Convert msgId to a BigInt for calculations
+    const msgId = BigInt(rawMsgId);
+    console.log("🔒 Extracted Message ID:", msgId);
 
     // Ensure the msgId is a multiple of the session token
-    if (msgId % BigInt(sessionToken) !== BigInt(0)) {
-      console.error(`❌ Invalid Message ID: ${msgId}. Residue: ${msgId % BigInt(sessionToken)}`);
+    if (msgId % sessionTokenInt !== BigInt(0)) {
+      console.error(`❌ Invalid Message ID: ${msgId}. Residue: ${msgId % sessionTokenInt}`);
       return;
     }
     console.log("🔒 Valid Message ID");
