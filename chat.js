@@ -252,6 +252,7 @@ const displayChat = async (messages, isLocalUpdate = false) => {
   chatroom.scrollTop = chatroom.scrollHeight;
 
   document.dispatchEvent(new Event("chatUpdated"));
+  console.log(`Chat updated with ${messages.length} new messages.`);
 };
 
 // Remove pending message on failure

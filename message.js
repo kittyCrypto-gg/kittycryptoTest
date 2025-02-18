@@ -19,6 +19,7 @@ const fetchUserHashedIp = async () => {
 
 // Enhance chat messages with edit/delete buttons
 const enhanceMessages = () => {
+  console.log("🔒 Enhancing messages...");
   if (!sessionToken) return;
 
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
