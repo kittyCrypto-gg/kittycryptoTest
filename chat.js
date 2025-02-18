@@ -214,9 +214,8 @@ const sendMessage = async () => {
 const displayChat = async (messages, isLocalUpdate = false) => {
   if (!isLocalUpdate) {
     document.querySelectorAll(".chat-message.pending").forEach(el => el.remove());
+    chatroom.innerHTML = "";
   }
-
-  chatroom.innerHTML = "";
 
   messages.forEach(({ nick, id, msg, timestamp, pending }) => {
     const colour = `hsl(${parseInt(id, 16) % 360}, 61%, 51%)`;
