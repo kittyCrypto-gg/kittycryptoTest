@@ -61,10 +61,10 @@ const enhanceMessages = () => {
     actionSpan.appendChild(editButton);
     actionSpan.appendChild(deleteButton);
 
-    // Append action buttons to the timestamp div instead of the main message div
-    const timestampDiv = messageDiv.querySelector(".chat-timestamp");
-    if (timestampDiv) {
-      timestampDiv.appendChild(actionSpan);
+    // Append action buttons to the chat-header div instead of the main message div
+    const chatHeaderDiv = messageDiv.querySelector(".chat-header");
+    if (chatHeaderDiv) {
+      chatHeaderDiv.appendChild(actionSpan);
     }
   });
 };
