@@ -18,14 +18,10 @@ const fetchUserHashedIp = async () => {
 };
 
 // Enhance chat messages with edit/delete buttons
-// Enhance chat messages with edit/delete buttons
 const enhanceMessages = () => {
-  console.log("🔒 Enhancing messages...");
   if (!sessionToken) return;
-
-  // Convert session token to an integer
-  const sessionTokenInt = BigInt("0x" + sessionToken);
-  console.log("🔒 Converted Session Token:", sessionTokenInt);
+  // Convert session token (full) to BigInt
+  const sessionTokenInt = BigInt(sessionToken);
 
   document.querySelectorAll(".chat-message").forEach((messageDiv) => {
     // Extract msgId from the hidden msgId span inside the messageDiv
@@ -35,15 +31,12 @@ const enhanceMessages = () => {
     let rawMsgId = msgIdSpan.textContent.replace("ID: ", "").trim();
     if (!rawMsgId) return;
 
-
-    // Convert msgId to a BigInt for calculations
+    // Convert msgId to BigInt
     const msgId = BigInt(rawMsgId);
-    console.log("🔒 Extracted Message ID:", msgId);
     const residue = msgId % sessionTokenInt;
-    console.log(`🔒 Operation: ${msgId} % ${sessionTokenInt} = ${residue}`);
+
     // Ensure the msgId is a multiple of the session token
     if (residue !== BigInt(0)) return;
-    console.log("🔒 Valid Message ID");
 
     // Avoid duplicating buttons if they already exist
     if (messageDiv.querySelector(".chat-actions")) return;
@@ -67,7 +60,12 @@ const enhanceMessages = () => {
 
     actionSpan.appendChild(editButton);
     actionSpan.appendChild(deleteButton);
-    messageDiv.appendChild(actionSpan); // Append before message text
+
+    // Append action buttons to the timestamp div instead of the main message div
+    const timestampDiv = messageDiv.querySelector(".chat-timestamp");
+    if (timestampDiv) {
+      timestampDiv.appendChild(actionSpan);
+    }
   });
 };
 
