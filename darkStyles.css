@@ -258,6 +258,11 @@ footer {
   margin-top: 2px;
 }
 
+/* Message ID (hidden from users but present in the HTML) */
+.chat-msg-id {
+  display: none;
+}
+
 .chat-text {
   margin-top: 5px;
 }

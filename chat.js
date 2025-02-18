@@ -217,7 +217,7 @@ const displayChat = async (messages, isLocalUpdate = false) => {
     chatroom.innerHTML = "";
   }
 
-  messages.forEach(({ nick, id, msg, timestamp, pending }) => {
+  messages.forEach(({ nick, id, msg, timestamp, msgId, pending }) => {
     const colour = `hsl(${parseInt(id, 16) % 360}, 61%, 51%)`;
     const formattedDate = timestamp.replace("T", " ").slice(0, 19).replace(/-/g, ".");
 
@@ -234,6 +234,10 @@ const displayChat = async (messages, isLocalUpdate = false) => {
     timestampSpan.classList.add("chat-timestamp");
     timestampSpan.textContent = formattedDate;
 
+    const msgIdSpan = document.createElement("span");
+    msgIdSpan.classList.add("chat-msg-id");
+    msgIdSpan.textContent = `ID: ${msgId}`;
+
     const textDiv = document.createElement("div");
     textDiv.classList.add("chat-text");
     textDiv.textContent = msg;
@@ -242,8 +246,10 @@ const displayChat = async (messages, isLocalUpdate = false) => {
     headerDiv.classList.add("chat-header");
     headerDiv.appendChild(headerSpan);
 
+
     messageDiv.appendChild(headerDiv);
     messageDiv.appendChild(timestampSpan);
+    messageDiv.appendChild(msgIdSpan);
     messageDiv.appendChild(textDiv);
 
     chatroom.appendChild(messageDiv);
