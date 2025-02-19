@@ -2,21 +2,6 @@ window.CHAT_SERVER = window.CHAT_SERVER || "https://kittycrypto.ddns.net:7619/ch
 window.GET_IP_HASH_URL = window.GET_IP_HASH_URL || `${window.CHAT_SERVER}/get-ip/sha256`;
 window.nicknameInput = window.nicknameInput || document.getElementById("nickname");
 
-let userHashedIp = null; // Store the user's hashed IP
-
-// Fetch user's hashed IP on load
-const fetchUserHashedIp = async () => {
-  try {
-    const response = await fetch(GET_IP_HASH_URL);
-    if (!response.ok) throw new Error("Failed to fetch hashed IP");
-    const data = await response.json();
-    userHashedIp = data.hashedIp;
-    console.log("🔑 User Hashed IP:", userHashedIp);
-  } catch (error) {
-    console.error("❌ Error fetching hashed IP:", error);
-  }
-};
-
 // Enhance chat messages with edit/delete buttons
 // Enhance chat messages with edit/delete buttons
 const enhanceMessages = () => {
@@ -152,7 +137,11 @@ async function editMessage() {
     body: JSON.stringify(body),
   };
 
-  const response = await fetch(`${CHAT_SERVER}/edit`, request);
+  const response = await fetch(`${CHAT_SERVER}/edit`, {
+    method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+  });
 
   if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
   console.log("✅ Message edited successfully.");
@@ -193,17 +182,11 @@ async function deleteMessage(msgId) {
     ip: userHashedIp,
   };
 
-  console.log(`body: ${JSON.stringify(body)}`);
-
-  const request = {
+  const response = await fetch(`${CHAT_SERVER}/delete`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  };
-
-  console.log(`request: ${JSON.stringify(request)}`);
-
-  const response = await fetch(`${CHAT_SERVER}/delete`, request);
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+  });
 
   if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
 
