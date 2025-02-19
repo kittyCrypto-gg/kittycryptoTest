@@ -192,12 +192,21 @@ function populateModalFields(messageDiv) {
 async function deleteMessage(msgId) {
   console.log("🗑️ Deleting message:", msgId);
 
-  // Select message based on msgId text content instead of using :contains()
+  // Find the message div based on msgId
   const messageDiv = [...document.querySelectorAll(".chat-message")].find(
     (div) => div.querySelector(".chat-msg-id")?.textContent.includes(msgId)
   );
 
+  let messageContent = "Message is being deleted...";
+  let userNick = "Unknown";
+
   if (messageDiv) {
+    const messageTextDiv = messageDiv.querySelector(".chat-text");
+    const messageNickDiv = messageDiv.querySelector(".chat-nick");
+
+    messageContent = messageTextDiv?.textContent || messageContent;
+    userNick = messageNickDiv?.textContent || userNick;
+
     messageDiv.remove();
   }
 
@@ -206,9 +215,9 @@ async function deleteMessage(msgId) {
   pendingMessageDiv.classList.add("chat-message", "pending");
   pendingMessageDiv.innerHTML = `
     <span class="chat-header">
-      <span class="chat-nick">Deleting message...</span>
+      <span class="chat-nick">${userNick} (Deleting...)</span>
     </span>
-    <div class="chat-text">Message ID: ${msgId}</div>
+    <div class="chat-text">${messageContent}</div>
   `;
 
   document.getElementById("chatroom").appendChild(pendingMessageDiv);
@@ -228,7 +237,7 @@ async function deleteMessage(msgId) {
 
     if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
 
-    const responseData = await response.json(); // Correct way to get response data
+    const responseData = await response.json();
     console.log("✅ Message deleted successfully:", responseData);
 
     // Remove the pending deletion message after confirmation
@@ -244,9 +253,10 @@ async function deleteMessage(msgId) {
     // Show error message inside the pending message div
     pendingMessageDiv.innerHTML = `
       <span class="chat-header">
-        <span class="chat-nick">Failed to delete message</span>
+        <span class="chat-nick">${userNick} (Failed to delete)</span>
       </span>
-      <div class="chat-text">An error occurred while deleting the message.</div>
+      <div class="chat-text">${messageContent}</div>
+      <div class="chat-error">An error occurred while deleting the message.</div>
     `;
 
     // Optionally, remove the error message after a delay
