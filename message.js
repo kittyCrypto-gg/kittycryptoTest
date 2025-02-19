@@ -1,4 +1,4 @@
-window.CHAT_SERVER = window.CHAT_SERVER || "https://kittycrypto.ddns.net:7619";
+window.CHAT_SERVER = window.CHAT_SERVER || "https://kittycrypto.ddns.net:7619/chat";
 window.GET_IP_HASH_URL = window.GET_IP_HASH_URL || `${window.CHAT_SERVER}/get-ip/sha256`;
 window.nicknameInput = window.nicknameInput || document.getElementById("nickname");
 
@@ -152,7 +152,7 @@ async function editMessage() {
     body: JSON.stringify(body),
   };
 
-  const response = await fetch(`${CHAT_SERVER}/chat/edit`, request);
+  const response = await fetch(`${CHAT_SERVER}/edit`, request);
 
   if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
   console.log("✅ Message edited successfully.");
@@ -193,13 +193,17 @@ async function deleteMessage(msgId) {
     ip: userHashedIp,
   };
 
+  console.log(`body: ${body}`);
+
   const request = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   };
 
-  const response = await fetch(`${CHAT_SERVER}/chat/delete`, request);
+  console.log(`request: ${request}`);
+
+  const response = await fetch(`${CHAT_SERVER}/delete`, request);
 
   if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
   console.log("✅ Message deleted successfully.");
