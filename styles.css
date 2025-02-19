@@ -17,6 +17,7 @@ body {
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for a floating effect */
   width: 80%; /* Occupy 80% of the viewport width */
+  height: auto; /* Adjust height automatically */
   max-width: 1200px; /* Restrict the width to a maximum of 1200px */
   margin: 20px auto; /* Add some space around the frame */
   padding: 20px;
