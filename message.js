@@ -57,7 +57,7 @@ const enhanceMessages = () => {
     deleteButton.classList.add("chat-action");
     deleteButton.title = "Delete Message";
     deleteButton.style.cursor = "pointer";
-    deleteButton.onclick = () => deleteMessage(msgId);
+    deleteButton.onclick = () => deleteMessage(rawMsgId);
 
     actionSpan.appendChild(editButton);
     actionSpan.appendChild(deleteButton);
