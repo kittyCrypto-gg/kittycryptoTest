@@ -22,7 +22,7 @@ body {
   margin: 20px auto;
   padding: 20px;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* Header styles */

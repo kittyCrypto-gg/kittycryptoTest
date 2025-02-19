@@ -22,7 +22,7 @@ body {
   margin: 20px auto; /* Add some space around the frame */
   padding: 20px;
   box-sizing: border-box; /* Include padding in width/height calculations */
-  overflow: hidden; /* Ensure no content spills out */
+  overflow: auto; /* Ensure no content spills out */
 }
 
 /* Header styles */
