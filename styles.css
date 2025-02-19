@@ -37,20 +37,18 @@ header {
 }
 
 /* Menu styles */
-/* Default: Horizontal layout */
 nav {
   background-color: #a7ffeb; /* Mint green */
   padding: 15px;
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping */
   gap: 15px;
   border-bottom: 2px solid #004d40;
-  max-width: 100%;
-  align-items: center;
-  justify-content: flex-start;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  white-space: nowrap; /* Prevents buttons from wrapping */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
 }
 
-/* Hide scrollbar for cleaner look */
+/* Hide scrollbar on some browsers */
 nav::-webkit-scrollbar {
   display: none;
 }
@@ -66,25 +64,11 @@ nav::-webkit-scrollbar {
   font-size: 1rem;
   font-weight: bold;
   flex: 0 0 auto; /* Prevents buttons from stretching */
-  white-space: nowrap; /* Prevents text from wrapping */
 }
 
-/* Hover effect */
 .menu-button:hover {
   background-color: #4dd0e1; /* Darker cyan */
   transform: scale(1.1);
-}
-
-/* Switch to vertical when scrolling is needed */
-nav:has(.menu-button:nth-child(3):nth-last-child(n+1)) {
-  overflow-x: hidden; /* Remove horizontal scroll */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  max-width: 200px;
-  height: auto;
-  border-right: 2px solid #004d40;
-  border-bottom: none;
 }
 
 /* Body content styles */
