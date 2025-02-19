@@ -48,6 +48,8 @@ nav {
   max-width: 100%;
   align-items: center;
   justify-content: flex-start;
+  position: relative;
+  transition: transform 0.3s ease-in-out; /* Smooth animation */
 }
 
 /* Hide scrollbar for cleaner look */
@@ -75,16 +77,54 @@ nav::-webkit-scrollbar {
   transform: scale(1.1);
 }
 
-/* Switch to vertical when scrolling is needed */
+/* Switch to vertical when menu overflows */
 nav:has(.menu-button:nth-child(3):nth-last-child(n+1)) {
-  overflow-x: hidden; /* Remove horizontal scroll */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   max-width: 200px;
-  height: auto;
+  height: 100vh;
   border-right: 2px solid #b2ebf2;
   border-bottom: none;
+  position: fixed;
+  left: -250px; /* Initially hidden */
+  top: 0;
+  transition: transform 0.3s ease-in-out; /* Sliding animation */
+}
+
+/* When menu is active, slide it in */
+nav.open {
+  transform: translateX(250px);
+}
+
+/* Burger menu button */
+.burger-menu {
+  display: block;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background-color: #004d40;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* Overlay to detect outside clicks */
+.menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.menu-overlay.active {
+  display: block;
 }
 
 /* Body content styles */

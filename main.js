@@ -76,3 +76,22 @@ fetch('./main.json')
   .catch(error => {
     console.error('Error loading JSON or updating DOM:', error);
   });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const burgerMenu = document.getElementById("burger-menu");
+    const navMenu = document.getElementById("nav");
+    const menuOverlay = document.getElementById("menu-overlay");
+  
+    // Toggle menu visibility
+    burgerMenu.addEventListener("click", () => {
+      navMenu.classList.toggle("open");
+      menuOverlay.classList.toggle("active");
+    });
+  
+    // Close menu when clicking outside
+    menuOverlay.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+      menuOverlay.classList.remove("active");
+    });
+  });
+  
