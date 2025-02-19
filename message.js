@@ -135,6 +135,7 @@ async function editMessage() {
   const msgId = document.getElementById("edit-message-id")?.textContent.replace("Editing Message ID: ", "").trim() || "";
   const newMessage = document.getElementById("edit-message-input")?.value || "";
   if (!msgId || !newMessage) {
+    console.log(msgId, newMessage);
     alert("Please provide a message to edit.");
     console.error("❌ Missing message data.");
     return;
