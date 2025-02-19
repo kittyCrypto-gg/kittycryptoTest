@@ -193,7 +193,7 @@ async function deleteMessage(msgId) {
     ip: userHashedIp,
   };
 
-  console.log(`body: ${body}`);
+  console.log(`body: ${JSON.stringify(body)}`);
 
   const request = {
     method: "POST",
@@ -201,10 +201,12 @@ async function deleteMessage(msgId) {
     body: JSON.stringify(body),
   };
 
-  console.log(`request: ${request}`);
+  console.log(`request: ${JSON.stringify(request)}`);
 
   const response = await fetch(`${CHAT_SERVER}/delete`, request);
 
   if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
+
+  console.log(JSON.stringify(response));
   console.log("✅ Message deleted successfully.");
 }
