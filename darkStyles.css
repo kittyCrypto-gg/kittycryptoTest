@@ -42,13 +42,12 @@ nav {
   background-color: #00352c; /* Darker mint green */
   padding: 15px;
   display: flex;
+  flex-wrap: wrap; /* Allow wrapping */
   gap: 15px;
-  border-bottom: 2px solid #b2ebf2;
-  overflow-x: auto; /* Allow horizontal scrolling */
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  max-width: 100%; /* Prevents breaking */
+  border-bottom: 2px solid #004d40;
+  max-width: 100%;
   align-items: center;
+  justify-content: flex-start;
 }
 
 /* Hide scrollbar for cleaner look */
@@ -77,7 +76,7 @@ nav::-webkit-scrollbar {
 }
 
 /* Switch to vertical when scrolling is needed */
-nav:has(.menu-button:first-child:last-child) {
+nav:has(.menu-button:nth-child(3):nth-last-child(n+1)) {
   overflow-x: hidden; /* Remove horizontal scroll */
   display: flex;
   flex-direction: column;
