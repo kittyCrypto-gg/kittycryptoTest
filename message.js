@@ -220,7 +220,7 @@ async function deleteMessage(msgId) {
   };
 
   try {
-    const response = await fetch(`${CHAT_SERVER}/chat/delete`, {
+    const response = await fetch(`${CHAT_SERVER}/delete`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
