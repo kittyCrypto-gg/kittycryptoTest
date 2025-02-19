@@ -1,6 +1,22 @@
 window.CHAT_SERVER = window.CHAT_SERVER || "https://kittycrypto.ddns.net:7619/chat";
-window.GET_IP_HASH_URL = window.GET_IP_HASH_URL || `${window.CHAT_SERVER}/get-ip/sha256`;
+window.MAIN_SERVER = window.MAIN_SERVER || "https://kittycrypto.ddns.net:7619";
+window.GET_IP_HASH_URL = window.GET_IP_HASH_URL || `${window.MAIN_SERVER}/get-ip/sha256`;
 window.nicknameInput = window.nicknameInput || document.getElementById("nickname");
+
+let userHashedIp = null; // Store the user's hashed IP
+
+// Fetch user's hashed IP on load
+const fetchUserHashedIp = async () => {
+  try {
+    const response = await fetch(GET_IP_HASH_URL);
+    if (!response.ok) throw new Error("Failed to fetch hashed IP");
+    const data = await response.json();
+    userHashedIp = data.hashedIp;
+    console.log("🔑 User Hashed IP:", userHashedIp);
+  } catch (error) {
+    console.error("❌ Error fetching hashed IP:", error);
+  }
+};
 
 // Enhance chat messages with edit/delete buttons
 // Enhance chat messages with edit/delete buttons
