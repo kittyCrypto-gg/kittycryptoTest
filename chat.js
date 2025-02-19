@@ -1,4 +1,4 @@
-const CHAT_SERVER = "https://kittycrypto.ddns.net:7619";
+const CHAT_SERVER = "https://kittycrypto.ddns.net:7619/chat";
 const CHAT_STREAM_URL = "https://kittycrypto.ddns.net:7619/chat/stream";
 const SESSION_TOKEN_URL = "https://kittycrypto.ddns.net:7619/session-token";
 
