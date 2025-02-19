@@ -192,20 +192,64 @@ function populateModalFields(messageDiv) {
 async function deleteMessage(msgId) {
   console.log("🗑️ Deleting message:", msgId);
 
+  // Select message based on msgId text content instead of using :contains()
+  const messageDiv = [...document.querySelectorAll(".chat-message")].find(
+    (div) => div.querySelector(".chat-msg-id")?.textContent.includes(msgId)
+  );
+
+  if (messageDiv) {
+    messageDiv.remove();
+  }
+
+  // Create and append "pending deletion" message
+  const pendingMessageDiv = document.createElement("div");
+  pendingMessageDiv.classList.add("chat-message", "pending");
+  pendingMessageDiv.innerHTML = `
+    <span class="chat-header">
+      <span class="chat-nick">Deleting message...</span>
+    </span>
+    <div class="chat-text">Message ID: ${msgId}</div>
+  `;
+
+  document.getElementById("chatroom").appendChild(pendingMessageDiv);
+
   const body = {
     msgId,
     sessionToken,
     ip: userHashedIp,
   };
 
-  const response = await fetch(`${CHAT_SERVER}/delete`, {
-    method: "POST",
+  try {
+    const response = await fetch(`${CHAT_SERVER}/chat/delete`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
-  });
+    });
 
-  if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
+    if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
 
-  console.log(JSON.stringify(response));
-  console.log("✅ Message deleted successfully.");
+    const responseData = await response.json(); // Correct way to get response data
+    console.log("✅ Message deleted successfully:", responseData);
+
+    // Remove the pending deletion message after confirmation
+    pendingMessageDiv.remove();
+  } catch (error) {
+    console.error("❌ Error deleting message:", error);
+
+    // Restore original message if deletion fails
+    if (messageDiv) {
+      document.getElementById("chatroom").appendChild(messageDiv);
+    }
+
+    // Show error message inside the pending message div
+    pendingMessageDiv.innerHTML = `
+      <span class="chat-header">
+        <span class="chat-nick">Failed to delete message</span>
+      </span>
+      <div class="chat-text">An error occurred while deleting the message.</div>
+    `;
+
+    // Optionally, remove the error message after a delay
+    setTimeout(() => pendingMessageDiv.remove(), 5000);
+  }
 }
