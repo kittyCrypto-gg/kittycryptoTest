@@ -50,14 +50,14 @@ const enhanceMessages = () => {
     editButton.classList.add("chat-action");
     editButton.title = "Edit Message";
     editButton.style.cursor = "pointer";
-    editButton.onclick = () => openEditModal(msgId.toString(), messageDiv.querySelector(".chat-text").textContent);
+    editButton.onclick = () => openEditModal(messageDiv);
 
     const deleteButton = document.createElement("span");
     deleteButton.innerHTML = " ❌";
     deleteButton.classList.add("chat-action");
     deleteButton.title = "Delete Message";
     deleteButton.style.cursor = "pointer";
-    deleteButton.onclick = () => deleteMessage(msgId.toString());
+    deleteButton.onclick = () => deleteMessage(msgId);
 
     actionSpan.appendChild(editButton);
     actionSpan.appendChild(deleteButton);
@@ -70,73 +70,137 @@ const enhanceMessages = () => {
   });
 };
 
-// Open modal for editing messages
-const openEditModal = (id, oldMessage) => {
-  const modal = document.createElement("div");
-  modal.id = "editModal";
-  modal.innerHTML = `
-    <div class="modal-content">
-      <h3>Edit Message</h3>
-      <textarea id="editMessageBox">${oldMessage}</textarea>
-      <button onclick="submitEdit('${id}')">Edit</button>
-      <button onclick="closeModal()">Cancel</button>
-    </div>
-  `;
-  document.body.appendChild(modal);
-};
-
-// Close modal
-const closeModal = () => {
-  const modal = document.getElementById("editModal");
-  if (modal) modal.remove();
-};
-
-// Submit edited message
-const submitEdit = async (id) => {
-  const newMessage = document.getElementById("editMessageBox").value.trim();
-  if (!newMessage) return alert("Message cannot be empty!");
-
-  try {
-    const response = await fetch(`${CHAT_SERVER}/edit-message`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, newMessage }),
-    });
-    if (!response.ok) throw new Error("Failed to edit message");
-    console.log("✅ Message edited successfully");
-    closeModal();
-  } catch (error) {
-    console.error("❌ Error editing message:", error);
-  }
-};
-
-// Delete message
-const deleteMessage = async (id) => {
-  if (!confirm("Are you sure you want to delete this message?")) return;
-
-  try {
-    const response = await fetch(`${CHAT_SERVER}/delete-message`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    if (!response.ok) throw new Error("Failed to delete message");
-    console.log("✅ Message deleted successfully");
-  } catch (error) {
-    console.error("❌ Error deleting message:", error);
-  }
-};
-
-const editButton = document.createElement("span");
-editButton.innerHTML = "✏️";
-editButton.classList.add("chat-action"); // Assigns hover effect
-editButton.onclick = () => openEditModal(id, msg);
-
-const deleteButton = document.createElement("span");
-deleteButton.innerHTML = "❌";
-deleteButton.classList.add("chat-action"); // Assigns hover effect
-deleteButton.onclick = () => deleteMessage(id);
-
 // Fetch user IP on script load and enhance messages after chat updates
-fetchUserHashedIp();
-document.addEventListener("chatUpdated", enhanceMessages);
+async function initialiseChat() {
+  await fetchUserHashedIp();
+  document.addEventListener("chatUpdated", enhanceMessages);
+}
+
+initialiseChat().then(() => console.log("🚀 Chat enhancements initialised."));
+
+async function openEditModal(messageDiv) {
+  if (document.getElementById("edit-message-modal")) return;
+
+  // Create overlay
+  const overlay = document.createElement("div");
+  overlay.id = "modal-overlay";
+
+  // Create modal container
+  const modal = document.createElement("div");
+  modal.id = "edit-message-modal";
+
+  // Disable scrolling on the page while modal is open
+  document.body.classList.add("no-scroll");
+
+  // Fetch modal content
+  try {
+    const response = await fetch("./editMessage.html");
+    if (!response.ok) throw new Error("Failed to load modal content.");
+    modal.innerHTML = await response.text();
+  } catch (error) {
+    console.error("❌ Error loading modal:", error);
+    modal.innerHTML = "<p>Failed to load content.</p>";
+  }
+
+  // Append modal and overlay
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  // Wait for modal content to load before populating
+  setTimeout(() => populateModalFields(messageDiv), 0);
+
+  // Close modal when clicking outside
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) closeEditModal();
+  });
+
+  // Close modal on Escape key
+  document.addEventListener("keydown", function handleEscape(event) {
+    if (event.key === "Escape") {
+      closeEditModal();
+      document.removeEventListener("keydown", handleEscape);
+    }
+  });
+}
+
+function closeEditModal() {
+  const overlay = document.getElementById("modal-overlay");
+  if (overlay) overlay.remove();
+  document.body.classList.remove("no-scroll"); // Re-enable scrolling
+}
+
+async function editMessage() {
+  // { msgId, sessionToken, ip, newMessage }
+  const msgId = document.getElementById("edit-message-id")?.textContent.replace("Editing Message ID: ", "").trim() || "";
+  const newMessage = document.getElementById("edit-message-input")?.value || "";
+  if (!msgId || !newMessage) {
+    alert("Please provide a message to edit.");
+    console.error("❌ Missing message data.");
+    return;
+  }
+
+  const body = {
+    msgId,
+    sessionToken,
+    ip: userHashedIp,
+    newMessage,
+  };
+
+  const request = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  };
+
+  const response = await fetch(`${CHAT_SERVER}/chat/edit`, request);
+
+  if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
+  console.log("✅ Message edited successfully.");
+  closeEditModal();
+}
+
+function populateModalFields(messageDiv) {
+  const modal = document.getElementById("edit-message-modal");
+  if (!modal) return;
+
+  // Extract message data
+  const messageText = messageDiv.querySelector(".chat-text")?.textContent || "";
+  const msgId = messageDiv.querySelector(".chat-msg-id")?.textContent.replace("ID: ", "").trim() || "";
+  const userNick = messageDiv.querySelector(".chat-nick")?.textContent.split(" - ")[0] || "";
+  const userId = messageDiv.querySelector(".chat-nick")?.textContent.match(/\((0x[a-f0-9]+)\)/)?.[1] || "";
+
+  // Populate modal fields
+  const messageInput = modal.querySelector("#edit-message-input");
+  const messageIdField = modal.querySelector("#edit-message-id");
+  const userInfoField = modal.querySelector("#edit-user-info");
+
+  if (messageInput) messageInput.value = messageText;
+  if (messageIdField) messageIdField.textContent = `Editing Message ID: ${msgId}`;
+  if (userInfoField) userInfoField.value = `${userNick} (${userId})`;
+
+  // Ensure the modal uses the same CSS file as the main page
+  const mainCss = document.querySelector("link[rel='stylesheet']")?.href || "";
+  const modalCss = modal.querySelector("#theme-stylesheet");
+  if (modalCss) modalCss.href = mainCss;
+}
+
+async function deleteMessage(msgId) {
+  console.log("🗑️ Deleting message:", msgId);
+
+  const body = {
+    msgId,
+    sessionToken,
+    ip: userHashedIp,
+  };
+
+  const request = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  };
+
+  const response = await fetch(`${CHAT_SERVER}/chat/delete`, request);
+
+  if (!response.ok) throw new Error(`❌ Server error: ${response.status} ${response.statusText}`);
+  console.log("✅ Message deleted successfully.");
+}

@@ -269,3 +269,107 @@ body.dark-mode .theme-toggle-button {
   background: #222;
   color: white;
 }
+
+/* Modal Overlay */
+#modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3); /* Lighter translucent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Container */
+#edit-message-modal {
+  background-color: #ffffff; /* White for a clean UI */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 400px;
+  max-width: 90%;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Modal Title */
+#edit-message-id {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #004d40; /* Dark teal for consistency */
+  margin-bottom: 10px;
+}
+
+/* User Info Display */
+#edit-user-info {
+  background-color: #e0f2f1; /* Light mint */
+  color: #004d40;
+  border: 1px solid #80cbc4;
+  padding: 8px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 1rem;
+}
+
+/* Editable Message Input */
+#edit-message-input {
+  width: 100%;
+  min-height: 100px;
+  background-color: #fafafa; /* Light background for contrast */
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+/* Modal Buttons */
+#edit-message-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+#edit-message-buttons button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 0 5px;
+  border: none;
+}
+
+/* Edit Button */
+#edit-message-btn {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+#edit-message-btn:hover {
+  background-color: #388e3c; /* Darker Green */
+}
+
+/* Cancel Button */
+#cancel-edit-btn {
+  background-color: #d32f2f; /* Red */
+  color: white;
+}
+
+#cancel-edit-btn:hover {
+  background-color: #b71c1c; /* Darker Red */
+}
+
+/* Disable scrolling on page when modal is open */
+body.no-scroll {
+  overflow: hidden;
+}
