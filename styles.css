@@ -1,376 +1,528 @@
-/* General styles */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #e8f8f5;
-  color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100hv;
-}
-
-/* Frame styles */
-.frame {
-  background-color: #ffffff; /* White background for the frame */
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for a floating effect */
-  width: 80%; /* Occupy 80% of the viewport width */
-  height: 100%;
-  max-width: 1200px; /* Restrict the width to a maximum of 1200px */
-  margin: 20px auto; /* Add some space around the frame */
-  padding: 20px;
-  box-sizing: border-box; /* Include padding in width/height calculations */
-  overflow: auto; /* Ensure no content spills out */
-}
-
-/* Header styles */
-header {
-  background-color: #b2ebf2; /* Light turquoise */
-  color: #004d40; /* Dark teal */
-  padding: 20px;
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Menu styles */
-nav {
-  background-color: #a7ffeb; /* Mint green */
-  padding: 15px;
-  display: flex;
-  gap: 15px;
-  border-bottom: 2px solid #004d40;
-  overflow-x: auto; /* Enables horizontal scrolling */
-  white-space: nowrap; /* Prevents buttons from wrapping */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
-}
-
-/* Hide scrollbar on some browsers */
-nav::-webkit-scrollbar {
-  display: none;
-}
-
-/* Menu buttons */
-.menu-button {
-  text-decoration: none;
-  color: #004d40;
-  background-color: #80deea; /* Cyan */
-  padding: 10px 15px;
-  border-radius: 8px;
-  transition: background-color 0.3s, transform 0.2s;
-  font-size: 1rem;
-  font-weight: bold;
-  flex: 0 0 auto; /* Prevents buttons from stretching */
-}
-
-.menu-button:hover {
-  background-color: #4dd0e1; /* Darker cyan */
-  transform: scale(1.1);
-}
-
-/* Body content styles */
-main {
-  padding: 20px;
-  text-align: center;
-  font-size: 1.2rem;
-  line-height: 1.6;
-}
-
-/* Footer styles */
-footer {
-  background-color: #b3e5fc; /* Light blue */
-  color: #01579b; /* Dark blue */
-  text-align: center;
-  padding: 10px;
-  font-size: 0.9rem;
-  border-top: 2px solid #01579b;
-}
-
-/* Chatroom styles */
-#chatroom {
-  width: 100%;
-  height: 400px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background: #f9f9f9;
-  font-family: monospace;
-  font-size: 14px;
-  white-space: pre-wrap;
-  overflow-y: auto;
-  word-wrap: break-word;
-  text-align: left; /* ✅ Aligns messages to the left */
-  display: flex;
-  flex-direction: column; /* ✅ Ensures messages stack properly */
-  justify-content: flex-start; /* ✅ Aligns messages at the top */
-}
-
-/* Chat message container */
-.chat-message {
-  display: flex;
-  flex-direction: column;
-  padding: 5px 0; /* ✅ Slightly reduces space between messages */
-}
-
-/* Nickname + ID */
-.chat-nick {
-  font-weight: bold;
-  display: inline-block;
-}
-
-/* Timestamp styling */
-.chat-timestamp {
-  color: grey;
-  font-size: 0.85em;
-  margin-left: 8px;
-}
-
-/* Message text */
-.chat-text {
-  margin-left: 15px; /* ✅ Indents the message text */
-  padding-top: 2px;
-  display: block;
-}
-
-/* Chat input box */
-.chat-inputs {
-  display: flex;
-  gap: 2%; /* Small gap between inputs */
-  margin-top: 10px;
-  justify-content: center;
-  align-items: center;
-  width: 100%; /* Ensure it takes full width */
-}
-
-/* Chat input fields */
-.chat-inputs input {
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  flex-grow: 1; /* Makes them scale automatically */
-  width: 40%; /* Inputs take 40% each */
-  min-width: 100px; /* Prevents extreme shrinking */
-  box-sizing: border-box;
-}
-
-/* Send button */
-.chat-inputs button {
-  padding: 10px;
-  font-size: 14px;
-  background: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 15%; /* Button is a fixed portion */
-  min-width: 80px;
-  box-sizing: border-box;
-}
-
-/* Ensuring fluid design for very small screens */
-.chat-inputs input,
-.chat-inputs button {
-  max-width: 100%; /* Prevents any weird overflowing */
-}
-
-.theme-toggle-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  font-size: 1.5rem;
-  background: #fff;
-  color: black;
-  border: none;
-  border-radius: 50%;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease-in-out;
+/* =========================================
+   1) Default (Light) Theme Variables
+   ========================================= */
+   :root {
+    /* Body */
+    --body-bg-colour: #e8f8f5;
+    --body-text-colour: #333;
+    --body-height: 100vh; /* Fix "hv" to "vh" */
   
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chat-message.pending {
-  opacity: 0.5;
-  font-style: italic;
-}
-
-.pending-indicator {
-  color: orange;
-  font-weight: bold;
-  margin-left: 10px;
-}
-
-.theme-toggle-button:hover {
-  transform: scale(1.1);
-}
-
-.chat-header {
-  display: flex;
-  align-items: center;
-  gap: 6px; /* Adjust spacing */
-}
-
-.chat-actions {
-  display: flex;
-  gap: 4px;
-}
-
-/* Show buttons when hovering over the name line */
-.chat-header:hover .chat-actions {
-  display: inline-flex;
-}
-
-/* Show buttons when the message is active (controlled via JS) */
-.chat-message.active .chat-actions {
-  display: inline-flex;
-}
-
-.chat-actions span {
-  display: inline-block;
-  padding: 4px 6px;
-  border-radius: 5px;
-  font-size: 50%; /* Slightly smaller than normal */
-  transition: background-color 0.2s ease-in-out;
-}
-
-.chat-actions span:hover {
-  background-color: rgba(0, 0, 0, 0.15); /* Darkens background */
-  cursor: pointer;
-}
-
-.chat-timestamp {
-  font-size: 0.85em;
-  color: #999;
-  margin-top: 2px;
-}
-
-/* Message ID (hidden from users but present in the HTML) */
-.chat-msg-id {
-  display: none;
-}
-
-.chat-nick {
-  flex-shrink: 0; /* Prevents shrinking */
-  font-size: 95%;
-}
-
-.chat-text {
-  margin-top: 5px;
-}
-
-/* Dark mode */
-body.dark-mode .theme-toggle-button {
-  background: #222;
-  color: white;
-}
-
-/* Modal Overlay */
-#modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3); /* Lighter translucent background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-/* Modal Container */
-#edit-message-modal {
-  background-color: #ffffff; /* White for a clean UI */
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  width: 400px;
-  max-width: 90%;
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Modal Title */
-#edit-message-id {
-  font-weight: bold;
-  font-size: 1rem;
-  color: #004d40; /* Dark teal for consistency */
-  margin-bottom: 10px;
-}
-
-/* User Info Display */
-#edit-user-info {
-  background-color: #e0f2f1; /* Light mint */
-  color: #004d40;
-  border: 1px solid #80cbc4;
-  padding: 8px;
-  border-radius: 5px;
-  width: 100%;
-  font-size: 1rem;
-}
-
-/* Editable Message Input */
-#edit-message-input {
-  width: 100%;
-  min-height: 100px;
-  background-color: #fafafa; /* Light background for contrast */
-  color: #333;
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 5px;
-  font-size: 1rem;
-  resize: vertical;
-}
-
-/* Modal Buttons */
-#edit-message-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-#edit-message-buttons button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin: 0 5px;
-  border: none;
-}
-
-/* Edit Button */
-#edit-message-btn {
-  background-color: #4caf50; /* Green */
-  color: white;
-}
-
-#edit-message-btn:hover {
-  background-color: #388e3c; /* Darker Green */
-}
-
-/* Cancel Button */
-#cancel-edit-btn {
-  background-color: #d32f2f; /* Red */
-  color: white;
-}
-
-#cancel-edit-btn:hover {
-  background-color: #b71c1c; /* Darker Red */
-}
-
-/* Disable scrolling on page when modal is open */
-body.no-scroll {
-  overflow: hidden;
-}
+    /* Frame */
+    --frame-bg-colour: #ffffff;
+  
+    /* Header */
+    --header-bg-colour: #b2ebf2;
+    --header-text-colour: #004d40;
+  
+    /* Navigation / Menu */
+    --nav-bg-colour: #a7ffeb;
+    --nav-border-colour: #004d40;
+    --menu-button-bg-colour: #80deea;
+    --menu-button-text-colour: #004d40;
+    --menu-button-hover-bg-colour: #4dd0e1;
+  
+    /* Footer */
+    --footer-bg-colour: #b3e5fc;
+    --footer-text-colour: #01579b;
+    --footer-border-colour: #01579b;
+  
+    /* Chatroom */
+    --chatroom-border-colour: #ccc;
+    --chatroom-bg-colour: #f9f9f9;
+    --chatroom-text-colour: #333; /* For monospace text if needed */
+  
+    /* Timestamps, etc. */
+    --timestamp-colour: grey;
+    --chat-timestamp-colour: #999;
+  
+    /* Inputs */
+    --chat-input-border-colour: #ccc;
+    --chat-input-bg-colour: #fff;
+    --chat-input-text-colour: #333;
+  
+    /* Buttons */
+    --chat-send-btn-bg-colour: #4caf50;
+    --chat-send-btn-text-colour: #fff;
+  
+    /* Theme Toggle Button */
+    --toggle-btn-bg-colour: #fff;
+    --toggle-btn-text-colour: black;
+  
+    /* Pending Indicator */
+    --pending-indicator-colour: orange;
+  
+    /* Modal Overlay & Edit Modal */
+    --modal-overlay-bg-colour: rgba(0, 0, 0, 0.3);
+    --edit-modal-bg-colour: #ffffff;
+    --edit-modal-text-colour: #004d40;
+    --edit-modal-shadow-colour: rgba(0, 0, 0, 0.2);
+    --edit-modal-userinfo-bg-colour: #e0f2f1;
+    --edit-modal-userinfo-text-colour: #004d40;
+    --edit-modal-userinfo-border-colour: #80cbc4;
+    --edit-modal-input-bg-colour: #fafafa;
+    --edit-modal-input-text-colour: #333;
+    --edit-modal-input-border-colour: #ccc;
+  
+    /* Modal Buttons (edit / cancel) */
+    --edit-modal-btn-save-bg-colour: #4caf50;   /* Light theme green */
+    --edit-modal-btn-save-hover-colour: #388e3c;
+    --edit-modal-btn-cancel-bg-colour: #d32f2f; /* Light theme red */
+    --edit-modal-btn-cancel-hover-colour: #b71c1c;
+  }
+  
+  /* =========================================
+     2) Dark Mode Overrides
+     ========================================= */
+  .dark-mode {
+    /* Body */
+    --body-bg-colour: #121212;
+    --body-text-colour: #e0e0e0;
+  
+    /* Frame */
+    --frame-bg-colour: #1e1e1e;
+  
+    /* Header */
+    --header-bg-colour: #004d40;
+    --header-text-colour: #b2ebf2;
+  
+    /* Navigation / Menu */
+    --nav-bg-colour: #00352c;
+    --nav-border-colour: #b2ebf2;
+    --menu-button-bg-colour: #005f50;
+    --menu-button-text-colour: #b2ebf2;
+    --menu-button-hover-bg-colour: #008577;
+  
+    /* Footer */
+    --footer-bg-colour: #002f6c;
+    --footer-text-colour: #b3e5fc;
+    --footer-border-colour: #b3e5fc;
+  
+    /* Chatroom */
+    --chatroom-border-colour: #444;
+    --chatroom-bg-colour: #222;
+    --chatroom-text-colour: #e0e0e0;
+  
+    /* Timestamps, etc. */
+    --timestamp-colour: #aaaaaa;
+    --chat-timestamp-colour: #999;
+  
+    /* Inputs */
+    --chat-input-border-colour: #555;
+    --chat-input-bg-colour: #333;
+    --chat-input-text-colour: #fff;
+  
+    /* Buttons */
+    --chat-send-btn-bg-colour: #388e3c;
+    --chat-send-btn-text-colour: #fff;
+  
+    /* Theme Toggle Button */
+    --toggle-btn-bg-colour: #222;
+    --toggle-btn-text-colour: #fff;
+  
+    /* Modal Overlay & Edit Modal */
+    --edit-modal-bg-colour: #1e1e1e;
+    --edit-modal-text-colour: #b2ebf2;
+    --edit-modal-shadow-colour: rgba(0, 0, 0, 0.5);
+    --edit-modal-userinfo-bg-colour: #333;
+    --edit-modal-userinfo-text-colour: #b2ebf2;
+    --edit-modal-userinfo-border-colour: #444;
+    --edit-modal-input-bg-colour: #222;
+    --edit-modal-input-text-colour: #e0e0e0;
+    --edit-modal-input-border-colour: #555;
+    
+    /* Modal Buttons (edit / cancel) */
+    --edit-modal-btn-save-bg-colour: #388e3c;
+    --edit-modal-btn-save-hover-colour: #2e7d32;
+    --edit-modal-btn-cancel-bg-colour: #d32f2f;
+    --edit-modal-btn-cancel-hover-colour: #b71c1c;
+  }
+  
+  /* =========================================
+     3) Shared Styles (Referencing Variables)
+     ========================================= */
+  
+  /* General styles */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--body-bg-colour);
+    color: var(--body-text-colour);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: var(--body-height);
+  }
+  
+  /* Frame styles */
+  .frame {
+    background-color: var(--frame-bg-colour);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: auto;
+    /* height: 100% (kept from your snippet, if you want to keep it) */
+    height: 100%;
+  }
+  
+  /* Header styles */
+  header {
+    background-color: var(--header-bg-colour);
+    color: var(--header-text-colour);
+    padding: 20px;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Menu styles */
+  nav {
+    background-color: var(--nav-bg-colour);
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    border-bottom: 2px solid var(--nav-border-colour);
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+  }
+  
+  /* Hide scrollbar on some browsers */
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Menu buttons */
+  .menu-button {
+    text-decoration: none;
+    color: var(--menu-button-text-colour);
+    background-color: var(--menu-button-bg-colour);
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 1rem;
+    font-weight: bold;
+    flex: 0 0 auto; /* Prevents buttons from stretching */
+  }
+  
+  .menu-button:hover {
+    background-color: var(--menu-button-hover-bg-colour);
+    transform: scale(1.1);
+  }
+  
+  /* Body content styles */
+  main {
+    padding: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+  
+  /* Footer styles */
+  footer {
+    background-color: var(--footer-bg-colour);
+    color: var(--footer-text-colour);
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+    border-top: 2px solid var(--footer-border-colour);
+  }
+  
+  /* Chatroom styles */
+  #chatroom {
+    width: 100%;
+    height: 400px;
+    padding: 10px;
+    border: 1px solid var(--chatroom-border-colour);
+    background: var(--chatroom-bg-colour);
+    font-family: monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    word-wrap: break-word;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: var(--chatroom-text-colour);
+  }
+  
+  /* Chat message container */
+  .chat-message {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0;
+  }
+  
+  /* Nickname + ID */
+  .chat-nick {
+    font-weight: bold;
+    display: inline-block;
+    /* For dark mode we often want a distinct colour, but we can keep a default
+       if you want it the same in light mode, remove the override. */
+    color: inherit;
+  }
+  
+  /* Timestamp styling */
+  .chat-timestamp {
+    color: var(--timestamp-colour);
+    font-size: 0.85em;
+    margin-left: 8px;
+  }
+  
+  /* Overriding the snippet's second mention of chat-timestamp colour (#999) */
+  .chat-timestamp {
+    color: var(--chat-timestamp-colour);
+  }
+  
+  /* Message text */
+  .chat-text {
+    margin-left: 15px;
+    padding-top: 2px;
+    display: block;
+    /* In dark mode, it's #ffffff; in light, it’s inherited from body. */
+    color: inherit;
+    margin-top: 5px; /* from snippet's second .chat-text definition */
+  }
+  
+  /* Chat input box */
+  .chat-inputs {
+    display: flex;
+    gap: 2%;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Chat input fields */
+  .chat-inputs input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid var(--chat-input-border-colour);
+    border-radius: 5px;
+    flex-grow: 1;
+    width: 40%;
+    min-width: 100px;
+    box-sizing: border-box;
+    background-color: var(--chat-input-bg-colour);
+    color: var(--chat-input-text-colour);
+  }
+  
+  /* Send button */
+  .chat-inputs button {
+    padding: 10px;
+    font-size: 14px;
+    background: var(--chat-send-btn-bg-colour);
+    color: var(--chat-send-btn-text-colour);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 15%;
+    min-width: 80px;
+    box-sizing: border-box;
+  }
+  
+  .chat-inputs button:hover {
+    /* For dark mode, we override with #2e7d32; in light, use #4dd0e1 or anything you prefer. 
+       But your snippet specifically uses #4CAF50 -> #388e3c in light mode, so let’s keep consistent. */
+    background: var(--menu-button-hover-bg-colour, #388e3c);
+    /* Fallback if not defined, but we have a variable for the menu button hover. 
+       Alternatively, define a separate var for the button hover if you want them different. */
+  }
+  
+  /* Ensuring fluid design for very small screens */
+  .chat-inputs input,
+  .chat-inputs button {
+    max-width: 100%;
+  }
+  
+  /* Theme toggle button */
+  .theme-toggle-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    background: var(--toggle-btn-bg-colour);
+    color: var(--toggle-btn-text-colour);
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .theme-toggle-button:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Pending messages */
+  .chat-message.pending {
+    opacity: 0.5;
+    font-style: italic;
+  }
+  
+  .pending-indicator {
+    color: var(--pending-indicator-colour);
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  
+  /* Chat header with actions */
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .chat-actions {
+    display: flex;
+    gap: 4px;
+  }
+  
+  /* Show buttons on hover or when active */
+  .chat-header:hover .chat-actions,
+  .chat-message.active .chat-actions {
+    display: inline-flex;
+  }
+  
+  .chat-actions span {
+    display: inline-block;
+    padding: 4px 6px;
+    border-radius: 5px;
+    font-size: 50%;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .chat-actions span:hover {
+    background-color: var(--chat-actions-hover-bg-colour, rgba(0, 0, 0, 0.15));
+    cursor: pointer;
+  }
+  
+  /* Message ID (hidden from users but present in the HTML) */
+  .chat-msg-id {
+    display: none;
+  }
+  
+  /* Dark mode styling for the toggle button when .dark-mode is active */
+  body.dark-mode .theme-toggle-button {
+    background: var(--toggle-btn-bg-colour);
+    color: var(--toggle-btn-text-colour);
+  }
+  
+  /* =========================================
+     Modal (Edit Message)
+     ========================================= */
+  /* Modal Overlay */
+  #modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--modal-overlay-bg-colour);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Modal Container */
+  #edit-message-modal {
+    background-color: var(--edit-modal-bg-colour);
+    color: var(--edit-modal-text-colour);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px var(--edit-modal-shadow-colour);
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Modal Title */
+  #edit-message-id {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  /* User Info Display */
+  #edit-user-info {
+    background-color: var(--edit-modal-userinfo-bg-colour);
+    color: var(--edit-modal-userinfo-text-colour);
+    border: 1px solid var(--edit-modal-userinfo-border-colour);
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 1rem;
+  }
+  
+  /* Editable Message Input */
+  #edit-message-input {
+    width: 100%;
+    min-height: 100px;
+    background-color: var(--edit-modal-input-bg-colour);
+    color: var(--edit-modal-input-text-colour);
+    border: 1px solid var(--edit-modal-input-border-colour);
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 1rem;
+    resize: vertical;
+  }
+  
+  /* Modal Buttons */
+  #edit-message-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  #edit-message-buttons button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin: 0 5px;
+    border: none;
+  }
+  
+  /* Edit Button */
+  #edit-message-btn {
+    background-color: var(--edit-modal-btn-save-bg-colour);
+    color: #fff;
+  }
+  
+  #edit-message-btn:hover {
+    background-color: var(--edit-modal-btn-save-hover-colour);
+  }
+  
+  /* Cancel Button */
+  #cancel-edit-btn {
+    background-color: var(--edit-modal-btn-cancel-bg-colour);
+    color: #fff;
+  }
+  
+  #cancel-edit-btn:hover {
+    background-color: var(--edit-modal-btn-cancel-hover-colour);
+  }
+  
+  /* Disable scrolling on page when modal is open */
+  body.no-scroll {
+    overflow: hidden;
+  }  

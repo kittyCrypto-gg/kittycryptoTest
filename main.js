@@ -57,7 +57,7 @@ fetch('./main.json')
     // Check if dark mode is enabled in cookies
     const isDarkMode = getCookie("darkMode") === "true";
     themeToggle.textContent = isDarkMode ? data.themeToggle.dark : data.themeToggle.default;
-    document.getElementById("theme-stylesheet").setAttribute("href", isDarkMode ? "darkStyles.css" : "styles.css");
+    document.body.classList.toggle("dark-mode", isDarkMode);
 
     // Toggle Dark Mode
     themeToggle.addEventListener("click", () => {
@@ -65,11 +65,11 @@ fetch('./main.json')
       if (currentTheme) {
         deleteCookie("darkMode");
         themeToggle.textContent = data.themeToggle.default;
-        document.getElementById("theme-stylesheet").setAttribute("href", "styles.css");
+        document.body.classList.remove("dark-mode");
       } else {
         setCookie("darkMode", "true");
         themeToggle.textContent = data.themeToggle.dark;
-        document.getElementById("theme-stylesheet").setAttribute("href", "darkStyles.css");
+        document.body.classList.add("dark-mode");
       }
     });
   })
