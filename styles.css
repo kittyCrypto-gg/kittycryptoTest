@@ -152,8 +152,8 @@ body {
   justify-content: center;
   align-items: flex-start;
   height: var(--body-height);
-  visibility: hidden;
-  opacity: 0;
+  /*visibility: hidden;
+  opacity: 0;*/
 }
 
 /* Frame styles */
