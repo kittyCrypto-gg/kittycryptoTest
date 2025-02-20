@@ -1,3 +1,8 @@
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.style.visibility = "visible";
+  document.body.style.opacity = "1";
+});
+
 // Function to get a cookie value
 const getCookie = (name) => {
   const cookies = document.cookie.split("; ");
