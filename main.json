@@ -12,5 +12,8 @@
   "themeToggle": {
     "default": "🌙", 
     "dark": "☀️"
-  }
+  },
+  "headScripts": [
+    "(function () { const darkMode = document.cookie.split('; ').find(row => row.startsWith('darkMode=')); if (darkMode && darkMode.split('=')[1] === 'true') { document.documentElement.classList.add('dark-mode'); } })();"
+  ]
 }

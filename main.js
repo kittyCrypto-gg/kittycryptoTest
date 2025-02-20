@@ -24,7 +24,14 @@ fetch('./main.json')
     return response.json();
   })
   .then(data => {
-    //console.log('Loaded JSON data:', data);
+    // Inject any scripts defined in main.json into <head>
+    if (data.headScripts) {
+      data.headScripts.forEach(scriptContent => {
+        const script = document.createElement("script");
+        script.textContent = scriptContent;
+        document.head.appendChild(script);
+      });
+    }
 
     // Populate the menu
     const menu = document.getElementById('main-menu');
