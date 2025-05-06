@@ -529,27 +529,56 @@ body.no-scroll {
 }
 
 /* =========================================
-  Chapter Navigation Buttons
+  Chapter Navigation Inputs
 ========================================= */
 
-.chapter-navigation button {
-  background: none;
+.chapter-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.chapter-display,
+.chapter-input {
+  width: 2ch;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 2px 4px;
   border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 5px;
+  border-radius: 4px;
+  background-color: var(--chat-input-bg-colour);
+  color: var(--chat-input-text-colour);
+}
+
+.chapter-display[readonly] {
+  background: transparent;
+  pointer-events: none;
+}
+
+.chapter-end {
+  width: 2ch;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 2px 4px;
+  border: none;
+  background: transparent;
   color: var(--body-text-colour);
 }
 
-.dark-mode .chapter-navigation button {
+/* Dark mode adjustments */
+.dark-mode .chapter-input,
+.dark-mode .chapter-display {
+  background-color: var(--chat-input-bg-colour);
+  color: var(--chat-input-text-colour);
+}
+
+.dark-mode .chapter-end {
   color: var(--body-text-colour);
 }
-
-.chapter-navigation button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
 
 /* =========================================
   Story Selector Dropdown
