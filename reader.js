@@ -196,7 +196,7 @@ async function discoverChapters() {
   let i = 1;
   while (true) {
     try {
-      const path = `${storyPath}/chapt${i}.html`;
+      const path = `${storyPath}/chapt${i}.xml`;
       console.log(`reading chapter ${i} in ${path}`);
       const res = await fetch(path, { method: "HEAD" });
       if (!res.ok) break;
