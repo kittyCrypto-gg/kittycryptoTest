@@ -1,3 +1,5 @@
+/* reader.js - Chapter Reader with Dynamic Discovery, Navigation, and Persistence */
+
 const params = new URLSearchParams(window.location.search);
 const storyPath = params.get("story");
 let chapter = parseInt(params.get("chapter") || "1");
@@ -14,10 +16,10 @@ function injectNav() {
   const navHTML = `
     <div class="chapter-navigation">
       <button class="btn-prev">⬅️</button>
-      <span class="chapter-display">[1]</span>
+      <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
+      <input class="chapter-input" type="number" min="1" style="width: 2ch; text-align: center;" />
       <button class="btn-jump">🆗</button>
-      <input class="chapter-input" type="number" style="display:none; width: 3em;" min="1" />
-      <span class="chapter-end">[END]</span>
+      <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
       <button class="btn-next">➡️</button>
       <button class="btn-rescan">🔃</button>
     </div>
@@ -85,7 +87,7 @@ async function loadChapter(n) {
 // Discover chapters until 404
 async function discoverChapters() {
   let i = 1;
-  while (i <= 50) {
+  while (true) {
     try {
       const res = await fetch(`${storyPath}/chapt${i}.html`, { method: "HEAD" });
       if (!res.ok) break;
@@ -107,8 +109,8 @@ function jumpTo(n) {
 
 // Update navigation controls
 function updateNav() {
-  document.querySelectorAll(".chapter-display").forEach(el => el.textContent = `[${chapter}]`);
-  document.querySelectorAll(".chapter-end").forEach(el => el.textContent = `[${lastKnownChapter}]`);
+  document.querySelectorAll(".chapter-display").forEach(el => el.value = chapter);
+  document.querySelectorAll(".chapter-end").forEach(btn => btn.textContent = lastKnownChapter);
   document.querySelectorAll(".btn-prev").forEach(btn => btn.disabled = chapter === 1);
   document.querySelectorAll(".btn-next").forEach(btn => btn.disabled = chapter === lastKnownChapter);
 }
@@ -121,7 +123,6 @@ async function initReader() {
   injectNav();
   if (!lastKnownChapter) lastKnownChapter = await discoverChapters();
 
-  // Use bookmark if no chapter explicitly set
   if (!params.get("chapter")) {
     const bookmark = parseInt(localStorage.getItem(chapterBookmarkKey));
     if (bookmark && bookmark <= lastKnownChapter) chapter = bookmark;
@@ -139,12 +140,13 @@ async function initReader() {
 
   document.querySelectorAll(".btn-jump").forEach(btn => btn.onclick = () => {
     document.querySelectorAll(".chapter-input").forEach(input => {
-      input.style.display = "inline";
-      input.focus();
+      const val = parseInt(input.value);
+      if (val >= 1 && val <= lastKnownChapter) jumpTo(val);
     });
   });
 
   document.querySelectorAll(".chapter-input").forEach(input => {
+    input.value = chapter;
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         const val = parseInt(e.target.value);
