@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kitty Crypto Reader</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kitty Crypto Reader</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <nav id="main-menu"></nav>
-  <div id="story-picker"></div>
-  <!-- Chapter will be injected here -->
-  <div id="reader" class="reader-container"></div>
-  <div id="main-footer"></div>
-  <script src="main.js"></script>
-  <!--<script src="reader.js"></script>-->
+    <div class="frame">
+        <nav id="main-menu"></nav>
+        <header id="main-header"></header>
+        <div id="story-picker"></div>
+        <main id="main-content">
+            <!-- Chapter will be injected here -->
+            <div id="reader" class="reader-container"></div>
+
+        </main>
+        <footer id="main-footer"></footer>
+    </div>
+</body>
+<script src="main.js"></script>
+<!--<script src="reader.js"></script>-->
 </body>
 </html>
