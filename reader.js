@@ -85,7 +85,7 @@ async function loadChapter(n) {
 // Discover chapters until 404
 async function discoverChapters() {
   let i = 1;
-  while (true) {
+  while (i <= 50) {
     try {
       const res = await fetch(`${storyPath}/chapt${i}.html`, { method: "HEAD" });
       if (!res.ok) break;
