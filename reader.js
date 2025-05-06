@@ -1,5 +1,3 @@
-/* reader.js - Chapter Reader with Dynamic Discovery, Navigation, and Persistence */
-
 const params = new URLSearchParams(window.location.search);
 const storyPath = params.get("story");
 let chapter = parseInt(params.get("chapter") || "1");
@@ -89,6 +87,7 @@ async function discoverChapters() {
   let i = 1;
   while (true) {
     try {
+      console.log(`reading chapter ${i} in ${storyPath}`);
       const res = await fetch(`${storyPath}/chapt${i}.html`, { method: "HEAD" });
       if (!res.ok) break;
       i++;
