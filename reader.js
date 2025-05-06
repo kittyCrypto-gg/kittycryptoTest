@@ -46,7 +46,43 @@ function injectNav() {
   readerRoot.insertAdjacentElement("afterend", navBottom);
 }
 
-// Load available stories into dropdown
+function bindNavigationEvents() {
+  document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
+    if (chapter > 1) jumpTo(chapter - 1);
+  });
+
+  document.querySelectorAll(".btn-next").forEach(btn => btn.onclick = () => {
+    if (chapter < lastKnownChapter) jumpTo(chapter + 1);
+  });
+
+  document.querySelectorAll(".btn-jump").forEach(btn => btn.onclick = () => {
+    document.querySelectorAll(".chapter-input").forEach(input => {
+      const val = parseInt(input.value);
+      if (val >= 1 && val <= lastKnownChapter) jumpTo(val);
+    });
+  });
+
+  document.querySelectorAll(".chapter-input").forEach(input => {
+    input.value = chapter;
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const val = parseInt(e.target.value);
+        if (val >= 1 && val <= lastKnownChapter) jumpTo(val);
+      }
+    });
+  });
+
+  document.querySelectorAll(".btn-rescan").forEach(btn => btn.onclick = async () => {
+    localStorage.removeItem(chapterCacheKey);
+    lastKnownChapter = await discoverChapters();
+    updateNav();
+  });
+
+  document.querySelectorAll(".font-increase").forEach(btn => btn.onclick = () => updateFontSize(0.1));
+  document.querySelectorAll(".font-decrease").forEach(btn => btn.onclick = () => updateFontSize(-0.1));
+  document.querySelectorAll(".font-reset").forEach(btn => btn.onclick = () => updateFontSize(0));
+}
+
 async function populateStoryPicker() {
   if (!storyPickerRoot) return;
   try {
@@ -77,7 +113,6 @@ async function populateStoryPicker() {
   }
 }
 
-// Load chapter XML
 async function loadChapter(n) {
   try {
     const res = await fetch(`${storyPath}/chapt${n}.xml`);
@@ -112,9 +147,7 @@ async function loadChapter(n) {
       }
 
       const runs = Array.from(p.getElementsByTagName("w:r")).map(run => {
-        const text = Array.from(run.getElementsByTagName("w:t"))
-          .map(t => t.textContent)
-          .join("");
+        const text = Array.from(run.getElementsByTagName("w:t")).map(t => t.textContent).join("");
 
         const rPr = run.getElementsByTagName("w:rPr")[0];
         let spanClass = [];
@@ -149,7 +182,6 @@ async function loadChapter(n) {
   }
 }
 
-// Discover chapters until 404
 async function discoverChapters() {
   let i = 1;
   while (true) {
@@ -169,12 +201,10 @@ async function discoverChapters() {
   return last;
 }
 
-// Jump to chapter
 function jumpTo(n) {
   window.location.search = `?story=${encodeURIComponent(storyPath)}&chapter=${n}`;
 }
 
-// Update navigation controls
 function updateNav() {
   document.querySelectorAll(".chapter-display").forEach(el => el.value = chapter);
   document.querySelectorAll(".chapter-end").forEach(btn => btn.textContent = lastKnownChapter);
@@ -182,12 +212,20 @@ function updateNav() {
   document.querySelectorAll(".btn-next").forEach(btn => btn.disabled = chapter === lastKnownChapter);
 }
 
-// Initialise reader
+function updateFontSize(delta = 0) {
+  const current = parseFloat(getReaderCookie("fontSize")) || 1;
+  const newSize = Math.max(0.7, Math.min(2.0, current + delta));
+  setReaderCookie("fontSize", newSize.toFixed(2));
+  document.querySelector("#reader").style.setProperty("font-size", `${newSize}em`);
+}
+
 async function initReader() {
   await populateStoryPicker();
   if (!storyPath) return;
 
   injectNav();
+  bindNavigationEvents();
+
   if (!lastKnownChapter) lastKnownChapter = await discoverChapters();
 
   if (!params.get("chapter")) {
@@ -197,49 +235,6 @@ async function initReader() {
 
   await loadChapter(chapter);
 
-  document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
-    if (chapter > 1) jumpTo(chapter - 1);
-  });
-
-  document.querySelectorAll(".btn-next").forEach(btn => btn.onclick = () => {
-    if (chapter < lastKnownChapter) jumpTo(chapter + 1);
-  });
-
-  document.querySelectorAll(".btn-jump").forEach(btn => btn.onclick = () => {
-    document.querySelectorAll(".chapter-input").forEach(input => {
-      const val = parseInt(input.value);
-      if (val >= 1 && val <= lastKnownChapter) jumpTo(val);
-    });
-  });
-
-  document.querySelectorAll(".chapter-input").forEach(input => {
-    input.value = chapter;
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        const val = parseInt(e.target.value);
-        if (val >= 1 && val <= lastKnownChapter) jumpTo(val);
-      }
-    });
-  });
-
-  document.querySelectorAll(".btn-rescan").forEach(btn => btn.onclick = async () => {
-    localStorage.removeItem(chapterCacheKey);
-    lastKnownChapter = await discoverChapters();
-    updateNav();
-  });
-
-  const updateFontSize = (delta = 0) => {
-    const current = parseFloat(getReaderCookie("fontSize")) || 1;
-    const newSize = Math.max(0.7, Math.min(2.0, current + delta));
-    setReaderCookie("fontSize", newSize.toFixed(2));
-    document.querySelector("#reader").style.setProperty("font-size", `${newSize}em`);
-  };
-
-  document.querySelectorAll(".font-increase").forEach(btn => btn.onclick = () => updateFontSize(0.1));
-  document.querySelectorAll(".font-decrease").forEach(btn => btn.onclick = () => updateFontSize(-0.1));
-  document.querySelectorAll(".font-reset").forEach(btn => btn.onclick = () => updateFontSize(0));
-
-  // Apply saved font size
   const initialFont = parseFloat(getReaderCookie("fontSize")) || 1;
   document.querySelector("#reader").style.setProperty("font-size", `${initialFont}em`);
 }
