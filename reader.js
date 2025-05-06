@@ -7,6 +7,7 @@ const chapterBookmarkKey = `chapterBookmark_${storyPath}`;
 let lastKnownChapter = parseInt(localStorage.getItem(chapterCacheKey) || "0");
 
 const readerRoot = document.getElementById("reader");
+const storyPickerRoot = document.getElementById("story-picker");
 
 // Inject navigation bars at top and bottom
 function injectNav() {
@@ -27,6 +28,36 @@ function injectNav() {
 
   readerRoot.insertAdjacentElement("beforebegin", navTop);
   readerRoot.insertAdjacentElement("afterend", navBottom);
+}
+
+// Load available stories into dropdown
+async function populateStoryPicker() {
+  if (!storyPickerRoot) return;
+  try {
+    const res = await fetch("/stories.json");
+    if (!res.ok) throw new Error("No stories found");
+    const stories = await res.json();
+
+    const select = document.createElement("select");
+    select.className = "story-selector";
+    select.innerHTML = `<option value="">Select a story...</option>`;
+    Object.entries(stories).forEach(([name, path]) => {
+      const opt = document.createElement("option");
+      opt.value = path;
+      opt.textContent = name;
+      select.appendChild(opt);
+    });
+
+    select.onchange = () => {
+      if (select.value) {
+        window.location.search = `?story=${encodeURIComponent(select.value)}&chapter=1`;
+      }
+    };
+
+    storyPickerRoot.appendChild(select);
+  } catch (err) {
+    console.warn("No stories found or failed to load stories.json", err);
+  }
 }
 
 // Load chapter HTML
@@ -84,6 +115,9 @@ function updateNav() {
 
 // Initialiser
 async function initReader() {
+  await populateStoryPicker();
+  if (!storyPath) return;
+
   injectNav();
   if (!lastKnownChapter) lastKnownChapter = await discoverChapters();
 
