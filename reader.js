@@ -1,3 +1,5 @@
+/* reader.js - Chapter Reader with Dynamic Discovery, Navigation, and Persistence */
+
 const params = new URLSearchParams(window.location.search);
 const storyPath = params.get("story");
 let chapter = parseInt(params.get("chapter") || "1");
@@ -44,6 +46,14 @@ function injectNav() {
 
   readerRoot.insertAdjacentElement("beforebegin", navTop);
   readerRoot.insertAdjacentElement("afterend", navBottom);
+}
+
+// Font size logic
+function updateFontSize(delta = 0) {
+  const current = parseFloat(getReaderCookie("fontSize")) || 1;
+  const newSize = Math.max(0.7, Math.min(2.0, current + delta));
+  setReaderCookie("fontSize", newSize.toFixed(2));
+  readerRoot.style.setProperty("font-size", `${newSize}em`);
 }
 
 function bindNavigationEvents() {
@@ -212,13 +222,6 @@ function updateNav() {
   document.querySelectorAll(".btn-next").forEach(btn => btn.disabled = chapter === lastKnownChapter);
 }
 
-function updateFontSize(delta = 0) {
-  const current = parseFloat(getReaderCookie("fontSize")) || 1;
-  const newSize = Math.max(0.7, Math.min(2.0, current + delta));
-  setReaderCookie("fontSize", newSize.toFixed(2));
-  document.querySelector("#reader").style.setProperty("font-size", `${newSize}em`);
-}
-
 async function initReader() {
   await populateStoryPicker();
   if (!storyPath) return;
@@ -236,7 +239,7 @@ async function initReader() {
   await loadChapter(chapter);
 
   const initialFont = parseFloat(getReaderCookie("fontSize")) || 1;
-  document.querySelector("#reader").style.setProperty("font-size", `${initialFont}em`);
+  readerRoot.style.setProperty("font-size", `${initialFont}em`);
 }
 
 initReader();
