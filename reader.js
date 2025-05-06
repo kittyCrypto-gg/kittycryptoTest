@@ -45,6 +45,7 @@ async function populateStoryPicker() {
       const opt = document.createElement("option");
       opt.value = path;
       opt.textContent = name;
+      if (path === storyPath) opt.selected = true;
       select.appendChild(opt);
     });
 
@@ -87,8 +88,9 @@ async function discoverChapters() {
   let i = 1;
   while (true) {
     try {
-      console.log(`reading chapter ${i} in ${storyPath}`);
-      const res = await fetch(`${storyPath}/chapt${i}.html`, { method: "HEAD" });
+      const path = `${storyPath}/chapt${i}.html`;
+      console.log(`reading chapter ${i} in ${path}`);
+      const res = await fetch(path, { method: "HEAD" });
       if (!res.ok) break;
       i++;
     } catch (err) {
