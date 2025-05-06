@@ -67,7 +67,7 @@ async function loadChapter(n) {
     const res = await fetch(`${storyPath}/chapt${n}.html`);
     if (!res.ok) throw new Error("Chapter not found");
     const html = await res.text();
-    readerRoot.innerHTML = html;
+    readerRoot.innerHTML = new TextDecoder("utf-8").decode(new TextEncoder().encode(html));
     chapter = n;
     updateNav();
     localStorage.setItem(chapterBookmarkKey, chapter);
