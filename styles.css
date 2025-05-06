@@ -527,3 +527,94 @@ body.dark-mode .theme-toggle-button {
 body.no-scroll {
   overflow: hidden;
 }
+
+/* =========================================
+  Chapter Navigation Buttons
+========================================= */
+
+.chapter-navigation button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  color: var(--body-text-colour);
+}
+
+.dark-mode .chapter-navigation button {
+  color: var(--body-text-colour);
+}
+
+.chapter-navigation button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+  Story Selector Dropdown
+========================================= */
+
+#story-picker {
+  margin: 15px auto;
+  text-align: center;
+}
+
+.story-selector {
+  background-color: var(--menu-button-bg-colour);
+  color: var(--menu-button-text-colour);
+  border: 1px solid var(--nav-border-colour);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.story-selector:hover {
+  background-color: var(--menu-button-hover-bg-colour);
+}
+
+.dark-mode .story-selector {
+  background-color: var(--menu-button-bg-colour);
+  color: var(--menu-button-text-colour);
+  border-color: var(--nav-border-colour);
+}
+
+
+/* =========================================
+  Chapter Reader Container
+========================================= */
+
+.reader-container {
+  background-color: var(--frame-bg-colour);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  color: var(--body-text-colour);
+}
+
+.dark-mode .reader-container {
+  background-color: var(--frame-bg-colour);
+  color: var(--body-text-colour);
+}
+
+
+/* =========================================
+  Chapter 404 Message
+========================================= */
+
+.chapter-404 {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: var(--body-text-colour);
+}
+
+.dark-mode .chapter-404 {
+  color: var(--body-text-colour);
+}
