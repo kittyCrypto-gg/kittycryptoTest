@@ -705,24 +705,24 @@ body.no-scroll {
 ========================================= */
 
 .reader-title {
-  font-size: 2.2rem;
+  font-size: 2.2em;
   font-weight: bold;
   text-align: center;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 2em;
+  margin-bottom: 1em;
 }
 
 .reader-subtitle {
-  font-size: 1.6rem;
+  font-size: 1.6em;
   font-weight: 600;
   text-align: center;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
   color: var(--header-text-colour);
 }
 
 .reader-paragraph {
-  font-size: 1.15rem;
+  font-size: 1em;
   line-height: 1.75;
   margin: 1.2em auto;
   max-width: 65ch;
@@ -731,7 +731,7 @@ body.no-scroll {
 }
 
 .reader-quote {
-  font-size: 1.1rem;
+  font-size: 1em;
   font-style: italic;
   background-color: rgba(0, 0, 0, 0.05);
   border-left: 4px solid var(--nav-border-colour);
