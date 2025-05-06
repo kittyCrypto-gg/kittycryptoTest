@@ -676,6 +676,95 @@ body.no-scroll {
   color: var(--body-text-colour);
 }
 
+/* =========================================
+  Reader: Block-Level Styling
+========================================= */
+
+.reader-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.reader-subtitle {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--header-text-colour);
+}
+
+.reader-paragraph {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  margin: 1.2em auto;
+  max-width: 65ch;
+  text-align: justify;
+  color: var(--body-text-colour);
+}
+
+.reader-quote {
+  font-size: 1.1rem;
+  font-style: italic;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-left: 4px solid var(--nav-border-colour);
+  margin: 1.5em auto;
+  padding: 1em 1.5em;
+  max-width: 60ch;
+  color: var(--body-text-colour);
+}
+
+.reader-intense {
+  background-color: rgba(255, 213, 79, 0.1); /* subtle yellow glow */
+  border-left-color: gold;
+}
+
+/* =========================================
+  Reader: Inline Text Styles
+========================================= */
+
+.reader-bold {
+  font-weight: bold;
+}
+
+.reader-italic {
+  font-style: italic;
+}
+
+.reader-underline {
+  text-decoration: underline;
+}
+
+.reader-strike {
+  text-decoration: line-through;
+}
+
+.reader-smallcaps {
+  font-variant: small-caps;
+}
+
+/* =========================================
+  Dark Mode Adjustments
+========================================= */
+
+.dark-mode .reader-quote {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-left-color: var(--nav-border-colour);
+}
+
+.dark-mode .reader-intense {
+  background-color: rgba(255, 230, 128, 0.1);
+  border-left-color: #ffcc00;
+}
+
+.dark-mode .reader-subtitle,
+.dark-mode .reader-title,
+.dark-mode .reader-paragraph {
+  color: var(--body-text-colour);
+}
 
 /* =========================================
   Chapter 404 Message
