@@ -553,6 +553,30 @@ body.no-scroll {
   color: var(--body-text-colour);
 }
 
+.font-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+  margin-top: 0.5em;
+}
+
+.font-controls button {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 5px;
+  color: var(--body-text-colour);
+}
+
+.font-controls button:hover {
+  transform: scale(1.2);
+}
+
+.dark-mode .font-controls button {
+  color: var(--body-text-colour);
+}
+
 /* =========================================
   Chapter Navigation Inputs
 ========================================= */
