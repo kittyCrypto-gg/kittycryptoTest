@@ -667,6 +667,8 @@ body.no-scroll {
   width: 90%;
   max-width: 800px;
   color: var(--body-text-colour);
+  font-size: 1.2rem;
+  line-height: 1.8;
 }
 
 .dark-mode .reader-container {
