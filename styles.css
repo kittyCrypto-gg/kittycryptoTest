@@ -528,18 +528,36 @@ body.no-scroll {
   overflow: hidden;
 }
 
+
+/* =========================================
+  Chapter Navigation Buttons
+========================================= */
+
+.chapter-navigation button {
+  all: unset;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  color: var(--body-text-colour);
+  display: inline-block;
+  padding: 0 4px;
+}
+
+.chapter-navigation button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Dark mode */
+.dark-mode .chapter-navigation button {
+  color: var(--body-text-colour);
+}
+
 /* =========================================
   Chapter Navigation Inputs
 ========================================= */
 
-.chapter-navigation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0;
-}
-
+/* Shared styles */
 .chapter-display,
 .chapter-input {
   width: 2ch;
@@ -551,13 +569,29 @@ body.no-scroll {
   border-radius: 4px;
   background-color: var(--chat-input-bg-colour);
   color: var(--chat-input-text-colour);
+  appearance: textfield; /* for Firefox */
 }
 
+/* Remove spinners in Chrome/Safari */
+.chapter-input::-webkit-outer-spin-button,
+.chapter-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove spinners in Firefox */
+.chapter-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Readonly display input */
 .chapter-display[readonly] {
   background: transparent;
   pointer-events: none;
+  color: var(--body-text-colour);
 }
 
+/* END button */
 .chapter-end {
   width: 2ch;
   text-align: center;
@@ -567,6 +601,14 @@ body.no-scroll {
   border: none;
   background: transparent;
   color: var(--body-text-colour);
+}
+
+/* Dark mode */
+.dark-mode .chapter-display,
+.dark-mode .chapter-input,
+.dark-mode .chapter-end {
+  background-color: var(--chat-input-bg-colour);
+  color: var(--chat-input-text-colour);
 }
 
 /* Dark mode adjustments */
