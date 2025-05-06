@@ -64,10 +64,60 @@ async function populateStoryPicker() {
 // Load chapter HTML
 async function loadChapter(n) {
   try {
-    const res = await fetch(`${storyPath}/chapt${n}.html`);
+    const res = await fetch(`${storyPath}/chapt${n}.xml`);
     if (!res.ok) throw new Error("Chapter not found");
-    const html = await res.text();
-    readerRoot.innerHTML = new TextDecoder("utf-8").decode(new TextEncoder().encode(html));
+    const xmlText = await res.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+
+    const paras = Array.from(xmlDoc.getElementsByTagName("w:p"));
+    const htmlContent = paras.map(p => {
+      const pPr = p.getElementsByTagName("w:pPr")[0];
+      let style = "";
+      if (pPr) {
+        const styleEl = pPr.getElementsByTagName("w:pStyle")[0];
+        if (styleEl) style = styleEl.getAttribute("w:val") || "";
+      }
+
+      let tag = "p";
+      let className = "reader-paragraph";
+      if (style === "Title") {
+        tag = "h1";
+        className = "reader-title";
+      } else if (style === "Heading1" || style === "Heading2") {
+        tag = "h2";
+        className = "reader-subtitle";
+      } else if (style === "Quote") {
+        tag = "blockquote";
+        className = "reader-quote";
+      } else if (style === "IntenseQuote") {
+        tag = "blockquote";
+        className = "reader-quote reader-intense";
+      }
+
+      const runs = Array.from(p.getElementsByTagName("w:r")).map(run => {
+        const text = Array.from(run.getElementsByTagName("w:t"))
+          .map(t => t.textContent)
+          .join("");
+
+        const rPr = run.getElementsByTagName("w:rPr")[0];
+        let spanClass = [];
+
+        if (rPr) {
+          if (rPr.getElementsByTagName("w:b").length) spanClass.push("reader-bold");
+          if (rPr.getElementsByTagName("w:i").length) spanClass.push("reader-italic");
+          if (rPr.getElementsByTagName("w:u").length) spanClass.push("reader-underline");
+          if (rPr.getElementsByTagName("w:strike").length) spanClass.push("reader-strike");
+          if (rPr.getElementsByTagName("w:smallCaps").length) spanClass.push("reader-smallcaps");
+        }
+
+        return `<span class="${spanClass.join(" ")}">${text}</span>`;
+      }).join("");
+
+      return `<${tag} class="${className}">${runs}</${tag}>`;
+    }).join("\n");
+
+    readerRoot.innerHTML = htmlContent;
     chapter = n;
     updateNav();
     localStorage.setItem(chapterBookmarkKey, chapter);
@@ -76,7 +126,7 @@ async function loadChapter(n) {
     readerRoot.innerHTML = `
       <div class="chapter-404">
         <h2>📕 Chapter ${n} Not Found</h2>
-        <p>It looks like this chapter doesn't exist yet. Maybe it's still being written—or maybe you’ve discovered a void in the story timeline.</p>
+        <p>Looks like this XML chapter doesn't exist yet.</p>
       </div>
     `;
     console.error(err);
