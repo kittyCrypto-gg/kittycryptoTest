@@ -3,11 +3,22 @@ const storyPath = params.get("story");
 let chapter = parseInt(params.get("chapter") || "1");
 
 const chapterCacheKey = `chapterCache_${storyPath}`;
-const chapterBookmarkKey = `chapterBookmark_${storyPath}`;
 let lastKnownChapter = parseInt(localStorage.getItem(chapterCacheKey) || "0");
 
 const readerRoot = document.getElementById("reader");
 const storyPickerRoot = document.getElementById("story-picker");
+
+// Reader-specific cookie helpers to avoid collision with main.js
+function setReaderCookie(name, value, days = 365) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `reader_${name}=${value}; expires=${expires}; path=/`;
+}
+
+function getReaderCookie(name) {
+  const cookies = document.cookie.split("; ");
+  const cookie = cookies.find(row => row.startsWith(`reader_${name}=`));
+  return cookie ? cookie.split("=")[1] : null;
+}
 
 // Inject navigation bars at top and bottom
 function injectNav() {
@@ -20,6 +31,11 @@ function injectNav() {
       <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
       <button class="btn-next">➡️</button>
       <button class="btn-rescan">🔃</button>
+    </div>
+    <div class="font-controls">
+      <button class="font-decrease">➖</button>
+      <button class="font-reset">🔁</button>
+      <button class="font-increase">➕</button>
     </div>
   `;
   const navTop = document.createElement("div");
@@ -61,7 +77,7 @@ async function populateStoryPicker() {
   }
 }
 
-// Load chapter HTML
+// Load chapter XML
 async function loadChapter(n) {
   try {
     const res = await fetch(`${storyPath}/chapt${n}.xml`);
@@ -120,7 +136,7 @@ async function loadChapter(n) {
     readerRoot.innerHTML = htmlContent;
     chapter = n;
     updateNav();
-    localStorage.setItem(chapterBookmarkKey, chapter);
+    setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
     window.scrollTo(0, 0);
   } catch (err) {
     readerRoot.innerHTML = `
@@ -166,7 +182,7 @@ function updateNav() {
   document.querySelectorAll(".btn-next").forEach(btn => btn.disabled = chapter === lastKnownChapter);
 }
 
-// Initialiser
+// Initialise reader
 async function initReader() {
   await populateStoryPicker();
   if (!storyPath) return;
@@ -175,7 +191,7 @@ async function initReader() {
   if (!lastKnownChapter) lastKnownChapter = await discoverChapters();
 
   if (!params.get("chapter")) {
-    const bookmark = parseInt(localStorage.getItem(chapterBookmarkKey));
+    const bookmark = parseInt(getReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`));
     if (bookmark && bookmark <= lastKnownChapter) chapter = bookmark;
   }
 
@@ -211,6 +227,21 @@ async function initReader() {
     lastKnownChapter = await discoverChapters();
     updateNav();
   });
+
+  const updateFontSize = (delta = 0) => {
+    const current = parseFloat(getReaderCookie("fontSize")) || 1;
+    const newSize = Math.max(0.7, Math.min(2.0, current + delta));
+    setReaderCookie("fontSize", newSize.toFixed(2));
+    document.querySelector("#reader").style.setProperty("font-size", `${newSize}em`);
+  };
+
+  document.querySelectorAll(".font-increase").forEach(btn => btn.onclick = () => updateFontSize(0.1));
+  document.querySelectorAll(".font-decrease").forEach(btn => btn.onclick = () => updateFontSize(-0.1));
+  document.querySelectorAll(".font-reset").forEach(btn => btn.onclick = () => updateFontSize(0));
+
+  // Apply saved font size
+  const initialFont = parseFloat(getReaderCookie("fontSize")) || 1;
+  document.querySelector("#reader").style.setProperty("font-size", `${initialFont}em`);
 }
 
 initReader();
