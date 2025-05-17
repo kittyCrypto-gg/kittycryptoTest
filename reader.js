@@ -194,21 +194,39 @@ async function loadChapter(n) {
 
 async function discoverChapters() {
   let i = 1;
+  let chapters = [];
+
+  // Check for Chapter 0 existence first
+  try {
+    const path = `${storyPath}/chapt0.xml`;
+    console.log(`Checking for Chapter 0 at ${path}`);
+    const res = await fetch(path, { method: "HEAD" });
+    if (res.ok) {
+      chapters.push(0);
+    }
+  } catch (err) {
+    console.log('No chapter 0');
+  }
+
+  // Discover remaining chapters
   while (true) {
     try {
       const path = `${storyPath}/chapt${i}.xml`;
-      console.log(`reading chapter ${i} in ${path}`);
+      console.log(`Reading Chapter ${i} in ${path}`);
       const res = await fetch(path, { method: "HEAD" });
       if (!res.ok) break;
+      chapters.push(i);
       i++;
     } catch (err) {
       console.error(`Error at chapt${i}:`, err);
       break;
     }
   }
+
   const last = i - 1;
+  lastKnownChapter = last;
   localStorage.setItem(chapterCacheKey, last);
-  return last;
+  return chapters;
 }
 
 function jumpTo(n) {
