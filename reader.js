@@ -57,8 +57,9 @@ function updateFontSize(delta = 0) {
 }
 
 function bindNavigationEvents() {
+  const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
   document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
-    if (chapter > 0 || localStorage.getItem(chapterCacheKey) === "0") {
+    if (chapter > 0 || chapters.includes(0)) {
       jumpTo(chapter - 1);
     }
   });
@@ -226,8 +227,9 @@ async function discoverChapters() {
   }
 
   const last = i - 1;
-  lastKnownChapter = last;
-  localStorage.setItem(chapterCacheKey, last);
+  lastKnownChapter = chapters.length > 0 ? Math.max(...chapters) : 0;
+  localStorage.setItem(chapterCacheKey, JSON.stringify(chapters));
+  lastKnownChapter = chapters.length > 0 ? Math.max(...chapters) : 0;
   return chapters;
 }
 
@@ -238,11 +240,17 @@ function jumpTo(n) {
 function updateNav() {
   document.querySelectorAll(".chapter-display").forEach(el => el.value = chapter);
   document.querySelectorAll(".chapter-end").forEach(btn => btn.textContent = lastKnownChapter);
-  
+
   // If Chapter 0 is detected, allow the Previous button to activate when on Chapter 1
-  const hasChapter0 = localStorage.getItem(chapterCacheKey) === "0" || localStorage.getItem(chapterCacheKey) === "1";
-  document.querySelectorAll(".btn-prev").forEach(btn => btn.disabled = chapter === 0 || (!hasChapter0 && chapter === 1));
-  document.querySelectorAll(".btn-next").forEach(btn => btn.disabled = chapter === lastKnownChapter);
+  const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
+  const hasChapter0 = chapters.includes(0);
+
+  document.querySelectorAll(".btn-prev").forEach(btn => {
+    btn.disabled = chapter === 0 && !hasChapter0;
+  });
+  document.querySelectorAll(".btn-next").forEach(btn => {
+    btn.disabled = chapter === lastKnownChapter;
+  });
 }
 
 async function initReader() {
