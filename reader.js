@@ -28,7 +28,7 @@ function injectNav() {
     <div class="chapter-navigation">
       <button class="btn-prev">⬅️</button>
       <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
-      <input class="chapter-input" type="number" min="1" style="width: 2ch; text-align: center;" />
+      <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
       <button class="btn-jump">🆗</button>
       <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
       <button class="btn-next">➡️</button>
@@ -58,7 +58,9 @@ function updateFontSize(delta = 0) {
 
 function bindNavigationEvents() {
   document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
-    if (chapter > 0) jumpTo(chapter - 1);
+    if (chapter > 0 || localStorage.getItem(chapterCacheKey) === "0") {
+      jumpTo(chapter - 1);
+    }
   });
 
   document.querySelectorAll(".btn-next").forEach(btn => btn.onclick = () => {
@@ -236,7 +238,10 @@ function jumpTo(n) {
 function updateNav() {
   document.querySelectorAll(".chapter-display").forEach(el => el.value = chapter);
   document.querySelectorAll(".chapter-end").forEach(btn => btn.textContent = lastKnownChapter);
-  document.querySelectorAll(".btn-prev").forEach(btn => btn.disabled = chapter === 1);
+  
+  // If Chapter 0 is detected, allow the Previous button to activate when on Chapter 1
+  const hasChapter0 = localStorage.getItem(chapterCacheKey) === "0" || localStorage.getItem(chapterCacheKey) === "1";
+  document.querySelectorAll(".btn-prev").forEach(btn => btn.disabled = chapter === 0 || (!hasChapter0 && chapter === 1));
   document.querySelectorAll(".btn-next").forEach(btn => btn.disabled = chapter === lastKnownChapter);
 }
 
