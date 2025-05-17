@@ -58,7 +58,7 @@ function updateFontSize(delta = 0) {
 
 function bindNavigationEvents() {
   document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
-    if (chapter > 1) jumpTo(chapter - 1);
+    if (chapter > 0) jumpTo(chapter - 1);
   });
 
   document.querySelectorAll(".btn-next").forEach(btn => btn.onclick = () => {
@@ -68,7 +68,7 @@ function bindNavigationEvents() {
   document.querySelectorAll(".btn-jump").forEach(btn => btn.onclick = () => {
     document.querySelectorAll(".chapter-input").forEach(input => {
       const val = parseInt(input.value);
-      if (val >= 1 && val <= lastKnownChapter) jumpTo(val);
+      if (val >= 0 && val <= lastKnownChapter) jumpTo(val);
     });
   });
 
@@ -77,7 +77,7 @@ function bindNavigationEvents() {
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         const val = parseInt(e.target.value);
-        if (val >= 1 && val <= lastKnownChapter) jumpTo(val);
+        if (val >= 0 && val <= lastKnownChapter) jumpTo(val);
       }
     });
   });
@@ -247,11 +247,15 @@ async function initReader() {
   injectNav();
   bindNavigationEvents();
 
-  if (!lastKnownChapter) lastKnownChapter = await discoverChapters();
+  const chapters = await discoverChapters();
 
   if (!params.get("chapter")) {
     const bookmark = parseInt(getReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`));
-    if (bookmark && bookmark <= lastKnownChapter) chapter = bookmark;
+    if (bookmark && chapters.includes(bookmark)) {
+      chapter = bookmark;
+    } else {
+      chapter = 1;
+    }
   }
 
   await loadChapter(chapter);
