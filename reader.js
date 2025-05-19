@@ -246,7 +246,7 @@ function replaceTategaki(htmlContent) {
   // Regex to match ::tg::...::/tg::
   const tategakiRegex = /::tg::([\s\S]*?)::\/tg::/g;
 
-  // Replace each ::tg:: block with SVG rendering
+  // Replace each ::tg:: block with a tategaki-container div
   return htmlContent.replace(tategakiRegex, (match, text) => {
     text = text.replace(/<\/?span[^>]*>/g, '').replace(/<\/?p[^>]*>/g, '');
 
@@ -257,7 +257,7 @@ function replaceTategaki(htmlContent) {
     const fontSize = parseFloat(getComputedStyle(readerRoot).fontSize) || 16;
     const fontColor = getComputedStyle(readerRoot).color;
     const fontFamily = getComputedStyle(readerRoot).fontFamily;
-    const charWidth = fontSize + 4; // Adding some padding
+    const charWidth = fontSize + 4;
     const lineHeight = fontSize + 4;
 
     let svgContent = `<svg width="${charWidth * lines.length}" height="${lineHeight * maxLength}" xmlns="http://www.w3.org/2000/svg">`;
@@ -279,7 +279,8 @@ function replaceTategaki(htmlContent) {
     });
 
     svgContent += `</svg>`;
-    return svgContent;
+
+    return `<div class="tategaki-container">${svgContent}</div>`;
   });
 }
 
