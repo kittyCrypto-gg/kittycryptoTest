@@ -812,24 +812,74 @@ body.dark-mode .tategaki-container svg text {
   overflow: hidden;
   border-radius: 8px;
   max-width: 100%;
+  position: relative;
+  height: 400px; /* Adjust based on your layout */
 }
 
+/* The image is set to 100% but scales on hover */
 .chapter-image {
   max-width: 100%;
-  height: auto;
+  height: 100%;
   border: 2px solid var(--body-text-colour);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s ease, object-position 0.1s ease;
+  transform-origin: center center;
+  object-fit: cover;
 }
 
-.chapter-image:hover {
-  transform: scale(2);
+/* Zoom effect on hover */
+.chapter-image-container:hover .chapter-image {
+  transform: scale(2); /* Scale up 2x */
+  cursor: zoom-in;
 }
 
-/* Dark mode adjustments */
-body.dark-mode .chapter-image {
-  border-color: var(--body-text-colour);
+/* Mouse move effect */
+.chapter-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.chapter-image-container:hover .chapter-image {
+  cursor: move;
+}
+
+.chapter-image-container:hover {
+  cursor: crosshair;
+}
+
+.chapter-image-container:hover .chapter-image {
+  transform-origin: 0 0;
+}
+
+.chapter-image-container:hover {
+  --x: 50%;
+  --y: 50%;
+}
+
+.chapter-image-container:hover .chapter-image {
+  object-position: var(--x) var(--y);
+}
+
+/* Tracking mouse movement */
+.chapter-image-container:hover {
+  cursor: move;
+}
+
+.chapter-image-container:hover .chapter-image {
+  transform: scale(2); /* Increase zoom */
+}
+
+.chapter-image-container:hover {
+  /* Smooth mouse tracking */
+  transition: none;
+}
+
+.chapter-image-container:hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 /* =========================================
