@@ -961,11 +961,19 @@ body.dark-mode .tategaki-container svg text {
 }
 
 .jp-about {
+  border-top: 1px solid var(--nav-border-colour);
+  padding-top: 20px;
+  margin-top: 30px;
   direction: rtl;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
   padding: 10px 0;
+  font-family: 'Noto Serif JP', 'Yu Mincho', serif;
+}
+
+.tategaki-container svg {
+  margin-left: 10px; /* gives columns space */
 }
 
 /* =========================================
