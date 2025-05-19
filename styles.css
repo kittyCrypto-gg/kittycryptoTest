@@ -953,6 +953,14 @@ body.dark-mode .tategaki-container svg text {
   justify-content: center;
 }
 
+.jp-about {
+  direction: rtl;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
 /* =========================================
   Floating PFP
 ========================================= */
