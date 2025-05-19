@@ -70,6 +70,11 @@ fetch('./main.json')
     const isDarkMode = getCookie("darkMode") === "true";
     themeToggle.textContent = isDarkMode ? data.themeToggle.dark : data.themeToggle.default;
     document.body.classList.toggle("dark-mode", isDarkMode);
+    if (isDarkMode) {
+      document.body.style.display = 'none';
+      document.body.offsetHeight; // Trigger reflow
+      document.body.style.display = '';
+    }
 
     // Toggle Dark Mode
     themeToggle.addEventListener("click", () => {
