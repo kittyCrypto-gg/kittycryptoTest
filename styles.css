@@ -824,7 +824,7 @@ body.dark-mode .tategaki-container svg text {
 }
 
 .chapter-image:hover {
-  transform: scale(1.02);
+  transform: scale(2);
 }
 
 /* Dark mode adjustments */
