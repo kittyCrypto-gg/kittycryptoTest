@@ -972,6 +972,24 @@ body.dark-mode .tategaki-container svg text {
   padding: 20px 0 10px 0;
   margin-top: 30px;
   font-family: 'Noto Serif JP', 'Yu Mincho', serif;
+
+  /* Custom Scrollbar Styles */
+  scrollbar-width: thin;
+  scrollbar-color: var(--nav-border-colour) var(--frame-bg-colour);
+}
+
+.jp-about::-webkit-scrollbar {
+  height: 8px; /* height of the horizontal scrollbar */
+}
+
+.jp-about::-webkit-scrollbar-thumb {
+  background-color: var(--nav-border-colour); /* colour of the scrollbar handle */
+  border-radius: 4px;
+}
+
+.jp-about::-webkit-scrollbar-track {
+  background-color: var(--frame-bg-colour); /* colour of the scrollbar track */
+  border-radius: 4px;
 }
 
 .tategaki-container {
