@@ -135,7 +135,7 @@ async function loadChapter(n) {
     const xmlDoc = parser.parseFromString(xmlText, "application/xml");
 
     const paras = Array.from(xmlDoc.getElementsByTagName("w:p"));
-    const htmlContent = paras.map(p => {
+    let htmlContent = paras.map(p => {
       const pPr = p.getElementsByTagName("w:pPr")[0];
       let style = "";
       if (pPr) {
@@ -179,7 +179,12 @@ async function loadChapter(n) {
       return `<${tag} class="${className}">${runs}</${tag}>`;
     }).join("\n");
 
+    // 🔹 Add this — parse <tategaki> and replace them
+    htmlContent = replaceTategaki(htmlContent);
+
+    // Render the HTML
     readerRoot.innerHTML = htmlContent;
+
     chapter = n;
     updateNav();
     setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
@@ -235,6 +240,44 @@ async function discoverChapters() {
 
 function jumpTo(n) {
   window.location.search = `?story=${encodeURIComponent(storyPath)}&chapter=${n}`;
+}
+
+function replaceTategaki(htmlContent) {
+  // Regex to match ::tg::...::/tg::
+  const tategakiRegex = /::tg::([\s\S]*?)::\/tg::/g;
+
+  // Replace each ::tg:: block with SVG rendering
+  return htmlContent.replace(tategakiRegex, (match, text) => {
+    const lines = text.trim().split("\n").filter(line => line.length > 0);
+    lines.reverse(); // Vertical order
+    const maxLength = Math.max(...lines.map(line => line.length));
+
+    // Fetch the current font size from the reader
+    const fontSize = parseFloat(getComputedStyle(readerRoot).fontSize) || 16;
+    const charWidth = fontSize + 4; // Adding some padding
+    const lineHeight = fontSize + 4;
+
+    // Create SVG element string with adaptive sizing
+    let svgContent = `<svg width="${charWidth * lines.length}" height="${lineHeight * maxLength}" xmlns="http://www.w3.org/2000/svg">`;
+
+    lines.forEach((line, column) => {
+      [...line].forEach((char, row) => {
+        svgContent += `
+          <text 
+            x="${column * charWidth}" 
+            y="${row * lineHeight + fontSize}" 
+            font-size="${fontSize}" 
+            font-family="serif" 
+            writing-mode="tb"
+            glyph-orientation-vertical="0">
+            ${char}
+          </text>`;
+      });
+    });
+
+    svgContent += `</svg>`;
+    return svgContent;
+  });
 }
 
 function updateNav() {
