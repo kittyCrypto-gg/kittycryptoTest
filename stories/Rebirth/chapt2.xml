@@ -2760,36 +2760,43 @@
           </w:p>
           <w:p w14:paraId="751A5CDF" w14:textId="090C8FF8" w:rsidR="00C5653B" w:rsidRPr="00F346BE" w:rsidRDefault="00C5653B" w:rsidP="00D77E08">
             <w:pPr>
-              <w:spacing w:after="0" w:line="240" w:lineRule="auto" />
+                <w:spacing w:after="0" w:line="240" w:lineRule="auto" />
             </w:pPr>
+
             <w:r w:rsidRPr="00F346BE">
-              <w:t xml:space="preserve">Welcome to Butterfly Heaven.</w:t>
+                <w:t xml:space="preserve">Welcome to Butterfly Heaven.</w:t>
             </w:r>
             <w:r>
-              <w:br />
+                <w:br />
             </w:r>
+
             <w:r w:rsidRPr="00F346BE">
-              <w:t xml:space="preserve">The mailbox at the feet of the stone stairs to the Shrine in the grove is yours.</w:t>
+                <w:t xml:space="preserve">The mailbox at the feet of the stone stairs to the Shrine in the grove is yours.</w:t>
             </w:r>
             <w:r>
-              <w:br />
+                <w:br />
             </w:r>
+
             <w:r w:rsidRPr="00F346BE">
-              <w:t xml:space="preserve">Use the attached key to open it.</w:t>
+                <w:t xml:space="preserve">Use the attached key to open it.</w:t>
             </w:r>
             <w:r>
-              <w:br />
+                <w:br />
             </w:r>
+
             <w:r w:rsidRPr="00F346BE">
-              <w:t xml:space="preserve">Kind regards,</w:t>
+                <w:t xml:space="preserve">Kind regards,</w:t>
             </w:r>
             <w:r>
-              <w:br />
+                <w:br />
             </w:r>
+
             <w:r w:rsidRPr="00F346BE">
-              <w:t xml:space="preserve">A friend at the Entrance of the Bamboo Forest.</w:t>
+                <w:t xml:space="preserve">A friend at the Entrance of the Bamboo Forest.</w:t>
             </w:r>
-          </w:p>
+
+            </w:p>
+
           <w:p w14:paraId="780584AD" w14:textId="77777777" w:rsidR="00C5653B" w:rsidRDefault="00C5653B" w:rsidP="00C5653B" />
           <w:p w14:paraId="2D9C8B70" w14:textId="4127B75A" w:rsidR="00565143" w:rsidRDefault="00565143" w:rsidP="00565143">
             <w:r>
@@ -3610,40 +3617,45 @@
           </w:p>
           <w:p w14:paraId="4F2DC2D2" w14:textId="77777777" w:rsidR="00E42659" w:rsidRDefault="002C5345" w:rsidP="00E42659">
             <w:pPr>
-              <w:spacing w:after="0" w:line="240" w:lineRule="auto" />
-              <w:rPr>
+                <w:spacing w:after="0" w:line="240" w:lineRule="auto" />
+                <w:rPr>
                 <w:i />
                 <w:iCs />
-              </w:rPr>
+                </w:rPr>
             </w:pPr>
+
             <w:r w:rsidRPr="00F346BE">
-              <w:rPr>
+                <w:rPr>
                 <w:i />
                 <w:iCs />
-              </w:rPr>
-              <w:t xml:space="preserve">Chasing shadows of </w:t>
+                </w:rPr>
+                <w:t xml:space="preserve">Chasing shadows of </w:t>
             </w:r>
             <w:r>
-              <w:br />
+                <w:br />
             </w:r>
+
             <w:r w:rsidRPr="00F346BE">
-              <w:rPr>
+                <w:rPr>
                 <w:i />
                 <w:iCs />
-              </w:rPr>
-              <w:t>butterflies that dance in air—</w:t>
+                </w:rPr>
+                <w:t xml:space="preserve">butterflies that dance in air—</w:t>
             </w:r>
             <w:r>
-              <w:br />
+                <w:br />
             </w:r>
+
             <w:r w:rsidRPr="00F346BE">
-              <w:rPr>
+                <w:rPr>
                 <w:i />
                 <w:iCs />
-              </w:rPr>
-              <w:t>you are far away.</w:t>
+                </w:rPr>
+                <w:t xml:space="preserve">you are far away.</w:t>
             </w:r>
-          </w:p>
+
+            </w:p>
+
           <w:p w14:paraId="773566B4" w14:textId="77777777" w:rsidR="002C5345" w:rsidRPr="002C5345" w:rsidRDefault="002C5345" w:rsidP="002C5345">
             <w:r w:rsidRPr="002C5345">
               <w:t>He breathed out slowly, the ache of longing settling back into the quiet corners of his heart. "If you were here, Himiko… you would know how to mend her spirit. How will I guide this girl alone?"</w:t>
