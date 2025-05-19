@@ -179,8 +179,8 @@ async function loadChapter(n) {
       return `<${tag} class="${className}">${runs}</${tag}>`;
     }).join("\n");
 
-    // 🔹 Add this — parse <> and replace them
     htmlContent = replaceTategaki(htmlContent);
+    htmlContent = replaceImageTags(htmlContent);
 
     // Render the HTML
     readerRoot.innerHTML = htmlContent;
@@ -240,6 +240,42 @@ async function discoverChapters() {
 
 function jumpTo(n) {
   window.location.search = `?story=${encodeURIComponent(storyPath)}&chapter=${n}`;
+}
+
+function replaceImageTags(htmlContent) {
+  // Regex to match ::img:url:...:alt:...::
+  const imageWithAltRegex = /::img:url:(.*?):alt:(.*?)::/g;
+
+  // Replace each ::img:url:...:alt:...:: with an <img> wrapped in a div
+  htmlContent = htmlContent.replace(imageWithAltRegex, (match, url, alt) => {
+    return `
+      <div class="chapter-image-container">
+        <img 
+          src="${url.trim()}" 
+          alt="${alt.trim()}" 
+          class="chapter-image" 
+          loading="lazy" 
+          onerror="this.onerror=null; this.src='/path/to/fallback-image.png'; this.alt='Image not found';"
+        />
+      </div>
+    `;
+  });
+
+  // Match images without alt text: ::img:url:...::
+  const imageWithoutAltRegex = /::img:url:(.*?)::/g;
+  return htmlContent.replace(imageWithoutAltRegex, (match, url) => {
+    return `
+      <div class="chapter-image-container">
+        <img 
+          src="${url.trim()}" 
+          alt="Chapter Image" 
+          class="chapter-image" 
+          loading="lazy" 
+          onerror="this.onerror=null; this.src='/path/to/fallback-image.png'; this.alt='Image not found';"
+        />
+      </div>
+    `;
+  });
 }
 
 function replaceTategaki(htmlContent) {
