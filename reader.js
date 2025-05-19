@@ -179,7 +179,7 @@ async function loadChapter(n) {
       return `<${tag} class="${className}">${runs}</${tag}>`;
     }).join("\n");
 
-    // 🔹 Add this — parse <tategaki> and replace them
+    // 🔹 Add this — parse <> and replace them
     htmlContent = replaceTategaki(htmlContent);
 
     // Render the HTML
@@ -260,14 +260,22 @@ function replaceTategaki(htmlContent) {
     const charWidth = fontSize + 4;
     const lineHeight = fontSize + 4;
 
-    let svgContent = `<svg width="${charWidth * lines.length}" height="${lineHeight * maxLength}" xmlns="http://www.w3.org/2000/svg">`;
+    const padding = 5;
+
+    let svgContent = `<svg 
+      width="${charWidth * lines.length + padding * 2}" 
+      height="${lineHeight * maxLength + padding * 2}" 
+      xmlns="http://www.w3.org/2000/svg" 
+      style="overflow: visible"
+      viewBox="-${padding} -${padding} ${charWidth * lines.length + padding * 2} ${lineHeight * maxLength + padding * 2}"
+    >`;
 
     lines.forEach((line, column) => {
       [...line].forEach((char, row) => {
         svgContent += `
           <text 
-            x="${column * charWidth}" 
-            y="${row * lineHeight + fontSize}" 
+            x="${column * charWidth + padding}" 
+            y="${row * lineHeight + fontSize + padding}" 
             font-size="${fontSize}" 
             font-family="${fontFamily}"
             fill="${fontColor}"
