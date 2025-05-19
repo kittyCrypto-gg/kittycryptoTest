@@ -14,24 +14,24 @@
         document.head.appendChild(script);
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const pfp = document.querySelector('.pfp');
-            let lastY = window.scrollY;
-        
-            window.addEventListener('scroll', () => {
-              const currentY = window.scrollY;
-        
-              if (!pfp) return;
-        
-              if (currentY > lastY && currentY > 200) {
-                pfp.classList.add('fade-out');
-              } else {
-                pfp.classList.remove('fade-out');
-              }
-        
-              lastY = currentY;
-            });
+      document.addEventListener('DOMContentLoaded', () => {
+        const pfp = document.querySelector('.pfp');
+        let lastScrollY = window.scrollY;
+    
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+              pfp.classList.add('fade-out');
+            } else {
+              pfp.classList.remove('fade-out');
+            }
           });
+        }, {
+          threshold: 0.1
+        });
+    
+        observer.observe(pfp);
+      });
     </script>
 </head>
 
