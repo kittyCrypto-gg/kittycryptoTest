@@ -250,7 +250,21 @@ async function discoverChapters() {
 }
 
 function jumpTo(n) {
-  window.location.search = `?story=${encodeURIComponent(storyPath)}&chapter=${n}`;
+  // Attempt to get story path from URL (decoded) or fallback to localStorage
+  let currentStoryPath = decodeURIComponent(storyPath) || localStorage.getItem('currentStoryPath');
+  
+  // If no story path is found, alert the user and prevent the jump
+  if (!currentStoryPath) {
+    alert("No story selected. Please select a story first.");
+    return;
+  }
+
+  // Save the current story path for future navigation
+  localStorage.setItem('currentStoryPath', currentStoryPath);
+
+  // Properly encode the URL before setting it
+  const encodedPath = encodeURIComponent(currentStoryPath);
+  window.location.search = `?story=${encodedPath}&chapter=${n}`;
 }
 
 function replaceImageTags(htmlContent) {
