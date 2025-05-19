@@ -2177,6 +2177,7 @@
               <w:t>::tg::</w:t>
             </w:r>
           </w:p>
+          
           <w:p w14:paraId="581BE3BC" w14:textId="77777777" w:rsidR="001A3759" w:rsidRPr="001A3759" w:rsidRDefault="001A3759" w:rsidP="001A3759">
             <w:pPr>
               <w:rPr>
@@ -2184,7 +2185,7 @@
                 <w:lang w:eastAsia="ja-JP" />
               </w:rPr>
             </w:pPr>
-            <w:r w:rsidRPr="001A3759">
+            <w:r>
               <w:rPr>
                 <w:rFonts w:ascii="MS Gothic" w:eastAsia="MS Gothic" w:hAnsi="MS Gothic" w:cs="MS Gothic" />
                 <w:lang w:eastAsia="ja-JP" />
@@ -2192,6 +2193,7 @@
               <w:t>蝶の楽園へようこそ。</w:t>
             </w:r>
           </w:p>
+          
           <w:p w14:paraId="40FC7797" w14:textId="77777777" w:rsidR="001A3759" w:rsidRPr="001A3759" w:rsidRDefault="001A3759" w:rsidP="001A3759">
             <w:pPr>
               <w:rPr>
@@ -2199,21 +2201,21 @@
                 <w:lang w:eastAsia="ja-JP" />
               </w:rPr>
             </w:pPr>
-            <w:r w:rsidRPr="001A3759">
+            <w:r>
               <w:rPr>
                 <w:rFonts w:ascii="MS Gothic" w:eastAsia="MS Gothic" w:hAnsi="MS Gothic" w:cs="MS Gothic" />
                 <w:lang w:eastAsia="ja-JP" />
               </w:rPr>
               <w:t>竹林の中、神社へ続く</w:t>
             </w:r>
-            <w:r w:rsidRPr="001A3759">
+            <w:r>
               <w:rPr>
                 <w:rFonts w:ascii="MS Gothic" w:eastAsia="MS Gothic" w:hAnsi="MS Gothic" w:cs="MS Gothic" />
                 <w:lang w:eastAsia="ja-JP" />
               </w:rPr>
               <w:t>石段の麓にある郵便箱</w:t>
             </w:r>
-            <w:r w:rsidRPr="001A3759">
+            <w:r>
               <w:rPr>
                 <w:rFonts w:ascii="MS Gothic" w:eastAsia="MS Gothic" w:hAnsi="MS Gothic" w:cs="MS Gothic" />
                 <w:lang w:eastAsia="ja-JP" />
@@ -2221,6 +2223,7 @@
               <w:t>はあなたのものです。</w:t>
             </w:r>
           </w:p>
+          
           <w:p w14:paraId="3084C2F5" w14:textId="77777777" w:rsidR="001A3759" w:rsidRPr="001A3759" w:rsidRDefault="001A3759" w:rsidP="001A3759">
             <w:pPr>
               <w:rPr>
@@ -2243,6 +2246,7 @@
               <w:t>て開けてください。</w:t>
             </w:r>
           </w:p>
+          
           <w:p w14:paraId="70380871" w14:textId="77777777" w:rsidR="001A3759" w:rsidRPr="001A3759" w:rsidRDefault="001A3759" w:rsidP="001A3759">
             <w:pPr>
               <w:rPr>
@@ -2250,7 +2254,7 @@
                 <w:lang w:eastAsia="ja-JP" />
               </w:rPr>
             </w:pPr>
-            <w:r w:rsidRPr="001A3759">
+            <w:r>
               <w:rPr>
                 <w:rFonts w:ascii="MS Gothic" w:eastAsia="MS Gothic" w:hAnsi="MS Gothic" w:cs="MS Gothic" />
                 <w:lang w:eastAsia="ja-JP" />
@@ -2258,6 +2262,7 @@
               <w:t>よろしくお願いします。</w:t>
             </w:r>
           </w:p>
+          
           <w:p w14:paraId="30A8D648" w14:textId="552FFD47" w:rsidR="001A3759" w:rsidRPr="001A3759" w:rsidRDefault="001A3759" w:rsidP="001A3759">
             <w:pPr>
               <w:rPr>
@@ -2265,7 +2270,7 @@
                 <w:lang w:eastAsia="ja-JP" />
               </w:rPr>
             </w:pPr>
-            <w:r w:rsidRPr="001A3759">
+            <w:r>
               <w:rPr>
                 <w:rFonts w:ascii="MS Gothic" w:eastAsia="MS Gothic" w:hAnsi="MS Gothic" w:cs="MS Gothic" />
                 <w:lang w:eastAsia="ja-JP" />
