@@ -13,26 +13,6 @@
         script.defer = true;
         document.head.appendChild(script);
     </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const pfp = document.querySelector('.pfp');
-        let lastScrollY = window.scrollY;
-    
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-              pfp.classList.add('fade-out');
-            } else {
-              pfp.classList.remove('fade-out');
-            }
-          });
-        }, {
-          threshold: 0.1
-        });
-    
-        observer.observe(pfp);
-      });
-    </script>
 </head>
 
 <body>
@@ -40,11 +20,10 @@
         <nav id="main-menu"></nav>
         <header id="main-header"></header>
         <main id="main-content">
-            <div class="about-columns">
-                <div class="pfp">
-                    <img src="images/kitty.jpg" alt="Kitty Crypto" />
-                </div>
-                <section class="about-text">
+          <div class="pfp">
+            <img src="images/kitty.jpg" alt="Kitty Crypto" />
+          </div>
+          <section class="about-text">
                     <p>I am Kitty Crypto — or just Kitty for short. Born under the warm, pulsating skies of South America, I am a neko (catgirl) with a millennial spirit and a soul steeped in both code and chords. My heart beats to the rhythm of Evanescence, Paramore, Bullet for My Valentine, Funeral For a Friend, Arch Enemy, Wintersun, and Rhapsody of Fire. A metalhead with a goth twist, I wear my heart on my sleeve and my headphones like a crown.</p>
                     <p>My journey led me to Scotland in the 2010s, where the misty landscapes became my new home. Here, I found love and built a family. I am married and have a daughter who fills my world with joy and curiosity.</p>
                     <p>As a relentless seeker of knowledge, I first pursued physics, captivated by the vast, unspoken stories of the universe. Eventually, I ventured into engineering and now thrive as an electronics engineer, shaping circuits and dreams alike.</p>
