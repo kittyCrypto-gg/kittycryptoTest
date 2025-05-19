@@ -2763,31 +2763,31 @@
               <w:spacing w:after="0" w:line="240" w:lineRule="auto" />
             </w:pPr>
             <w:r w:rsidRPr="00F346BE">
-              <w:t>Welcome to Butterfly Heaven.</w:t>
+              <w:t xml:space="preserve">Welcome to Butterfly Heaven.</w:t>
             </w:r>
             <w:r>
               <w:br />
             </w:r>
             <w:r w:rsidRPr="00F346BE">
-              <w:t>The mailbox at the feet of the stone stairs to the Shrine in the grove is yours.</w:t>
+              <w:t xml:space="preserve">The mailbox at the feet of the stone stairs to the Shrine in the grove is yours.</w:t>
             </w:r>
             <w:r>
               <w:br />
             </w:r>
             <w:r w:rsidRPr="00F346BE">
-              <w:t>Use the attached key to open it.</w:t>
+              <w:t xml:space="preserve">Use the attached key to open it.</w:t>
             </w:r>
             <w:r>
               <w:br />
             </w:r>
             <w:r w:rsidRPr="00F346BE">
-              <w:t>Kind regards,</w:t>
+              <w:t xml:space="preserve">Kind regards,</w:t>
             </w:r>
             <w:r>
               <w:br />
             </w:r>
             <w:r w:rsidRPr="00F346BE">
-              <w:t>A friend at the Entrance of the Bamboo Forest.</w:t>
+              <w:t xml:space="preserve">A friend at the Entrance of the Bamboo Forest.</w:t>
             </w:r>
           </w:p>
           <w:p w14:paraId="780584AD" w14:textId="77777777" w:rsidR="00C5653B" w:rsidRDefault="00C5653B" w:rsidP="00C5653B" />
@@ -3621,7 +3621,7 @@
                 <w:i />
                 <w:iCs />
               </w:rPr>
-              <w:t>Chasing shadows of</w:t>
+              <w:t xml:space="preserve">Chasing shadows of </w:t>
             </w:r>
             <w:r>
               <w:br />
