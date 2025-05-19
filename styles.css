@@ -974,6 +974,12 @@ body.dark-mode .tategaki-container svg text {
   font-family: 'Noto Serif JP', 'Yu Mincho', serif;
 }
 
+.tategaki-container {
+  display: inline-block;
+  margin-left: 0;
+  margin-right: 10px; /* spacing between columns */
+}
+
 .tategaki-container svg {
   margin-left: 10px; /* gives columns space */
 }
