@@ -61,31 +61,32 @@ fetch('./main.json')
     footer.textContent = data.footer.replace('${year}', currentYear);
 
     // Theme Toggle Button
+    // Theme Toggle Button
     const themeToggle = document.createElement("button");
     themeToggle.id = "theme-toggle";
     themeToggle.classList.add("theme-toggle-button");
     document.body.appendChild(themeToggle);
 
-    // Check if dark mode is enabled in cookies
-    const isDarkMode = getCookie("darkMode") === "true";
-    themeToggle.textContent = isDarkMode ? data.themeToggle.dark : data.themeToggle.default;
-    document.body.classList.toggle("dark-mode", isDarkMode);
+    /* explicit helpers */
+    const applyLightTheme = () => {
+      document.body.classList.remove("dark-mode");
+      themeToggle.textContent = data.themeToggle.default;
+      deleteCookie("darkMode");
+    };
 
-    // Toggle Dark Mode
+    const applyDarkTheme = () => {
+      document.body.classList.add("dark-mode");
+      themeToggle.textContent = data.themeToggle.dark;
+      setCookie("darkMode", "true");
+    };
+
+    /* set initial theme */
+    (getCookie("darkMode") === "true") ? applyDarkTheme() : applyLightTheme();
+
+    /* toggle */
     themeToggle.addEventListener("click", () => {
-      const isCurrentlyDark = document.body.classList.contains("dark-mode");
-    
-      // flip the class first so the colours change immediately
-      document.body.classList.toggle("dark-mode", !isCurrentlyDark);
-    
-      // sync cookie & button label with the *new* state
-      if (isCurrentlyDark) {
-        deleteCookie("darkMode");
-        themeToggle.textContent = data.themeToggle.default;
-      } else {
-        setCookie("darkMode", "true");
-        themeToggle.textContent = data.themeToggle.dark;
-      }
+      document.body.classList.contains("dark-mode") ? applyLightTheme()
+        : applyDarkTheme();
     });
   })
   .catch(error => {
