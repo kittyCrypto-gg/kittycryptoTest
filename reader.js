@@ -198,6 +198,17 @@ async function loadChapter(n) {
     `;
     console.error(err);
   }
+
+  // Render the HTML
+  readerRoot.innerHTML = htmlContent;
+  
+  // Activate navigation controls for images
+  activateImageNavigation();
+  
+  chapter = n;
+  updateNav();
+  setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
+  window.scrollTo(0, 0);
 }
 
 async function discoverChapters() {
@@ -368,27 +379,85 @@ async function initReader() {
   readerRoot.style.setProperty("font-size", `${initialFont}em`);
 }
 
-document.querySelectorAll(".chapter-image-container").forEach(container => {
-  const image = container.querySelector(".chapter-image");
+/**
+ * Activate Image Navigation Buttons
+ */
+function activateImageNavigation() {
+  // First, clear any existing overlays and listeners to avoid duplication
+  document.querySelectorAll(".image-nav").forEach(nav => nav.remove());
 
-  // Handle mouse movement within the container
-  container.addEventListener("mousemove", (event) => {
-    const bounds = container.getBoundingClientRect();
-    const x = event.clientX - bounds.left;
-    const y = event.clientY - bounds.top;
+  document.querySelectorAll(".chapter-image-container").forEach(container => {
+    const image = container.querySelector(".chapter-image");
 
-    // Calculate the percentage position of the mouse
-    const xPercent = (x / bounds.width) * 100;
-    const yPercent = (y / bounds.height) * 100;
+    // === Create Navigation Overlay ===
+    const navOverlay = document.createElement("div");
+    navOverlay.classList.add("image-nav");
+    navOverlay.innerHTML = `
+      <button class="btn-up">⬆️</button>
+      <div class="horizontal">
+        <button class="btn-left">⬅️</button>
+        <button class="btn-center">⏺️</button>
+        <button class="btn-right">➡️</button>
+      </div>
+      <button class="btn-down">⬇️</button>
+    `;
 
-    // Move the image based on mouse position
-    image.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+    container.appendChild(navOverlay);
+
+    // === State Logic ===
+    let posX = 50;
+    let posY = 50;
+    const step = 5;
+
+    const updatePosition = () => {
+      image.style.transformOrigin = `${posX}% ${posY}%`;
+    };
+
+    // Button event listeners
+    navOverlay.querySelector(".btn-up").onclick = () => {
+      posY = Math.max(0, posY - step);
+      updatePosition();
+    };
+    navOverlay.querySelector(".btn-down").onclick = () => {
+      posY = Math.min(100, posY + step);
+      updatePosition();
+    };
+    navOverlay.querySelector(".btn-left").onclick = () => {
+      posX = Math.max(0, posX - step);
+      updatePosition();
+    };
+    navOverlay.querySelector(".btn-right").onclick = () => {
+      posX = Math.min(100, posX + step);
+      updatePosition();
+    };
+    navOverlay.querySelector(".btn-center").onclick = () => {
+      posX = 50;
+      posY = 50;
+      updatePosition();
+    };
+
+    // === Logic for Overlay Display ===
+    const toggleOverlay = () => {
+      if (image.style.transform.includes("scale(2)")) {
+        navOverlay.classList.add("active");
+      } else {
+        navOverlay.classList.remove("active");
+      }
+    };
+
+    // Show navigation if zoomed in
+    container.addEventListener("mousemove", () => toggleOverlay());
+    image.addEventListener("transitionend", () => toggleOverlay());
+
+    // Remove overlay when zooming out
+    container.addEventListener("mouseleave", () => {
+      if (!image.style.transform.includes("scale(2)")) {
+        navOverlay.classList.remove("active");
+      }
+    });
   });
+}
 
-  // Reset transform origin when mouse leaves
-  container.addEventListener("mouseleave", () => {
-    image.style.transformOrigin = "center center";
-  });
-});
+
 
 initReader();
