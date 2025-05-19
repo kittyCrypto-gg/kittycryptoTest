@@ -83,6 +83,9 @@ fetch('./main.json')
         themeToggle.textContent = data.themeToggle.dark;
         document.body.classList.add("dark-mode");
       }
+      document.body.style.display = 'none';
+      document.body.offsetHeight; // Trigger reflow
+      document.body.style.display = '';
     });
   })
   .catch(error => {
