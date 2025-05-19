@@ -54,6 +54,7 @@ function updateFontSize(delta = 0) {
   const newSize = Math.max(0.7, Math.min(2.0, current + delta));
   setReaderCookie("fontSize", newSize.toFixed(2));
   readerRoot.style.setProperty("font-size", `${newSize}em`);
+  refreshTategakiFont();
 }
 
 function bindNavigationEvents() {
@@ -357,6 +358,14 @@ function replaceTategaki(htmlContent) {
 
     return `<div class="tategaki-container">${svgContent}</div>`;
   });
+}
+
+function refreshTategakiFont() {
+  // current computed body font-size in px
+  const px = parseFloat(getComputedStyle(readerRoot).fontSize);
+  document
+    .querySelectorAll(".tategaki-container svg text")
+    .forEach(t => t.setAttribute("font-size", px));
 }
 
 function updateNav() {
