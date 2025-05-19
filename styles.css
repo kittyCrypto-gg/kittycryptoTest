@@ -990,3 +990,11 @@ body.dark-mode .tategaki-container svg text {
 .about-text p {
   margin-bottom: 15px;
 }
+
+.about-columns {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  position: relative;
+}
+
