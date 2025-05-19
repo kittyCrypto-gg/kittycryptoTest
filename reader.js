@@ -368,4 +368,27 @@ async function initReader() {
   readerRoot.style.setProperty("font-size", `${initialFont}em`);
 }
 
+document.querySelectorAll(".chapter-image-container").forEach(container => {
+  const image = container.querySelector(".chapter-image");
+
+  // Handle mouse movement within the container
+  container.addEventListener("mousemove", (event) => {
+    const bounds = container.getBoundingClientRect();
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
+
+    // Calculate the percentage position of the mouse
+    const xPercent = (x / bounds.width) * 100;
+    const yPercent = (y / bounds.height) * 100;
+
+    // Move the image based on mouse position
+    image.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+  });
+
+  // Reset transform origin when mouse leaves
+  container.addEventListener("mouseleave", () => {
+    image.style.transformOrigin = "center center";
+  });
+});
+
 initReader();
