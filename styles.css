@@ -784,25 +784,22 @@ body.no-scroll {
 }
 
 .tategaki-container svg {
-  max-width: 100%;
-  height: auto;
-}
-
-body:not(.dark-mode) .tategaki-container {
-  border-color: var(--body-text-colour);
-}
-
-body.dark-mode .tategaki-container {
-  border-color: var(--body-text-colour);
+  overflow: visible;
 }
 
 .tategaki-container svg text {
   fill: var(--body-text-colour);
 }
 
-/* Fix colour inheritance in dark mode */
-.dark-mode .tategaki-container svg text {
+/* Ensure full visibility in dark mode */
+body.dark-mode .tategaki-container svg text {
   fill: var(--body-text-colour);
+}
+
+/* Padding compensation */
+.tategaki-container svg {
+  margin-left: 5px; /* To prevent left cropping */
+  margin-bottom: 5px; /* To prevent bottom cropping */
 }
 
 /* =========================================
