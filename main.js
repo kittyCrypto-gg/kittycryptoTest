@@ -70,27 +70,22 @@ fetch('./main.json')
     const isDarkMode = getCookie("darkMode") === "true";
     themeToggle.textContent = isDarkMode ? data.themeToggle.dark : data.themeToggle.default;
     document.body.classList.toggle("dark-mode", isDarkMode);
-    if (isDarkMode) {
-      document.body.style.display = 'none';
-      document.body.offsetHeight; // Trigger reflow
-      document.body.style.display = '';
-    }
 
     // Toggle Dark Mode
     themeToggle.addEventListener("click", () => {
-      const currentTheme = getCookie("darkMode") === "true";
-      if (currentTheme) {
+      const isCurrentlyDark = document.body.classList.contains("dark-mode");
+    
+      // flip the class first so the colours change immediately
+      document.body.classList.toggle("dark-mode", !isCurrentlyDark);
+    
+      // sync cookie & button label with the *new* state
+      if (isCurrentlyDark) {
         deleteCookie("darkMode");
         themeToggle.textContent = data.themeToggle.default;
-        document.body.classList.remove("dark-mode");
       } else {
         setCookie("darkMode", "true");
         themeToggle.textContent = data.themeToggle.dark;
-        document.body.classList.add("dark-mode");
       }
-      document.body.style.display = 'none';
-      document.body.offsetHeight; // Trigger reflow
-      document.body.style.display = '';
     });
   })
   .catch(error => {
