@@ -72,12 +72,14 @@ fetch('./main.json')
       document.body.classList.remove("dark-mode");
       themeToggle.textContent = data.themeToggle.default;
       deleteCookie("darkMode");
+      repaint();
     };
 
     const applyDarkTheme = () => {
       document.body.classList.add("dark-mode");
       themeToggle.textContent = data.themeToggle.dark;
       setCookie("darkMode", "true");
+      repaint();
     };
 
     /* set initial theme */
@@ -92,3 +94,5 @@ fetch('./main.json')
   .catch(error => {
     console.error('Error loading JSON or updating DOM:', error);
   });
+
+  const repaint = () => void document.body.offsetHeight;
