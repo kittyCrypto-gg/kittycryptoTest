@@ -68,11 +68,17 @@ function bindNavigationEvents() {
     if (chapter < lastKnownChapter) jumpTo(chapter + 1);
   });
 
-  document.querySelectorAll(".btn-jump").forEach(btn => btn.onclick = () => {
-    document.querySelectorAll(".chapter-input").forEach(input => {
-      const val = parseInt(input.value);
-      if (val >= 0 && val <= lastKnownChapter) jumpTo(val);
-    });
+  // Jump to the chapter typed next to this button
+  document.querySelectorAll(".btn-jump").forEach(btn => {
+    btn.onclick = () => {
+      const input = btn.parentElement.querySelector(".chapter-input");
+      if (!input) return;
+  
+      const val = parseInt(input.value, 10);
+      if (!isNaN(val) && val >= 0 && val <= lastKnownChapter) {
+        jumpTo(val);
+      }
+    };
   });
 
   document.querySelectorAll(".chapter-input").forEach(input => {
