@@ -248,16 +248,18 @@ function replaceTategaki(htmlContent) {
 
   // Replace each ::tg:: block with SVG rendering
   return htmlContent.replace(tategakiRegex, (match, text) => {
+    text = text.replace(/<\/?span[^>]*>/g, '').replace(/<\/?p[^>]*>/g, '');
+
     const lines = text.trim().split("\n").filter(line => line.length > 0);
     lines.reverse(); // Vertical order
     const maxLength = Math.max(...lines.map(line => line.length));
 
-    // Fetch the current font size from the reader
     const fontSize = parseFloat(getComputedStyle(readerRoot).fontSize) || 16;
+    const fontColor = getComputedStyle(readerRoot).color;
+    const fontFamily = getComputedStyle(readerRoot).fontFamily;
     const charWidth = fontSize + 4; // Adding some padding
     const lineHeight = fontSize + 4;
 
-    // Create SVG element string with adaptive sizing
     let svgContent = `<svg width="${charWidth * lines.length}" height="${lineHeight * maxLength}" xmlns="http://www.w3.org/2000/svg">`;
 
     lines.forEach((line, column) => {
@@ -267,7 +269,8 @@ function replaceTategaki(htmlContent) {
             x="${column * charWidth}" 
             y="${row * lineHeight + fontSize}" 
             font-size="${fontSize}" 
-            font-family="serif" 
+            font-family="${fontFamily}"
+            fill="${fontColor}"
             writing-mode="tb"
             glyph-orientation-vertical="0">
             ${char}
