@@ -803,6 +803,36 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
+  In-Chapter Images
+========================================= */
+.chapter-image-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+.chapter-image {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid var(--body-text-colour);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.chapter-image:hover {
+  transform: scale(1.02);
+}
+
+/* Dark mode adjustments */
+body.dark-mode .chapter-image {
+  border-color: var(--body-text-colour);
+}
+
+/* =========================================
   Dark Mode Adjustments
 ========================================= */
 
