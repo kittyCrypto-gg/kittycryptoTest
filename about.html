@@ -1,116 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitty Crypto's Page</title>
-    <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
-    <script>
-        const script = document.createElement('script');
-        script.src = `./main.js?v=${Date.now()}`;
-        script.defer = true;
-        document.head.appendChild(script);
-    </script>
-    <script>
-        function replaceTategaki(htmlContent) {
-            const tategakiRegex = /::tg::([\s\S]*?)::\/tg::/g;
-            return htmlContent.replace(tategakiRegex, (match, text) => {
-              text = text.replace(/<\/?span[^>]*>/g, '').replace(/<\/?p[^>]*>/g, '');
-              const lines = text.trim().split("\n").filter(line => line.length > 0);
-              lines.reverse();
-              const maxLength = Math.max(...lines.map(line => line.length));
-              const readerRoot = document.querySelector('.jp-about') || document.body;
-              const fontSize = parseFloat(getComputedStyle(readerRoot).fontSize) || 16;
-              const fontColor = getComputedStyle(readerRoot).color;
-              const fontFamily = getComputedStyle(readerRoot).fontFamily;
-              const charWidth = fontSize + 4;
-              const lineHeight = fontSize + 4;
-              const padding = 5;
-              let svgContent = `<svg 
-                width="${charWidth * lines.length + padding * 2}" 
-                height="${lineHeight * maxLength + padding * 2}" 
-                xmlns="http://www.w3.org/2000/svg" 
-                style="overflow: visible"
-                viewBox="-${padding} -${padding} ${charWidth * lines.length + padding * 2} ${lineHeight * maxLength + padding * 2}"
-              >`;
-              lines.forEach((line, column) => {
-                [...line].forEach((char, row) => {
-                  svgContent += `
-                    <text 
-                      x="${column * charWidth + padding}" 
-                      y="${row * lineHeight + fontSize + padding}" 
-                      font-size="${fontSize}" 
-                      font-family="${fontFamily}"
-                      fill="${fontColor}"
-                      writing-mode="tb"
-                      glyph-orientation-vertical="0">
-                      ${char}
-                    </text>`;
-                });
-              });
-              svgContent += `</svg>`;
-              return `<div class="tategaki-container">${svgContent}</div>`;
-            });
-          }
+< !DOCTYPE html >
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Kitty Crypto's Page</title>
+          <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
+            <script>
+              const script = document.createElement('script');
+              script.src = `./main.js?v=${Date.now()}`;
+              script.defer = true;
+              document.head.appendChild(script);
+            </script>
+            <script>
+              function replaceTategaki(htmlContent) {
+  const tategakiRegex = /::tg::([\s\S]*?)::\/tg::/g;
+
+  return htmlContent.replace(tategakiRegex, (match, rawHtml) => {
+    // Extract only the text within <p> tags
+    const parser = new DOMParser();
+                const doc = parser.parseFromString(rawHtml, 'text/html');
+    const lines = Array.from(doc.querySelectorAll('p')).map(p => p.textContent.trim());
+                lines.reverse(); // For right-to-left display
+
+    const maxLength = Math.max(...lines.map(line => line.length));
+                const readerRoot = document.querySelector('.jp-about') || document.body;
+                const fontSize = parseFloat(getComputedStyle(readerRoot).fontSize) || 16;
+                const fontColor = getComputedStyle(readerRoot).color;
+                const fontFamily = getComputedStyle(readerRoot).fontFamily;
+                const charWidth = fontSize + 4;
+                const lineHeight = fontSize + 4;
+                const padding = 5;
+
+                let svgContent = `<svg
+                  width="${charWidth * lines.length + padding * 2}"
+                  height="${lineHeight * maxLength + padding * 2}"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="overflow: visible"
+                  viewBox="-${padding} -${padding} ${charWidth * lines.length + padding * 2} ${lineHeight * maxLength + padding * 2}"
+                >`;
+
+    lines.forEach((line, column) => {
+                    [...line].forEach((char, row) => {
+                      svgContent += `
+          <text 
+            x="${column * charWidth + padding}" 
+            y="${row * lineHeight + fontSize + padding}" 
+            font-size="${fontSize}" 
+            font-family="${fontFamily}"
+            fill="${fontColor}"
+            writing-mode="tb"
+            glyph-orientation-vertical="0">
+            ${char}
+          </text>`;
+                    });
+    });
+
+                  svgContent += `</svg>`;
+                return `<div class="tategaki-container">${svgContent}</div>`;
+  });
+}
           document.addEventListener('DOMContentLoaded', () => {
             const container = document.querySelector('.jp-about');
-            if (container) {
-              container.innerHTML = replaceTategaki(container.innerHTML);
+                if (container) {
+                  container.innerHTML = replaceTategaki(container.innerHTML);
             }
           });
-    </script>
-</head>
+            </script>
+          </head>
 
-<body>
-    <div class="frame">
-        <nav id="main-menu"></nav>
-        <header id="main-header"></header>
-        <main id="main-content">
-            <div class="pfp">
-                <img src="images/kitty.jpg" alt="Kitty Crypto" />
+          <body>
+            <div class="frame">
+              <nav id="main-menu"></nav>
+              <header id="main-header"></header>
+              <main id="main-content">
+                <div class="pfp">
+                  <img src="images/kitty.jpg" alt="Kitty Crypto" />
+                </div>
+                <section class="about-text">
+                  <p>I am Kitty Crypto — or just Kitty for short. Born under the warm, pulsating skies of South America, I am a neko (catgirl) with a millennial spirit and a soul steeped in both code and chords. My heart beats to the rhythm of Evanescence, Paramore, Bullet for My Valentine, Funeral For a Friend, Arch Enemy, Wintersun, and Rhapsody of Fire. A metalhead with a goth twist, I wear my heart on my sleeve and my headphones like a crown.</p>
+                  <p>My journey led me to Scotland in the 2010s, where the misty landscapes became my new home. Here, I found love and built a family. I am married and have a daughter who fills my world with joy and curiosity.</p>
+                  <p>As a relentless seeker of knowledge, I first pursued physics, captivated by the vast, unspoken stories of the universe. Eventually, I ventured into engineering and now thrive as an electronics engineer, shaping circuits and dreams alike.</p>
+                  <p>Music, Programming (especially TypeScript), creative writing, and my family are the pillars of my existence. This blog serves as a sanctuary for my personal projects — a blend of programming endeavours and storytelling.</p>
+                  <p>Cryptocurrency is my wild, chaotic playground — yes, I’m a complete degen, and I wouldn’t have it any other way.</p>
+                  <p>Yes, I like Hentai. Yes, I like Yuri. Yes, I think anime catgirls are hot. No, I won’t apologise for being myself.</p>
+                  <p>To everynyan who visits, thank you for dropping by. May your stay be filled with curiosity, warmth, and a little bit of chaos. Welcome to my world.</p>
+                </section>
+                <div class="jp-about">
+                  ::tg::
+                  <p>私はキティ・クリプト、あるいはキティと呼んでください。</p>
+                  <p>南米の温かく脈打つ空の下に生まれたネコ娘、</p>
+                  <p>ミレニアル世代の魂を持ち、コードと音に染まった存在です。</p>
+                  <p>エヴァネッセンス、パラモア、ブレット・フォー・マイ・ヴァレンタイン、</p>
+                  <p>フューネラル・フォー・ア・フレンド、アーク・エネミー、</p>
+                  <p>ウィンターサン、そしてラプソディー・オブ・ファイアに心を打たれ、</p>
+                  <p>ゴス風味のメタルヘッドとして生きています。</p>
+                  <p>2010年代、私はスコットランドへ旅立ちました。</p>
+                  <p>霧に包まれた風景の中に、新しい家と愛を見つけました。</p>
+                  <p>私は結婚し、娘もいます。</p>
+                  <p>彼女は私の世界を喜びと好奇心で満たしてくれます。</p>
+                  <p>知識を追い求める私は、まず物理学に惹かれました。</p>
+                  <p>宇宙の語られない物語に魅了されて。</p>
+                  <p>やがて工学へ進み、今は電子工学エンジニアとして働いています。</p>
+                  <p>音楽、プログラミング（特にTypeScript）、</p>
+                  <p>創作、そして家族が私の支えです。</p>
+                  <p>このブログは、私の創作と技術の混ざり合う聖域です。</p>
+                  <p>暗号通貨は私の混沌とした遊び場。</p>
+                  <p>そう、私は完全なるデジェンです。</p>
+                  <p>そして、それが私らしさ。</p>
+                  <p>はい、私は変態が好きです。</p>
+                  <p>百合も好きです。</p>
+                  <p>アニメの猫耳少女がセクシーだと思っています。</p>
+                  <p>謝るつもりはありません。</p>
+                  <p>訪れてくれた皆に感謝します。</p>
+                  <p>あなたの旅が好奇心、温もり、そして少しの混沌に満ちたものでありますように。</p>
+                  <p>ようこそ、私の世界へ。</p>
+                  ::/tg::
+                </div>
+              </main>
+              <footer id="main-footer"></footer>
             </div>
-            <section class="about-text">
-                <p>I am Kitty Crypto — or just Kitty for short. Born under the warm, pulsating skies of South America, I am a neko (catgirl) with a millennial spirit and a soul steeped in both code and chords. My heart beats to the rhythm of Evanescence, Paramore, Bullet for My Valentine, Funeral For a Friend, Arch Enemy, Wintersun, and Rhapsody of Fire. A metalhead with a goth twist, I wear my heart on my sleeve and my headphones like a crown.</p>
-                <p>My journey led me to Scotland in the 2010s, where the misty landscapes became my new home. Here, I found love and built a family. I am married and have a daughter who fills my world with joy and curiosity.</p>
-                <p>As a relentless seeker of knowledge, I first pursued physics, captivated by the vast, unspoken stories of the universe. Eventually, I ventured into engineering and now thrive as an electronics engineer, shaping circuits and dreams alike.</p>
-                <p>Music, Programming (especially TypeScript), creative writing, and my family are the pillars of my existence. This blog serves as a sanctuary for my personal projects — a blend of programming endeavours and storytelling.</p>
-                <p>Cryptocurrency is my wild, chaotic playground — yes, I’m a complete degen, and I wouldn’t have it any other way.</p>
-                <p>Yes, I like Hentai. Yes, I like Yuri. Yes, I think anime catgirls are hot. No, I won’t apologise for being myself.</p>
-                <p>To everynyan who visits, thank you for dropping by. May your stay be filled with curiosity, warmth, and a little bit of chaos. Welcome to my world.</p>
-            </section>
-            <div class="jp-about">
-                ::tg::
-                <p>私はキティ・クリプト、あるいはキティと呼んでください。</p>
-                <p>南米の温かく脈打つ空の下に生まれたネコ娘、</p>
-                <p>ミレニアル世代の魂を持ち、コードと音に染まった存在です。</p>
-                <p>エヴァネッセンス、パラモア、ブレット・フォー・マイ・ヴァレンタイン、</p>
-                <p>フューネラル・フォー・ア・フレンド、アーク・エネミー、</p>
-                <p>ウィンターサン、そしてラプソディー・オブ・ファイアに心を打たれ、</p>
-                <p>ゴス風味のメタルヘッドとして生きています。</p>
-                <p>2010年代、私はスコットランドへ旅立ちました。</p>
-                <p>霧に包まれた風景の中に、新しい家と愛を見つけました。</p>
-                <p>私は結婚し、娘もいます。</p>
-                <p>彼女は私の世界を喜びと好奇心で満たしてくれます。</p>
-                <p>知識を追い求める私は、まず物理学に惹かれました。</p>
-                <p>宇宙の語られない物語に魅了されて。</p>
-                <p>やがて工学へ進み、今は電子工学エンジニアとして働いています。</p>
-                <p>音楽、プログラミング（特にTypeScript）、</p>
-                <p>創作、そして家族が私の支えです。</p>
-                <p>このブログは、私の創作と技術の混ざり合う聖域です。</p>
-                <p>暗号通貨は私の混沌とした遊び場。</p>
-                <p>そう、私は完全なるデジェンです。</p>
-                <p>そして、それが私らしさ。</p>
-                <p>はい、私は変態が好きです。</p>
-                <p>百合も好きです。</p>
-                <p>アニメの猫耳少女がセクシーだと思っています。</p>
-                <p>謝るつもりはありません。</p>
-                <p>訪れてくれた皆に感謝します。</p>
-                <p>あなたの旅が好奇心、温もり、そして少しの混沌に満ちたものでありますように。</p>
-                <p>ようこそ、私の世界へ。</p>
-                ::/tg::
-            </div>
-        </main>
-        <footer id="main-footer"></footer>
-    </div>
-</body>
-</html>
+          </body>
+        </html>
