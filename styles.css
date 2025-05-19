@@ -950,7 +950,14 @@ body.dark-mode .tategaki-container svg text {
   flex-wrap: wrap;
   gap: 20px;
   align-items: flex-start;
-  justify-content: center;
+}
+
+.about-text {
+  flex-grow: 1;
+  text-align: justify;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  color: var(--body-text-colour);
 }
 
 .jp-about {
