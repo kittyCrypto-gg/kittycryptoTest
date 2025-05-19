@@ -379,9 +379,6 @@ async function initReader() {
   readerRoot.style.setProperty("font-size", `${initialFont}em`);
 }
 
-/**
- * Activate Image Navigation Buttons
- */
 function activateImageNavigation() {
   // First, clear any existing overlays and listeners to avoid duplication
   document.querySelectorAll(".image-nav").forEach(nav => nav.remove());
@@ -436,28 +433,28 @@ function activateImageNavigation() {
       updatePosition();
     };
 
-    // === Logic for Overlay Display ===
-    const toggleOverlay = () => {
-      if (image.style.transform.includes("scale(2)")) {
-        navOverlay.classList.add("active");
-      } else {
+    // === Logic for Overlay Display & Image Zoom ===
+    const toggleZoom = () => {
+      if (image.classList.contains("active")) {
+        image.classList.remove("active");
         navOverlay.classList.remove("active");
+      } else {
+        image.classList.add("active");
+        navOverlay.classList.add("active");
       }
     };
 
-    // Show navigation if zoomed in
-    container.addEventListener("mousemove", () => toggleOverlay());
-    image.addEventListener("transitionend", () => toggleOverlay());
+    // Click to zoom in and out
+    image.addEventListener("click", toggleZoom);
 
-    // Remove overlay when zooming out
+    // Hide overlay when mouse leaves the container
     container.addEventListener("mouseleave", () => {
-      if (!image.style.transform.includes("scale(2)")) {
-        navOverlay.classList.remove("active");
-      }
+      navOverlay.classList.remove("active");
     });
   });
 }
 
+document.addEventListener("DOMContentLoaded", activateImageNavigation);
 
 
 initReader();
