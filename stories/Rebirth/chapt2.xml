@@ -2607,7 +2607,7 @@
               <w:t xml:space="preserve"> smoothly, its fibres absorbing the calligraphy with reverence, preserving each stroke in perfect clarity.</w:t>
             </w:r>
           </w:p>
-        <w:p>
+
             <w:p w14:paraId="43C6F1F9" w14:textId="0BD76FF9" w:rsidR="00770FC0" w:rsidRDefault="00770FC0" w:rsidP="00565143">
               <w:pPr>
                 <w:rPr>
@@ -2759,7 +2759,7 @@
               </w:r>
               <w:proofErr w:type="gramEnd" />
             </w:p>
-        </w:p>
+
           <w:p w14:paraId="751A5CDF" w14:textId="090C8FF8" w:rsidR="00C5653B" w:rsidRPr="00F346BE" w:rsidRDefault="00C5653B" w:rsidP="00D77E08">
             <w:pPr>
               <w:spacing w:after="0" />
