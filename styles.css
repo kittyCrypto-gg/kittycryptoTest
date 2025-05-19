@@ -812,38 +812,7 @@ body.dark-mode .tategaki-container svg text {
   overflow: hidden;
   border-radius: 8px;
   max-width: 100%;
-}
-
-.chapter-image {
-  max-width: 100%;
-  height: auto;
-  border: 2px solid var(--body-text-colour);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-}
-
-.chapter-image:hover {
-  transform: scale(1.02);
-}
-
-/* Dark mode adjustments */
-body.dark-mode .chapter-image {
-  border-color: var(--body-text-colour);
-}
-
-/* =========================================
-  Image Zoom and Navigation Overlay
-========================================= */
-.chapter-image-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-  overflow: hidden;
-  border-radius: 8px;
-  max-width: 100%;
   position: relative;
-  height: 400px;
 }
 
 .chapter-image {
@@ -851,60 +820,69 @@ body.dark-mode .chapter-image {
   height: 100%;
   border: 2px solid var(--body-text-colour);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,.1);
   cursor: zoom-in;
   object-fit: cover;
+  transition: transform 0.3s ease, transform-origin 0.3s ease;
 }
 
-.chapter-image-container:hover .chapter-image {
+/* Zoom effect */
+.chapter-image.active {
   transform: scale(2); /* 2x zoom */
   cursor: move;
 }
 
 /* =========================================
-  Image Navigation Overlay
+   Image-nav overlay (fixed)
 ========================================= */
 .image-nav {
   position: absolute;
   bottom: 15px;
   right: 15px;
-  display: none; /* Initially hidden */
-  gap: 5px;
+  display: none;          /* hidden until needed */
   flex-direction: column;
+  gap: 5px;
   z-index: 10;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-.chapter-image-container:hover .image-nav {
+/* Show the overlay when the image is zoomed */
+.chapter-image.active + .image-nav {
   display: flex;
   opacity: 1;
 }
 
-/* =========================================
-  Image Navigation Buttons
-========================================= */
+/* buttons */
 .image-nav button {
   all: unset;
   font-size: 1.5rem;
   cursor: pointer;
-  background-color: var(--menu-button-bg-colour);
+  background: var(--menu-button-bg-colour);
   color: var(--menu-button-text-colour);
   border-radius: 4px;
   padding: 5px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,.1);
+  transition: background 0.2s, transform 0.1s;
 }
 
 .image-nav button:hover {
-  background-color: var(--menu-button-hover-bg-colour);
+  background: var(--menu-button-hover-bg-colour);
   transform: scale(1.1);
 }
 
 .image-nav button:active {
-  background-color: var(--menu-button-hover-bg-colour);
   transform: scale(0.95);
+}
+
+/* dark-mode button tint */
+.dark-mode .image-nav button {
+  background: var(--nav-bg-colour);
+  color: var(--header-text-colour);
+}
+
+.dark-mode .image-nav button:hover {
+  background: var(--menu-button-hover-bg-colour);
 }
 
 /* =========================================
