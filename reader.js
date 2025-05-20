@@ -1,3 +1,5 @@
+import { replaceTategaki } from './tategaki.js';
+
 const params = new URLSearchParams(window.location.search);
 const storyPath = params.get("story");
 let chapter = parseInt(params.get("chapter") || "1");
@@ -320,56 +322,6 @@ function replaceImageTags(htmlContent) {
         />
       </div>
     `;
-  });
-}
-
-function replaceTategaki(htmlContent) {
-  // Regex to match ::tg::...::/tg::
-  const tategakiRegex = /::tg::([\s\S]*?)::\/tg::/g;
-
-  // Replace each ::tg:: block with a tategaki-container div
-  return htmlContent.replace(tategakiRegex, (match, text) => {
-    text = text.replace(/<\/?span[^>]*>/g, '').replace(/<\/?p[^>]*>/g, '');
-
-    const lines = text.trim().split("\n").filter(line => line.length > 0);
-    lines.reverse(); // Vertical order
-    const maxLength = Math.max(...lines.map(line => line.length));
-
-    const fontSize = parseFloat(getComputedStyle(readerRoot).fontSize) || 16;
-    const fontColor = getComputedStyle(readerRoot).color;
-    const fontFamily = getComputedStyle(readerRoot).fontFamily;
-    const charWidth = fontSize + 4;
-    const lineHeight = fontSize + 4;
-
-    const padding = 5;
-
-    let svgContent = `<svg 
-      width="${charWidth * lines.length + padding * 2}" 
-      height="${lineHeight * maxLength + padding * 2}" 
-      xmlns="http://www.w3.org/2000/svg" 
-      style="overflow: visible"
-      viewBox="-${padding} -${padding} ${charWidth * lines.length + padding * 2} ${lineHeight * maxLength + padding * 2}"
-    >`;
-
-    lines.forEach((line, column) => {
-      [...line].forEach((char, row) => {
-        svgContent += `
-          <text 
-            x="${column * charWidth + padding}" 
-            y="${row * lineHeight + fontSize + padding}" 
-            font-size="${fontSize}" 
-            font-family="${fontFamily}"
-            fill="${fontColor}"
-            writing-mode="tb"
-            glyph-orientation-vertical="0">
-            ${char}
-          </text>`;
-      });
-    });
-
-    svgContent += `</svg>`;
-
-    return `<div class="tategaki-container">${svgContent}</div>`;
   });
 }
 
