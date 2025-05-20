@@ -51,6 +51,10 @@ fetch('./main.json')
     }
     // Populate the header
     const header = document.getElementById('main-header');
+    const headerText = (data.header === "Kitty Crypto's Website!")
+      ? (header && header.textContent.trim() ? header.textContent : data.header)
+      : data.header;
+    header.textContent = headerText;
     if (!header) throw new Error('Element #main-header not found!');
     header.textContent = data.header;
     // Populate the footer
