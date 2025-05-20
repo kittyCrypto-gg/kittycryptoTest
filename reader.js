@@ -149,21 +149,16 @@ async function loadChapter(n) {
     const xmlText = await res.text();
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-
     // Use the helper function to support both "w:p" and "paragraph" tags
     const paras = getElementsByAliases(xmlDoc, ["w:p", "paragraph"]);
-
     let htmlContent = paras.map(p => {
-      // Check if the paragraph comes from the cleaned XML or the bloated Word XML
-      const isCleaned = p.tagName === "paragraph"; // Checking if it's cleaned XML format
-      const pPr = isCleaned ? null : p.getElementsByTagName("w:pPr")[0]; // No pPr for cleaned XML
+      const isCleaned = p.tagName === "paragraph";
+      const pPr = isCleaned ? null : p.getElementsByTagName("w:pPr")[0];
       let style = "";
-
-      if (!isCleaned && pPr) {  // Only get style for bloated XML
+      if (!isCleaned && pPr) {
         const styleEl = pPr.getElementsByTagName("w:pStyle")[0];
         if (styleEl) style = styleEl.getAttribute("w:val") || "";
       }
-
       let tag = "p";
       let className = "reader-paragraph";
       if (style === "Title") {
@@ -179,34 +174,32 @@ async function loadChapter(n) {
         tag = "blockquote";
         className = "reader-quote reader-intense";
       }
-
-      // Process runs differently depending on XML format
-      const runs = isCleaned ? [p.textContent || ""] : Array.from(p.getElementsByTagName("w:r")).map(run => {
-        const text = Array.from(run.getElementsByTagName("w:t")).map(t => t.textContent).join("");
-
-        const rPr = run.getElementsByTagName("w:rPr")[0];
-        let spanClass = [];
-
-        if (rPr) {
-          if (rPr.getElementsByTagName("w:b").length) spanClass.push("reader-bold");
-          if (rPr.getElementsByTagName("w:i").length) spanClass.push("reader-italic");
-          if (rPr.getElementsByTagName("w:u").length) spanClass.push("reader-underline");
-          if (rPr.getElementsByTagName("w:strike").length) spanClass.push("reader-strike");
-          if (rPr.getElementsByTagName("w:smallCaps").length) spanClass.push("reader-smallcaps");
-        }
-
-        return `<span class="${spanClass.join(" ")}">${text}</span>`;
-      }).join("");
-
+      const runs = isCleaned
+        ? [p.textContent || ""]
+        : Array.from(p.getElementsByTagName("w:r")).map(run => {
+            const text = Array.from(run.getElementsByTagName("w:t"))
+              .map(t => t.textContent)
+              .join("");
+            const rPr = run.getElementsByTagName("w:rPr")[0];
+            let spanClass = [];
+            if (rPr) {
+              if (rPr.getElementsByTagName("w:b").length) spanClass.push("reader-bold");
+              if (rPr.getElementsByTagName("w:i").length) spanClass.push("reader-italic");
+              if (rPr.getElementsByTagName("w:u").length) spanClass.push("reader-underline");
+              if (rPr.getElementsByTagName("w:strike").length) spanClass.push("reader-strike");
+              if (rPr.getElementsByTagName("w:smallCaps").length) spanClass.push("reader-smallcaps");
+            }
+            return `<span class="${spanClass.join(" ")}">${text}</span>`;
+          }).join("");
       return `<${tag} class="${className}">${runs}</${tag}>`;
     }).join("\n");
-
+    // Process Tategaki and images
     htmlContent = replaceTategaki(htmlContent);
     htmlContent = replaceImageTags(htmlContent);
-
     // Render the HTML
     readerRoot.innerHTML = htmlContent;
-
+    // Activate features
+    activateImageNavigation();
     chapter = n;
     updateNav();
     setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
@@ -220,17 +213,6 @@ async function loadChapter(n) {
     `;
     console.error(err);
   }
-
-  // Render the HTML
-  readerRoot.innerHTML = htmlContent;
-
-  // Activate navigation controls for images
-  activateImageNavigation();
-
-  chapter = n;
-  updateNav();
-  setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
-  window.scrollTo(0, 0);
 }
 
 async function discoverChapters() {
