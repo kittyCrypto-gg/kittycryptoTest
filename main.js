@@ -51,7 +51,7 @@ fetch('./main.json')
     }
     // Populate the header
     const header = document.getElementById('main-header');
-    const headerText = (header && header.textContent.trim() ? header.textContent : data.header);
+    const headerText = header ? header.textContent : data.header;
     header.textContent = headerText;
     if (!header) throw new Error('Element #main-header not found!');
     header.textContent = data.header;
