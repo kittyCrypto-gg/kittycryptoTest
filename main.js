@@ -66,7 +66,7 @@ fetch('./main.json')
     // Explicit helpers
     const applyLightTheme = () => {
       document.body.classList.remove("dark-mode");
-      themeToggle.textContent = data.themeToggle.default;
+      themeToggle.textContent = data.themeToggle.light;
       setCookie("darkMode", "false");
       repaint();
       currentTheme = 'light';
