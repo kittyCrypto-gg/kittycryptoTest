@@ -1,4 +1,4 @@
-function replaceTategaki(htmlContent) {
+export function replaceTategaki(htmlContent) {
   const tategakiRegex = /::tg::([\s\S]*?)::\/tg::/g;
 
   return htmlContent.replace(tategakiRegex, (match, rawHtml) => {
