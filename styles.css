@@ -1,145 +1,73 @@
 /* =========================================
-  0) Root
+  1) Default (Light) Theme Variables
 ========================================= */
 :root {
   /* Body */
-  --body-bg-colour: var(--body-bg-colour-lm);
-  --body-text-colour: var(--body-text-colour-lm);
-  --body-height: var(--body-height-lm);
+  --body-bg-colour: #e8f8f5;
+  --body-text-colour: #333;
+  --body-height: auto; /* Fix "hv" to "vh" */
 
   /* Frame */
-  --frame-bg-colour: var(--frame-bg-colour-lm);
+  --frame-bg-colour: #ffffff;
 
   /* Header */
-  --header-bg-colour: var(--header-bg-colour-lm);
-  --header-text-colour: var(--header-text-colour-lm);
+  --header-bg-colour: #b2ebf2;
+  --header-text-colour: #004d40;
 
   /* Navigation / Menu */
-  --nav-bg-colour: var(--nav-bg-colour-lm);
-  --nav-border-colour: var(--nav-border-colour-lm);
-  --menu-button-bg-colour: var(--menu-button-bg-colour-lm);
-  --menu-button-text-colour: var(--menu-button-text-colour-lm);
-  --menu-button-hover-bg-colour: var(--menu-button-hover-bg-colour-lm);
+  --nav-bg-colour: #a7ffeb;
+  --nav-border-colour: #004d40;
+  --menu-button-bg-colour: #80deea;
+  --menu-button-text-colour: #004d40;
+  --menu-button-hover-bg-colour: #4dd0e1;
 
   /* Footer */
-  --footer-bg-colour: var(--footer-bg-colour-lm);
-  --footer-text-colour: var(--footer-text-colour-lm);
-  --footer-border-colour: var(--footer-border-colour-lm);
+  --footer-bg-colour: #b3e5fc;
+  --footer-text-colour: #01579b;
+  --footer-border-colour: #01579b;
 
   /* Chatroom */
-  --chatroom-border-colour: var(--chatroom-border-colour-lm);
-  --chatroom-bg-colour: var(--chatroom-bg-colour-lm);
-  --chatroom-text-colour: var(--chatroom-text-colour-lm);
+  --chatroom-border-colour: #ccc;
+  --chatroom-bg-colour: #f9f9f9;
+  --chatroom-text-colour: #333; /* For monospace text if needed */
 
   /* Timestamps, etc. */
-  --timestamp-colour: var(--timestamp-colour-lm);
-  --chat-timestamp-colour: var(--chat-timestamp-colour-lm);
+  --timestamp-colour: grey;
+  --chat-timestamp-colour: #999;
 
   /* Inputs */
-  --chat-input-border-colour: var(--chat-input-border-colour-lm);
-  --chat-input-bg-colour: var(--chat-input-bg-colour-lm);
-  --chat-input-text-colour: var(--chat-input-text-colour-lm);
+  --chat-input-border-colour: #ccc;
+  --chat-input-bg-colour: #fff;
+  --chat-input-text-colour: #333;
 
   /* Buttons */
-  --chat-send-btn-bg-colour: var(--chat-send-btn-bg-colour-lm);
-  --chat-send-btn-text-colour: var(--chat-send-btn-text-colour-lm);
+  --chat-send-btn-bg-colour: #4caf50;
+  --chat-send-btn-text-colour: #fff;
 
   /* Theme Toggle Button */
-  --toggle-btn-bg-colour: var(--toggle-btn-bg-colour-lm);
-  --toggle-btn-text-colour: var(--toggle-btn-text-colour-lm);
+  --toggle-btn-bg-colour: #fff;
+  --toggle-btn-text-colour: black;
 
   /* Pending Indicator */
-  --pending-indicator-colour: var(--pending-indicator-colour-lm);
+  --pending-indicator-colour: orange;
 
   /* Modal Overlay & Edit Modal */
-  --modal-overlay-bg-colour: var(--modal-overlay-bg-colour-lm);
-  --edit-modal-bg-colour: var(--edit-modal-bg-colour-lm);
-  --edit-modal-text-colour: var(--edit-modal-text-colour-lm);
-  --edit-modal-shadow-colour: var(--edit-modal-shadow-colour-lm);
-  --edit-modal-userinfo-bg-colour: var(--edit-modal-userinfo-bg-colour-lm);
-  --edit-modal-userinfo-text-colour: var(--edit-modal-userinfo-text-colour-lm);
-  --edit-modal-userinfo-border-colour: var(--edit-modal-userinfo-border-colour-lm);
-  --edit-modal-input-bg-colour: var(--edit-modal-input-bg-colour-lm);
-  --edit-modal-input-text-colour: var(--edit-modal-input-text-colour-lm);
-  --edit-modal-input-border-colour: var(--edit-modal-input-border-colour-lm);
+  --modal-overlay-bg-colour: rgba(0, 0, 0, 0.3);
+  --edit-modal-bg-colour: #ffffff;
+  --edit-modal-text-colour: #004d40;
+  --edit-modal-shadow-colour: rgba(0, 0, 0, 0.2);
+  --edit-modal-userinfo-bg-colour: #e0f2f1;
+  --edit-modal-userinfo-text-colour: #004d40;
+  --edit-modal-userinfo-border-colour: #80cbc4;
+  --edit-modal-input-bg-colour: #fafafa;
+  --edit-modal-input-text-colour: #333;
+  --edit-modal-input-border-colour: #ccc;
 
   /* Modal Buttons (edit / cancel) */
-  --edit-modal-btn-save-bg-colour: var(--edit-modal-btn-save-bg-colour-lm);
-  --edit-modal-btn-save-hover-colour: var(--edit-modal-btn-save-hover-colour-lm);
-  --edit-modal-btn-cancel-bg-colour: var(--edit-modal-btn-cancel-bg-colour-lm);
-  --edit-modal-btn-cancel-hover-colour: var(--edit-modal-btn-cancel-hover-colour-lm);
-}
-
-/* =========================================
-  1) Default (Light) Theme Variables
-========================================= */
-.light-mode {
-  /* Body */
-  --body-bg-colour-lm: #e8f8f5;
-  --body-text-colour-lm: #333;
-  --body-height-lm: auto; /* Fix "hv" to "vh" */
-
-  /* Frame */
-  --frame-bg-colour-lm: #ffffff;
-
-  /* Header */
-  --header-bg-colour-lm: #b2ebf2;
-  --header-text-colour-lm: #004d40;
-
-  /* Navigation / Menu */
-  --nav-bg-colour-lm: #a7ffeb;
-  --nav-border-colour-lm: #004d40;
-  --menu-button-bg-colour-lm: #80deea;
-  --menu-button-text-colour-lm: #004d40;
-  --menu-button-hover-bg-colour-lm: #4dd0e1;
-
-  /* Footer */
-  --footer-bg-colour-lm: #b3e5fc;
-  --footer-text-colour-lm: #01579b;
-  --footer-border-colour-lm: #01579b;
-
-  /* Chatroom */
-  --chatroom-border-colour-lm: #ccc;
-  --chatroom-bg-colour-lm: #f9f9f9;
-  --chatroom-text-colour-lm: #333; /* For monospace text if needed */
-
-  /* Timestamps, etc. */
-  --timestamp-colour-lm: grey;
-  --chat-timestamp-colour-lm: #999;
-
-  /* Inputs */
-  --chat-input-border-colour-lm: #ccc;
-  --chat-input-bg-colour-lm: #fff;
-  --chat-input-text-colour-lm: #333;
-
-  /* Buttons */
-  --chat-send-btn-bg-colour-lm: #4caf50;
-  --chat-send-btn-text-colour-lm: #fff;
-
-  /* Theme Toggle Button */
-  --toggle-btn-bg-colour-lm: #fff;
-  --toggle-btn-text-colour-lm: black;
-
-  /* Pending Indicator */
-  --pending-indicator-colour-lm: orange;
-
-  /* Modal Overlay & Edit Modal */
-  --modal-overlay-bg-colour-lm: rgba(0, 0, 0, 0.3);
-  --edit-modal-bg-colour-lm: #ffffff;
-  --edit-modal-text-colour-lm: #004d40;
-  --edit-modal-shadow-colour-lm: rgba(0, 0, 0, 0.2);
-  --edit-modal-userinfo-bg-colour-lm: #e0f2f1;
-  --edit-modal-userinfo-text-colour-lm: #004d40;
-  --edit-modal-userinfo-border-colour-lm: #80cbc4;
-  --edit-modal-input-bg-colour-lm: #fafafa;
-  --edit-modal-input-text-colour-lm: #333;
-  --edit-modal-input-border-colour-lm: #ccc;
-
-  /* Modal Buttons (edit / cancel) */
-  --edit-modal-btn-save-bg-colour-lm: #4caf50; /* Light theme green */
-  --edit-modal-btn-save-hover-colour-lm: #388e3c;
-  --edit-modal-btn-cancel-bg-colour-lm: #d32f2f; /* Light theme red */
-  --edit-modal-btn-cancel-hover-colour-lm: #b71c1c;
+  --edit-modal-btn-save-bg-colour: #4caf50; /* Light theme green */
+  --edit-modal-btn-save-hover-colour: #388e3c;
+  --edit-modal-btn-cancel-bg-colour: #d32f2f; /* Light theme red */
+  --edit-modal-btn-cancel-hover-colour: #b71c1c;
 }
 
 /* =========================================
@@ -1085,7 +1013,7 @@ body.dark-mode .tategaki-container svg text {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
   border: 2px solid var(--nav-border-colour);
   flex-shrink: 0;
-  align-self: right;
+  align-self: center;
 }
 
 .pfp img {
