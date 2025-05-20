@@ -9,7 +9,7 @@
   <script>
     ["main.js", "chat.js", "message.js"].forEach(scriptName => {
       const script = document.createElement('script');
-      script.src = ./${scriptName}?v=${Date.now()};
+      script.src = `./${scriptName}?v=${Date.now()}`;
       script.defer = true;
       document.head.appendChild(script);
     });
