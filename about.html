@@ -2,6 +2,7 @@
     <head>
       <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="format-detection" content="telephone=no,email=no,address=no">
           <title>Kitty Crypto's Page</title>
           <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
             <script>
@@ -50,8 +51,8 @@
                           font-size="${fontSize}" 
                           font-family="${fontFamily}"
                           fill="${fontColor}"
-                          writing-mode="vertical-rl"
-                          style="text-orientation: upright; writing-mode: vertical-rl;"
+                          writing-mode="tb"
+                          glyph-orientation-vertical="0"
                           ${char}
                         </text>`;
                     });
@@ -79,7 +80,8 @@
                 <div class="pfp">
                   <img src="images/kitty.jpg" alt="Kitty Crypto" />
                 </div>
-                <section class="about-text">
+                <div style="display: none">🧃 Not an article 🧃</div>
+                <div class="about-text">
                   <p>I am Kitty Crypto — or just Kitty for short. Born under the warm, pulsating skies of South America, I am a neko (catgirl) with a millennial spirit and a soul steeped in both code and chords. My heart beats to the rhythm of Evanescence, Paramore, Bullet for My Valentine, Funeral For a Friend, Arch Enemy, Wintersun, and Rhapsody of Fire. A metalhead with a goth twist, I wear my heart on my sleeve and my headphones like a crown.</p>
                   <p>My journey led me to Scotland in the 2010s, where the misty landscapes became my new home. Here, I found love and built a family. I am married and have a daughter who fills my world with joy and curiosity.</p>
                   <p>As a relentless seeker of knowledge, I first pursued physics, captivated by the vast, unspoken stories of the universe. Eventually, I ventured into engineering and now thrive as an electronics engineer, shaping circuits and dreams alike.</p>
@@ -87,7 +89,7 @@
                   <p>Cryptocurrency is my wild, chaotic playground — yes, I’m a complete degen, and I wouldn’t have it any other way.</p>
                   <p>Yes, I like Yuri. Yes, I think anime catgirls are hot. No, I won’t apologise for being myself.</p>
                   <p>To everynyan who visits, thank you for dropping by. May your stay be filled with curiosity, warmth, and a little bit of chaos. Welcome to my world.</p>
-                </section>
+                </div>
                 <div class="jp-about">
                   ::tg::
                   <p>私はキティ・クリプト、あるいはキティと</p>
