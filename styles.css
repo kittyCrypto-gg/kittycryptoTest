@@ -1013,7 +1013,7 @@ body.dark-mode .tategaki-container svg text {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
   border: 2px solid var(--nav-border-colour);
   flex-shrink: 0;
-  align-self: center;
+  align-self: right;
 }
 
 .pfp img {
