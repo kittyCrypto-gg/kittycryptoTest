@@ -1,5 +1,3 @@
-/* reader.js - Chapter Reader with Dynamic Discovery, Navigation, and Persistence */
-
 const params = new URLSearchParams(window.location.search);
 const storyPath = params.get("story");
 let chapter = parseInt(params.get("chapter") || "1");
@@ -20,6 +18,15 @@ function getReaderCookie(name) {
   const cookies = document.cookie.split("; ");
   const cookie = cookies.find(row => row.startsWith(`reader_${name}=`));
   return cookie ? cookie.split("=")[1] : null;
+}
+
+// Helper to check for aliases of tags in the cleaned or bloated XML
+function getElementsByAliases(doc, aliases) {
+  for (const tag of aliases) {
+    const found = doc.getElementsByTagName(tag);
+    if (found.length > 0) return Array.from(found);
+  }
+  return [];
 }
 
 // Inject navigation bars at top and bottom
@@ -74,7 +81,7 @@ function bindNavigationEvents() {
     btn.onclick = () => {
       const input = btn.parentElement.querySelector(".chapter-input");
       if (!input) return;
-  
+
       const val = parseInt(input.value, 10);
       if (!isNaN(val) && val >= 0 && val <= lastKnownChapter) {
         jumpTo(val);
@@ -141,11 +148,16 @@ async function loadChapter(n) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "application/xml");
 
-    const paras = Array.from(xmlDoc.getElementsByTagName("w:p"));
+    // Use the helper function to support both "w:p" and "paragraph" tags
+    const paras = getElementsByAliases(xmlDoc, ["w:p", "paragraph"]);
+
     let htmlContent = paras.map(p => {
-      const pPr = p.getElementsByTagName("w:pPr")[0];
+      // Check if the paragraph comes from the cleaned XML or the bloated Word XML
+      const isCleaned = p.tagName === "paragraph"; // Checking if it's cleaned XML format
+      const pPr = isCleaned ? null : p.getElementsByTagName("w:pPr")[0]; // No pPr for cleaned XML
       let style = "";
-      if (pPr) {
+
+      if (!isCleaned && pPr) {  // Only get style for bloated XML
         const styleEl = pPr.getElementsByTagName("w:pStyle")[0];
         if (styleEl) style = styleEl.getAttribute("w:val") || "";
       }
@@ -166,7 +178,8 @@ async function loadChapter(n) {
         className = "reader-quote reader-intense";
       }
 
-      const runs = Array.from(p.getElementsByTagName("w:r")).map(run => {
+      // Process runs differently depending on XML format
+      const runs = isCleaned ? [p.textContent || ""] : Array.from(p.getElementsByTagName("w:r")).map(run => {
         const text = Array.from(run.getElementsByTagName("w:t")).map(t => t.textContent).join("");
 
         const rPr = run.getElementsByTagName("w:rPr")[0];
@@ -208,10 +221,10 @@ async function loadChapter(n) {
 
   // Render the HTML
   readerRoot.innerHTML = htmlContent;
-  
+
   // Activate navigation controls for images
   activateImageNavigation();
-  
+
   chapter = n;
   updateNav();
   setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
@@ -259,7 +272,7 @@ async function discoverChapters() {
 function jumpTo(n) {
   // Attempt to get story path from URL (decoded) or fallback to localStorage
   let currentStoryPath = decodeURIComponent(storyPath) || localStorage.getItem('currentStoryPath');
-  
+
   // If no story path is found, alert the user and prevent the jump
   if (!currentStoryPath) {
     alert("No story selected. Please select a story first.");
