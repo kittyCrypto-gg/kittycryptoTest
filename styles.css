@@ -1018,3 +1018,90 @@ body.dark-mode .tategaki-container svg text {
   object-fit: cover;
   display: block;
 }
+
+/* =========================================
+  Comment Section Styling
+========================================= */
+
+.comments-container {
+  background-color: var(--frame-bg-colour);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  color: var(--body-text-colour);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comments-box {
+  background-color: var(--chatroom-bg-colour);
+  border: 1px solid var(--chatroom-border-colour);
+  border-radius: 8px;
+  padding: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  color: var(--chatroom-text-colour);
+}
+
+/* Input Section */
+.comment-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#new-comment {
+  width: 100%;
+  min-height: 100px;
+  max-height: 300px;
+  resize: vertical;
+  font-size: 1rem;
+  padding: 10px;
+  border: 1px solid var(--chat-input-border-colour);
+  border-radius: 6px;
+  background-color: var(--chat-input-bg-colour);
+  color: var(--chat-input-text-colour);
+  box-sizing: border-box;
+}
+
+#post-comment-button {
+  align-self: flex-end;
+  background-color: var(--chat-send-btn-bg-colour);
+  color: var(--chat-send-btn-text-colour);
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#post-comment-button:hover {
+  background-color: var(--menu-button-hover-bg-colour);
+}
+
+/* Dark mode support */
+.dark-mode .comments-box {
+  background-color: var(--chatroom-bg-colour);
+  border-color: var(--chatroom-border-colour);
+  color: var(--chatroom-text-colour);
+}
+
+.dark-mode #new-comment {
+  background-color: var(--chat-input-bg-colour);
+  color: var(--chat-input-text-colour);
+  border-color: var(--chat-input-border-colour);
+}
+
+.dark-mode #post-comment-button {
+  background-color: var(--chat-send-btn-bg-colour);
+  color: var(--chat-send-btn-text-colour);
+}
