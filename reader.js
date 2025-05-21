@@ -386,28 +386,78 @@ function activateImageNavigation() {
       image.style.transformOrigin = `${posX}% ${posY}%`;
     };
 
-    // Button event listeners
-    navOverlay.querySelector(".btn-up").onclick = () => {
-      posY = Math.max(0, posY - step);
-      updatePosition();
+    // === Holdable Button Logic ===
+    const startHold = (onHold: () => void) => {
+      const interval = setInterval(onHold, 100);
+      const stopHold = () => {
+        clearInterval(interval);
+        document.removeEventListener("mouseup", stopHold);
+        document.removeEventListener("touchend", stopHold);
+        document.removeEventListener("mouseleave", stopHold);
+      };
+      document.addEventListener("mouseup", stopHold);
+      document.addEventListener("touchend", stopHold);
+      document.addEventListener("mouseleave", stopHold);
+      onHold(); // Immediate call on press
     };
-    navOverlay.querySelector(".btn-down").onclick = () => {
-      posY = Math.min(100, posY + step);
-      updatePosition();
-    };
-    navOverlay.querySelector(".btn-left").onclick = () => {
-      posX = Math.max(0, posX - step);
-      updatePosition();
-    };
-    navOverlay.querySelector(".btn-right").onclick = () => {
-      posX = Math.min(100, posX + step);
-      updatePosition();
-    };
-    navOverlay.querySelector(".btn-center").onclick = () => {
+
+    navOverlay.querySelector(".btn-up").addEventListener("mousedown", () => {
+      startHold(() => {
+        posY = Math.max(0, posY - step);
+        updatePosition();
+      });
+    });
+    navOverlay.querySelector(".btn-down").addEventListener("mousedown", () => {
+      startHold(() => {
+        posY = Math.min(100, posY + step);
+        updatePosition();
+      });
+    });
+    navOverlay.querySelector(".btn-left").addEventListener("mousedown", () => {
+      startHold(() => {
+        posX = Math.max(0, posX - step);
+        updatePosition();
+      });
+    });
+    navOverlay.querySelector(".btn-right").addEventListener("mousedown", () => {
+      startHold(() => {
+        posX = Math.min(100, posX + step);
+        updatePosition();
+      });
+    });
+
+    // Touch support for mobile users
+    navOverlay.querySelector(".btn-up").addEventListener("touchstart", () => {
+      startHold(() => {
+        posY = Math.max(0, posY - step);
+        updatePosition();
+      });
+    });
+    navOverlay.querySelector(".btn-down").addEventListener("touchstart", () => {
+      startHold(() => {
+        posY = Math.min(100, posY + step);
+        updatePosition();
+      });
+    });
+    navOverlay.querySelector(".btn-left").addEventListener("touchstart", () => {
+      startHold(() => {
+        posX = Math.max(0, posX - step);
+        updatePosition();
+      });
+    });
+    navOverlay.querySelector(".btn-right").addEventListener("touchstart", () => {
+      startHold(() => {
+        posX = Math.min(100, posX + step);
+        updatePosition();
+      });
+    });
+
+    // Centre button: single reset action
+    navOverlay.querySelector(".btn-center").addEventListener("click", () => {
       posX = 50;
       posY = 50;
       updatePosition();
-    };
+    });
 
     // === Logic for Overlay Display & Image Zoom ===
     const toggleZoom = () => {
