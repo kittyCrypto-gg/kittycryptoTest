@@ -1023,6 +1023,21 @@ body.dark-mode .tategaki-container svg text {
   Comment Section Styling
 ========================================= */
 
+.comments-header {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--nav-border-colour);
+  color: var(--header-text-colour);
+  text-align: left;
+}
+
+.dark-mode .comments-header {
+  color: var(--header-text-colour);
+  border-bottom-color: var(--nav-border-colour);
+}
+
 .comments-container {
   background-color: var(--frame-bg-colour);
   border-radius: 12px;
