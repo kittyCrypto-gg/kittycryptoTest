@@ -9,8 +9,9 @@ let userIP = null;
 // Get full page identifier
 function getPageIdentifier() {
   const page = window.location.href.replace(window.location.origin, "");
-  console.log(`${page}`);
-  return page;
+  const decoded = decodeURIComponent(page);
+  console.log(`🔎 Decoded page: ${decoded}`);
+  return decoded;
 }
 
 // Fetch Session Token
@@ -57,7 +58,7 @@ function formatTimestamp(isoString) {
   return date.toLocaleString();
 }
 
-// Load all comments and filter for current page
+// Load comments for current page
 async function loadCommentsForPage() {
   const currentPage = getPageIdentifier();
   try {
