@@ -61,14 +61,15 @@ function formatTimestamp(isoString) {
 async function loadCommentsForPage() {
   const currentPage = getPageIdentifier();
   try {
-    const response = await fetch(COMMENT_LOAD_URL);
+    const encodedPage = encodeURIComponent(currentPage);
+    const response = await fetch(`${COMMENT_LOAD_URL}?page=${encodedPage}`);
     if (!response.ok) throw new Error(`Failed to load comments: ${response.status}`);
-    const allComments = await response.json();
-    if (!Array.isArray(allComments)) throw new Error("Invalid comment data format");
 
-    const matchingComments = allComments.filter((comment) => comment.page === currentPage);
-    console.log(`💬 Loaded ${matchingComments.length} comment(s) for page "${currentPage}"`);
-    return matchingComments;
+    const comments = await response.json();
+    if (!Array.isArray(comments)) throw new Error("Invalid comment data format");
+
+    console.log(`💬 Loaded ${comments.length} comment(s) for page "${currentPage}"`);
+    return comments;
   } catch (error) {
     console.error("❌ Error loading comments:", error);
     return [];
