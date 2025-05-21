@@ -1,11 +1,9 @@
 {
   "mainMenu": {
-    "Main": "./index.html",
-    "About": "./about.html",
-    "Stories": "./reader.html",
-    "Chat": "./chat.html",
-    "Guestbook": "./guestbook.html",
-    "Email me": "./email.html"
+    "🏠Main": "./index.html",
+    "❓About": "./about.html",
+    "📚Stories": "./reader.html",
+    "💬Chat": "./chat.html"
   },
   "header": "Kitty Crypto's Website!",
   "footer": "Kitty's website is open-source. 1991 - ${year}",
