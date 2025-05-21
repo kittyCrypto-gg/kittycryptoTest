@@ -386,8 +386,8 @@ function activateImageNavigation() {
       image.style.transformOrigin = `${posX}% ${posY}%`;
     };
 
-    // === Holdable Button Logic ===
-    const startHold = (onHold: () => void) => {
+    // === Holdable Button Logic (JS-safe) ===
+    const startHold = (onHold) => {
       const interval = setInterval(onHold, 100);
       const stopHold = () => {
         clearInterval(interval);
@@ -398,7 +398,7 @@ function activateImageNavigation() {
       document.addEventListener("mouseup", stopHold);
       document.addEventListener("touchend", stopHold);
       document.addEventListener("mouseleave", stopHold);
-      onHold(); // Immediate call on press
+      onHold(); // immediate execution
     };
 
     navOverlay.querySelector(".btn-up").addEventListener("mousedown", () => {
@@ -407,18 +407,21 @@ function activateImageNavigation() {
         updatePosition();
       });
     });
+
     navOverlay.querySelector(".btn-down").addEventListener("mousedown", () => {
       startHold(() => {
         posY = Math.min(100, posY + step);
         updatePosition();
       });
     });
+
     navOverlay.querySelector(".btn-left").addEventListener("mousedown", () => {
       startHold(() => {
         posX = Math.max(0, posX - step);
         updatePosition();
       });
     });
+
     navOverlay.querySelector(".btn-right").addEventListener("mousedown", () => {
       startHold(() => {
         posX = Math.min(100, posX + step);
@@ -426,25 +429,28 @@ function activateImageNavigation() {
       });
     });
 
-    // Touch support for mobile users
+    // Touch support for mobile
     navOverlay.querySelector(".btn-up").addEventListener("touchstart", () => {
       startHold(() => {
         posY = Math.max(0, posY - step);
         updatePosition();
       });
     });
+
     navOverlay.querySelector(".btn-down").addEventListener("touchstart", () => {
       startHold(() => {
         posY = Math.min(100, posY + step);
         updatePosition();
       });
     });
+
     navOverlay.querySelector(".btn-left").addEventListener("touchstart", () => {
       startHold(() => {
         posX = Math.max(0, posX - step);
         updatePosition();
       });
     });
+
     navOverlay.querySelector(".btn-right").addEventListener("touchstart", () => {
       startHold(() => {
         posX = Math.min(100, posX + step);
@@ -452,14 +458,14 @@ function activateImageNavigation() {
       });
     });
 
-    // Centre button: single reset action
+    // Centre button is click only
     navOverlay.querySelector(".btn-center").addEventListener("click", () => {
       posX = 50;
       posY = 50;
       updatePosition();
     });
 
-    // === Logic for Overlay Display & Image Zoom ===
+    // === Zoom toggle ===
     const toggleZoom = () => {
       if (image.classList.contains("active")) {
         image.classList.remove("active");
@@ -470,10 +476,8 @@ function activateImageNavigation() {
       }
     };
 
-    // Click to zoom in and out
     image.addEventListener("click", toggleZoom);
 
-    // Hide overlay when mouse leaves the container
     container.addEventListener("mouseleave", () => {
       navOverlay.classList.remove("active");
     });
