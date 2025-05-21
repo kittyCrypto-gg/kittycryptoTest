@@ -833,7 +833,7 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
-   Image-nav overlay (fixed)
+   Image-nav overlay
 ========================================= */
 .image-nav {
   position: absolute;
@@ -856,9 +856,9 @@ body.dark-mode .tategaki-container svg text {
 /* transparent buttons with padding for usability */
 .image-nav button {
   all: unset;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   cursor: pointer;
-  padding: 5px;
+  padding: 0px;
   background: none;
   border: none;
   box-shadow: none;
