@@ -131,7 +131,6 @@ async function postComment({ nick, msg, ip, sessionToken }) {
     }
 
     console.log("✅ Comment posted:", payload);
-    await renderComments();
     return { success: true, id };
   } catch (error) {
     console.error("❌ Error sending comment:", error);
@@ -168,7 +167,7 @@ function setupCommentPosting() {
     // Persist nickname
     localStorage.setItem("nickname", nick);
 
-    const result = await ({ nick, msg, ip: userIP, sessionToken });
+    const result = await postComment({ nick, msg, ip: userIP, sessionToken });
     if (result.success) {
       textarea.value = "";
       await renderComments();
