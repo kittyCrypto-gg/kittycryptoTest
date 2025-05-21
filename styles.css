@@ -834,6 +834,7 @@ body.dark-mode .tategaki-container svg text {
 .chapter-image.active {
   transform: scale(2); /* 2x zoom */
   cursor: move;
+  touch-action: none; /* disable scroll and gestures while zoomed */
 }
 
 /* =========================================
