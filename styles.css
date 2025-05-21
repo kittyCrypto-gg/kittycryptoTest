@@ -824,6 +824,10 @@ body.dark-mode .tategaki-container svg text {
   cursor: zoom-in;
   object-fit: cover;
   transition: transform 0.3s ease, transform-origin 0.3s ease;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 /* Zoom effect */
