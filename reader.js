@@ -481,7 +481,56 @@ function activateImageNavigation() {
     container.addEventListener("mouseleave", () => {
       navOverlay.classList.remove("active");
     });
+
+    // === Swipe support for mobile ===
+    enableImageSwipeNavigation(image, () => posX, () => posY, (x, y) => {
+      posX = x;
+      posY = y;
+      updatePosition();
+    });
   });
+
+  // === Swipe handler helper ===
+  function enableImageSwipeNavigation(image, getX, getY, setPosition) {
+    let startX = 0;
+    let startY = 0;
+    let lastX = 0;
+    let lastY = 0;
+    let isSwiping = false;
+
+    image.addEventListener("touchstart", e => {
+      if (!image.classList.contains("active")) return;
+      if (e.touches.length === 1) {
+        isSwiping = true;
+        startX = lastX = e.touches[0].clientX;
+        startY = lastY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    image.addEventListener("touchmove", e => {
+      if (!isSwiping || e.touches.length !== 1) return;
+
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+
+      const deltaX = currentX - lastX;
+      const deltaY = currentY - lastY;
+      lastX = currentX;
+      lastY = currentY;
+
+      const pxToPercent = 300; // base: 300px for full range
+      let newX = getX() - (deltaX / pxToPercent) * 100;
+      let newY = getY() - (deltaY / pxToPercent) * 100;
+
+      newX = Math.min(100, Math.max(0, newX));
+      newY = Math.min(100, Math.max(0, newY));
+      setPosition(newX, newY);
+    }, { passive: true });
+
+    image.addEventListener("touchend", () => {
+      isSwiping = false;
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", activateImageNavigation);
