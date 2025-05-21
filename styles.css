@@ -833,13 +833,13 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
-   Image-nav overlay (fixed)
+   Image-nav overlay
 ========================================= */
 .image-nav {
   position: absolute;
   bottom: 15px;
   right: 15px;
-  display: none;          /* hidden until needed */
+  display: none;
   flex-direction: column;
   gap: 5px;
   z-index: 10;
@@ -853,21 +853,20 @@ body.dark-mode .tategaki-container svg text {
   opacity: 1;
 }
 
-/* buttons */
+/* transparent buttons with padding for usability */
 .image-nav button {
   all: unset;
   font-size: 1.5rem;
   cursor: pointer;
-  background: var(--menu-button-bg-colour);
-  color: var(--menu-button-text-colour);
-  border-radius: 4px;
   padding: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,.1);
-  transition: background 0.2s, transform 0.1s;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: inherit;
+  transition: transform 0.1s;
 }
 
 .image-nav button:hover {
-  background: var(--menu-button-hover-bg-colour);
   transform: scale(1.1);
 }
 
@@ -875,26 +874,11 @@ body.dark-mode .tategaki-container svg text {
   transform: scale(0.95);
 }
 
-/* dark-mode button tint */
-.dark-mode .image-nav button {
-  background: var(--nav-bg-colour);
-  color: var(--header-text-colour);
-}
-
+/* ensure transparency in dark mode too */
+.dark-mode .image-nav button,
 .dark-mode .image-nav button:hover {
-  background: var(--menu-button-hover-bg-colour);
-}
-
-/* =========================================
-  Dark Mode Adjustments for Image Nav
-========================================= */
-.dark-mode .image-nav button {
-  background-color: var(--nav-bg-colour);
-  color: var(--header-text-colour);
-}
-
-.dark-mode .image-nav button:hover {
-  background-color: var(--menu-button-hover-bg-colour);
+  background: none;
+  color: inherit;
 }
 
 /* =========================================
