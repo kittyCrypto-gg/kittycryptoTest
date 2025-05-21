@@ -1105,3 +1105,22 @@ body.dark-mode .tategaki-container svg text {
   background-color: var(--chat-send-btn-bg-colour);
   color: var(--chat-send-btn-text-colour);
 }
+/* =========================================
+  Comment Nickname Input
+========================================= */
+
+#comment-nick {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid var(--chat-input-border-colour);
+  border-radius: 6px;
+  background-color: var(--chat-input-bg-colour);
+  color: var(--chat-input-text-colour);
+  box-sizing: border-box;
+}
+.dark-mode #comment-nick {
+  background-color: var(--chat-input-bg-colour);
+  color: var(--chat-input-text-colour);
+  border-color: var(--chat-input-border-colour);
+}
