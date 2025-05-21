@@ -8,7 +8,9 @@ let userIP = null;
 
 // Get full page identifier
 function getPageIdentifier() {
-  return window.location.href.replace(window.location.origin, "");
+  const page = window.location.href.replace(window.location.origin, "");
+  console.log(`${page}`);
+  return page;
 }
 
 // Fetch Session Token
