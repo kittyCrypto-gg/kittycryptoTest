@@ -542,7 +542,6 @@ function activateImageNavigation() {
 function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
   let counter = 0;
   const story = encodeURIComponent(storyPath);
-  const chapter = encodeURIComponent(chapter);
 
   return htmlContent.replace(/<\/(p|h1|h2|blockquote)>/g, (match) => {
     const id = `bm-${story}-ch${chapter}-${counter++}`;
