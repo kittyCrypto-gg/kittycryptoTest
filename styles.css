@@ -1066,6 +1066,28 @@ body.dark-mode .tategaki-container svg text {
   color: var(--chatroom-text-colour);
 }
 
+/* Individual comment message */
+.comment-message {
+  text-align: left;
+  padding: 12px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Alternate comment backgrounds */
+.comment-message:nth-child(odd) {
+  background-color: var(--chatroom-bg-colour);
+}
+
+.comment-message:nth-child(even) {
+  background-color: color-mix(in srgb, var(--chatroom-bg-colour) 85%, black);
+}
+
+.dark-mode .comment-message:nth-child(even) {
+  background-color: color-mix(in srgb, var(--chatroom-bg-colour) 85%, white);
+}
+
 /* Input Section */
 .comment-input {
   display: flex;
