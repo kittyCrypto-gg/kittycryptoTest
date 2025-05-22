@@ -200,6 +200,7 @@ nav::-webkit-scrollbar {
 
 /* Menu buttons */
 .menu-button {
+  flex: 1 1 0;
   text-decoration: none;
   color: var(--menu-button-text-colour);
   background-color: var(--menu-button-bg-colour);
@@ -208,7 +209,7 @@ nav::-webkit-scrollbar {
   transition: background-color 0.3s, transform 0.2s;
   font-size: 1rem;
   font-weight: bold;
-  flex: 0 0 auto; /* Prevents buttons from stretching */
+  text-align: center;
 }
 
 .menu-button:hover {
