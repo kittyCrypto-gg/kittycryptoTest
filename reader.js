@@ -196,6 +196,12 @@ async function loadChapter(n) {
     // Process Tategaki and images
     htmlContent = replaceTategaki(htmlContent);
     htmlContent = replaceImageTags(htmlContent);
+    htmlContent = injectBookmarksIntoHTML(htmlContent);
+
+    //Jump to bookmark and start observing
+    restoreBookmark(storyPath, chapter);
+    observeAndSaveBookmarkProgress();
+    
     // Render the HTML
     readerRoot.innerHTML = htmlContent;
     // Activate features
@@ -533,7 +539,86 @@ function activateImageNavigation() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", activateImageNavigation);
+function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
+  let counter = 0;
+  const story = encodeURIComponent(storyPath);
+  const chapter = encodeURIComponent(chapter);
 
+  return htmlContent.replace(/<\/(p|h1|h2|blockquote)>/g, (match) => {
+    const id = `bm-${story}-ch${chapter}-${counter++}`;
+    return `${match}\n<div class="reader-bookmark" id="${id}"></div>`;
+  });
+}
 
-initReader();
+function observeAndSaveBookmarkProgress() {
+  const bookmarks = Array.from(document.querySelectorAll(".reader-bookmark"));
+
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+
+      const id = entry.target.id;
+      const match = id.match(/^bm-(.+)-ch(\d+)-\d+$/);
+      if (!match) continue;
+
+      const storyKey = match[1];
+      const chapter = match[2];
+      const key = `bookmark_${storyKey}_ch${chapter}`;
+
+      const newIndex = bookmarks.findIndex(el => el.id === id);
+      const savedId = localStorage.getItem(key);
+      const savedIndex = bookmarks.findIndex(el => el.id === savedId);
+
+      if (newIndex <= savedIndex) continue;
+
+      localStorage.setItem(key, id);
+    }
+  }, {
+    threshold: 0.6
+  });
+
+  bookmarks.forEach(el => observer.observe(el));
+}
+
+function restoreBookmark(storyPath, chapter) {
+  const storyKey = encodeURIComponent(storyPath);
+  const key = `bookmark_${storyKey}_ch${chapter}`;
+  const id = localStorage.getItem(key);
+  if (!id) return;
+
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.scrollIntoView({ behavior: "smooth" });
+}
+
+function restoreLastStoryRead() {
+  const params = new URLSearchParams(window.location.search);
+  const story = params.get("story");
+  const chapter = params.get("chapter");
+  const lastKey = "lastStoryRead";
+
+  if (story && chapter !== null) {
+    localStorage.setItem(lastKey, JSON.stringify({ story, chapter }));
+    return;
+  }
+
+  const last = localStorage.getItem(lastKey);
+  if (!last) return;
+
+  try {
+    const { story, chapter } = JSON.parse(last);
+    if (!story || chapter === null) return;
+
+    const encoded = `?story=${encodeURIComponent(story)}&chapter=${chapter}`;
+    window.location.search = encoded;
+  } catch (e) {
+    console.warn("Failed to parse lastStoryRead:", e);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  restoreLastStoryRead();
+  initReader();
+  activateImageNavigation();
+});
