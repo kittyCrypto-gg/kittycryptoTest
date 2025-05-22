@@ -233,20 +233,20 @@ async function discoverChapters() {
   // Check for Chapter 0 existence first
   try {
     const path = `${storyPath}/chapt0.xml`;
-    console.log(`Checking for Chapter 0 at ${path}`);
+    //console.log(`Checking for Chapter 0 at ${path}`);
     const res = await fetch(path, { method: "HEAD" });
     if (res.ok) {
       chapters.push(0);
     }
   } catch (err) {
-    console.log('No chapter 0');
+    //console.log('No chapter 0');
   }
 
   // Discover remaining chapters
   while (true) {
     try {
       const path = `${storyPath}/chapt${i}.xml`;
-      console.log(`Reading Chapter ${i} in ${path}`);
+      //console.log(`Reading Chapter ${i} in ${path}`);
       const res = await fetch(path, { method: "HEAD" });
       if (!res.ok) break;
       chapters.push(i);
@@ -597,22 +597,22 @@ function observeAndSaveBookmarkProgress() {
 function restoreBookmark(storyPath, chapter) {
   const storyKey = makeStoryKey(storyPath);
   const key = `bookmark_${storyKey}_ch${chapter}`;
-  console.log(`[restoreBookmark] Looking for key: ${key}`);
+  //console.log(`[restoreBookmark] Looking for key: ${key}`);
 
   const id = localStorage.getItem(key);
   if (!id) {
-    console.log(`[restoreBookmark] No bookmark ID found in localStorage`);
+    //console.log(`[restoreBookmark] No bookmark ID found in localStorage`);
     return;
   }
 
-  console.log(`[restoreBookmark] Bookmark ID from storage: ${id}`);
+  //console.log(`[restoreBookmark] Bookmark ID from storage: ${id}`);
   const el = document.getElementById(id);
   if (!el) {
-    console.warn(`[restoreBookmark] No element found in DOM with ID: ${id}`);
+    //console.warn(`[restoreBookmark] No element found in DOM with ID: ${id}`);
     return;
   }
 
-  console.log(`[restoreBookmark] Scrolling to element with ID: ${id}`);
+  //console.log(`[restoreBookmark] Scrolling to element with ID: ${id}`);
   el.scrollIntoView({ behavior: "smooth" });
 }
 
