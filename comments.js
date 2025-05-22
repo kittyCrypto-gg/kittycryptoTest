@@ -87,7 +87,7 @@ async function renderComments() {
   box.innerHTML = "";
   for (const comment of comments) {
     const wrapper = document.createElement("div");
-    wrapper.className = "chat-message";
+    wrapper.className = "comment-message";
 
     const header = document.createElement("div");
     header.className = "chat-header";
