@@ -24,14 +24,15 @@ function drawSpiralArm(ctx, hash, colour, angleOffset) {
   ctx.restore();
 }
 
-export async function drawSpiralIdenticon(username, size = 128) {
+async function drawSpiralIdenticon(username, size = 128) {
   const hash = await hashString(username);
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, size, size);
   ctx.translate(size / 2, size / 2);
 
-  const numArms = 3 + (hash[0] % 3); // 3–5
+  const numArms = 3 + (hash[0] % 3); // 3–5 arms
   const colours = [
     `hsl(${hash[1] * 1.4}, 80%, 60%)`,
     `hsl(${hash[2] * 1.4}, 80%, 50%)`,
@@ -46,7 +47,22 @@ export async function drawSpiralIdenticon(username, size = 128) {
   return canvas;
 }
 
-// Render immediately for test
-drawSpiralIdenticon("kitty-crypto").then(canvas => {
-  document.getElementById("avatar-root").appendChild(canvas);
+// Initialise DOM hooks and bind input
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("name-input");
+  const container = document.getElementById("avatar-root");
+
+  async function updateAvatar() {
+    const name = input.value.trim();
+    if (!name) {
+      container.innerHTML = ""; // Clear
+      return;
+    }
+
+    const canvas = await drawSpiralIdenticon(name);
+    container.innerHTML = ""; // Clear previous
+    container.appendChild(canvas);
+  }
+
+  input.addEventListener("input", updateAvatar);
 });
