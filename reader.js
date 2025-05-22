@@ -35,7 +35,8 @@ function prevBtnEn(chapter, chapters) {
   const hasChapter0 = chapters.includes(0);
 
   if (chapter > 0) return true;
-  if (chapter === 0 && !hasChapter0) return false;
+  if (chapter = 1 && !hasChapter0) return false;
+  if (chapter <= 0) return false;
   return false;
 }
 
