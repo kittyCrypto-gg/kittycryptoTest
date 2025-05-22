@@ -62,8 +62,9 @@ function formatTimestamp(isoString) {
 async function loadCommentsForPage() {
   const currentPage = getPageIdentifier();
   try {
-    const encodedPage = encodeURIComponent(currentPage);
-    const response = await fetch(`${COMMENT_LOAD_URL}?page=${encodedPage}`);
+    //const encodedPage = encodeURIComponent(currentPage);
+    //const response = await fetch(`${COMMENT_LOAD_URL}?page=${encodedPage}`);
+    const response = await fetch(`${COMMENT_LOAD_URL}?page=${currentPage}`);
     if (!response.ok) throw new Error(`Failed to load comments: ${response.status}`);
 
     const comments = await response.json();
