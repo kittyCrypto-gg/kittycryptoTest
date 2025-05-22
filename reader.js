@@ -31,6 +31,14 @@ function getElementsByAliases(doc, aliases) {
   return [];
 }
 
+function prevBtnEn(chapter, chapters) {
+  const hasChapter0 = chapters.includes(0);
+
+  if (chapter > 0) return true;
+  if (chapter === 0 && !hasChapter0) return false;
+  return false;
+}
+
 // Inject navigation bars at top and bottom
 function injectNav() {
   const navHTML = `
@@ -62,6 +70,14 @@ function injectNav() {
 
   readerRoot.insertAdjacentElement("beforebegin", navTop);
   readerRoot.insertAdjacentElement("afterend", navBottom);
+  
+  // Disable previous buttons if needed
+  const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
+  const shouldEnable = prevBtnEn(chapter, chapters);
+
+  document.querySelectorAll(".btn-prev").forEach(btn => {
+    btn.disabled = !shouldEnable;
+  });
 }
 
 // Font size logic
