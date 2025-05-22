@@ -35,13 +35,13 @@ function getElementsByAliases(doc, aliases) {
 function injectNav() {
   const navHTML = `
     <div class="chapter-navigation">
-      <button class="btn-prev">⬅️</button>
+      <button class="btn-prev">⏪</button>
       <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
       <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
       <button class="btn-jump">🆗</button>
       <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
-      <button class="btn-next">➡️</button>
-      <button class="btn-rescan">🔃</button>
+      <button class="btn-next">⏩</button>
+      <button class="btn-scroll-down">⏬</button>
     </div>
     <div class="font-controls">
       <button class="font-decrease">➖</button>
@@ -52,6 +52,13 @@ function injectNav() {
   const navTop = document.createElement("div");
   navTop.innerHTML = navHTML;
   const navBottom = navTop.cloneNode(true);
+  // Replace ⏬ with ⏫ in the bottom nav
+  const scrollDownBtn = navBottom.querySelector(".btn-scroll-down");
+  if (scrollDownBtn) {
+    scrollDownBtn.textContent = "⏫";
+    scrollDownBtn.classList.remove("btn-scroll-down");
+    scrollDownBtn.classList.add("btn-scroll-up");
+  }
 
   readerRoot.insertAdjacentElement("beforebegin", navTop);
   readerRoot.insertAdjacentElement("afterend", navBottom);
@@ -649,3 +656,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initReader();
   activateImageNavigation();
 });
+
+document.querySelectorAll(".btn-scroll-down").forEach(btn => {
+  btn.onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+});
+
+document.querySelectorAll(".btn-scroll-up").forEach(btn => {
+  btn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
