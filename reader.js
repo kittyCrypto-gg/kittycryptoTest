@@ -540,11 +540,12 @@ function activateImageNavigation() {
   }
 }
 
-function injectBookmarksIntoHTML(htmlContent, story, chapter) {
+function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
+  const storyKey = encodeURIComponent(storyPath);
   let counter = 0;
 
   return htmlContent.replace(/<\/(p|h1|h2|blockquote)>/g, (match) => {
-    const id = `bm-${story}-ch${chapter}-${counter++}`;
+    const id = `bm-${storyKey}-ch${chapter}-${counter++}`;
     return `${match}\n<div class="reader-bookmark" id="${id}"></div>`;
   });
 }
@@ -557,7 +558,7 @@ function observeAndSaveBookmarkProgress() {
       if (!entry.isIntersecting) return;
       const id = entry.target.id;
       console.log(`[observe] Bookmark entered view: ${id}`);
-      const match = id.match(/^bm-(.+)-ch(\d+)-\d+$/);
+      const match = id.match(/^bm-([^]+)-ch(\d+)-\d+$/);
       if (!match) {
         console.warn(`[observe] Invalid bookmark ID format: ${id}`);
         return;
