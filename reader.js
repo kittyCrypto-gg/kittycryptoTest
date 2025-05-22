@@ -38,7 +38,7 @@ function injectNav() {
       <button class="btn-prev">⏪</button>
       <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
       <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
-      <button class="btn-jump">🆗</button>
+      <button class="btn-jump">⏯️</button>
       <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
       <button class="btn-next">⏩</button>
       <button class="btn-scroll-down">⏬</button>
@@ -675,4 +675,19 @@ document.addEventListener("click", (e) => {
     downBtn.scrollIntoView({ behavior: "smooth" });
     return;
   }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const prevButtons = document.querySelectorAll(".btn-prev");
+  const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
+  const hasChapter0 = chapters.includes(0);
+
+  const shouldDisablePrev =
+    (chapter <= 0 && hasChapter0) || // at chapter 0, and 0 is valid — can't go further back
+    (chapter <= 0 && !hasChapter0) || // already below 1, and 0 isn't valid — block
+    (chapter === 1 && !hasChapter0); // at chapter 1, and 0 not valid — no going back
+
+  prevButtons.forEach(btn => {
+    btn.disabled = shouldDisablePrev;
+  });
 });
