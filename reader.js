@@ -658,10 +658,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.querySelectorAll(".btn-scroll-down").forEach(btn => {
-  btn.onclick = () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  btn.onclick = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth"
+    });
+  };
 });
 
 document.querySelectorAll(".btn-scroll-up").forEach(btn => {
-  btn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  btn.onclick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
 });
-
