@@ -575,13 +575,16 @@ function observeAndSaveBookmarkProgress() {
       const chapter = match[2];
       const key = `bookmark_${storyKey}_ch${chapter}`;
       const newIndex = bookmarks.findIndex(el => el.id === id);
+      // If it's the last bookmark, remove it from localStorage
+      if (newIndex === bookmarks.length - 1) {
+        localStorage.removeItem(key);
+        return;
+      }
       const savedId = localStorage.getItem(key);
       const savedIndex = bookmarks.findIndex(el => el.id === savedId);
       //console.log(`[observe] Checking bookmark index: current=${newIndex}, saved=${savedIndex}`);
-      if (newIndex <= savedIndex) {
-        //console.log(`[observe] Not updating bookmark — already at index ${savedIndex}`);
+      if (newIndex <= savedIndex)
         return;
-      }
       localStorage.setItem(key, id);
       //console.log(`[observe] Updated bookmark: ${key} → ${id}`);
     }
