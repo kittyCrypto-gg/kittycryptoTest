@@ -1,3 +1,4 @@
+import { drawSpiralIdenticon } from './avatar.js';
 const COMMENT_POST_URL = "https://kittycrypto.ddns.net:7619/comment";
 const COMMENT_LOAD_URL = "https://kittycrypto.ddns.net:7619/comments/load";
 const SESSION_TOKEN_URL = "https://kittycrypto.ddns.net:7619/session-token";
@@ -84,13 +85,21 @@ async function renderComments() {
   if (!box) return;
 
   box.innerHTML = "";
-  comments.forEach((comment) => {
+  for (const comment of comments) {
     const wrapper = document.createElement("div");
     wrapper.className = "chat-message";
 
     const header = document.createElement("div");
     header.className = "chat-header";
 
+    // Avatar container
+    const avatarWrapper = document.createElement("div");
+    avatarWrapper.className = "avatar-container";
+
+    const identicon = await generateIdenticonSVG(`${comment.nick}@${comment.ip}`, 48);
+    avatarWrapper.appendChild(identicon);
+
+    // Nickname and timestamp
     const nickSpan = document.createElement("span");
     nickSpan.className = "chat-nick";
     nickSpan.textContent = comment.nick;
@@ -99,6 +108,7 @@ async function renderComments() {
     timestampSpan.className = "chat-timestamp";
     timestampSpan.textContent = formatTimestamp(comment.timestamp);
 
+    header.appendChild(avatarWrapper);
     header.appendChild(nickSpan);
     header.appendChild(timestampSpan);
 
@@ -109,7 +119,7 @@ async function renderComments() {
     wrapper.appendChild(header);
     wrapper.appendChild(message);
     box.appendChild(wrapper);
-  });
+  }
 }
 
 // Send comment to server
