@@ -77,19 +77,21 @@ async function drawSpiralIdenticon(username, size = 128) {
   return svg;
 }
 
+export { drawSpiralIdenticon };
+
 // DOM hook
-document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("name-input");
-  const container = document.getElementById("avatar-root");
+// document.addEventListener("DOMContentLoaded", () => {
+//   const input = document.getElementById("name-input");
+//   const container = document.getElementById("avatar-root");
 
-  async function updateAvatar() {
-    const name = input.value.trim();
-    container.innerHTML = "";
-    if (!name) return;
+//   async function updateAvatar() {
+//     const name = input.value.trim();
+//     container.innerHTML = "";
+//     if (!name) return;
 
-    const avatar = await drawSpiralIdenticon(name);
-    container.appendChild(avatar);
-  }
+//     const avatar = await drawSpiralIdenticon(name);
+//     container.appendChild(avatar);
+//   }
 
-  input.addEventListener("input", updateAvatar);
-});
+//   input.addEventListener("input", updateAvatar);
+// });
