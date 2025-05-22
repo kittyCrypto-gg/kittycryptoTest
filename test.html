@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Avatar Generator Test</title>
+  <title>Live Avatar Generator</title>
   <style>
     body {
       background: #f0f4f8;
@@ -19,6 +19,16 @@
       margin-bottom: 1em;
     }
 
+    input {
+      padding: 10px;
+      font-size: 1.2rem;
+      margin-bottom: 1.5em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 250px;
+      text-align: center;
+    }
+
     .avatar-container {
       border: 2px solid #ccc;
       border-radius: 50%;
@@ -30,7 +40,8 @@
   </style>
 </head>
 <body>
-  <h1>Generated Avatar</h1>
+  <h1>Live Avatar Generator</h1>
+  <input type="text" id="name-input" placeholder="Type a name..." />
   <div id="avatar-root" class="avatar-container"></div>
 
   <script type="module" src="avatar.js"></script>
