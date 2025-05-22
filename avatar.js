@@ -1,4 +1,3 @@
-// avatar.js
 async function hashString(str) {
   const msgBuffer = new TextEncoder().encode(str);
   const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
@@ -12,50 +11,41 @@ function getHSL(hue, sat = 80, light = 60) {
 function pickDistinctColours(seed, hash) {
   const baseHue = seed % 360;
 
-  // Triadic arm colours
+  // Triadic colours
   const arms = [
     getHSL(baseHue),             // Arm 1
     getHSL(baseHue + 120),       // Arm 2
     getHSL(baseHue + 240)        // Arm 3
   ];
 
-  // Choose one of the arms as the background base hue (deterministically from hash)
   const bgIndex = hash[5] % 3;
   const bgHue = (baseHue + 120 * bgIndex) % 360;
-
-  // More pastel/light background derived from one of the arms
-  const background = getHSL(bgHue, 40, 85);
+  const background = getHSL(bgHue, 40, 85); // pastel bg
 
   return { arms, background };
 }
 
-function drawSpiralArm(ctx, colour, angleOffset, spiralConfig) {
-  const { angleStep, radiusStep, steps } = spiralConfig;
-
-  ctx.save();
-  ctx.rotate(angleOffset);
-  ctx.strokeStyle = colour;
-  ctx.lineWidth = 5.2; // Thicker lines for visibility
-  ctx.beginPath();
-
-  for (let t = 0; t < steps; t++) {
-    const theta = t * angleStep;
-    const r = t * radiusStep;
-    const x = r * Math.cos(theta);
-    const y = r * Math.sin(theta);
-    t === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-  }
-
-  ctx.stroke();
-  ctx.restore();
+function getSpiralConfig(hash) {
+  const angleStep = 0.15 + (hash[2] % 70) / 200; // 0.15–0.5
+  const radiusStep = 1.0 + (hash[3] % 40) / 10;  // 1.0–5.0
+  const steps = 60 + (hash[4] % 40);            // 60–100
+  return { angleStep, radiusStep, steps };
 }
 
-function getSpiralConfig(hash) {
-  const angleStep = 0.15 + (hash[2] % 70) / 200; // range: 0.15–0.5
-  const radiusStep = 1.0 + (hash[3] % 40) / 10;  // range: 1.0–5.0
-  const steps = 60 + (hash[4] % 40);            // 60–100 points
+function createSpiralPath(angleOffset, spiralConfig, size) {
+  const { angleStep, radiusStep, steps } = spiralConfig;
+  let d = "";
+  const centre = size / 2;
 
-  return { angleStep, radiusStep, steps };
+  for (let t = 0; t < steps; t++) {
+    const theta = t * angleStep + angleOffset;
+    const r = t * radiusStep;
+    const x = centre + r * Math.cos(theta);
+    const y = centre + r * Math.sin(theta);
+    d += t === 0 ? `M${x},${y}` : ` L${x},${y}`;
+  }
+
+  return d;
 }
 
 async function drawSpiralIdenticon(username, size = 128) {
@@ -64,39 +54,41 @@ async function drawSpiralIdenticon(username, size = 128) {
   const { arms, background } = pickDistinctColours(seed, hash);
   const spiralConfig = getSpiralConfig(hash);
 
-  const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = size;
-  const ctx = canvas.getContext("2d");
+  const xmlns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(xmlns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+  svg.setAttribute("width", size);
+  svg.setAttribute("height", size);
+  svg.style.borderRadius = "8px";
+  svg.style.background = background;
 
-  // Fill background
-  ctx.fillStyle = background;
-  ctx.fillRect(0, 0, size, size);
-  ctx.translate(size / 2, size / 2);
-
-  // Draw 3 spiral arms
   for (let i = 0; i < 3; i++) {
-    const angle = (2 * Math.PI / 3) * i;
-    drawSpiralArm(ctx, arms[i], angle, spiralConfig);
+    const angleOffset = (2 * Math.PI / 3) * i;
+    const pathData = createSpiralPath(angleOffset, spiralConfig, size);
+
+    const path = document.createElementNS(xmlns, "path");
+    path.setAttribute("d", pathData);
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", arms[i]);
+    path.setAttribute("stroke-width", "5.2");
+    svg.appendChild(path);
   }
 
-  return canvas;
+  return svg;
 }
 
-// Initialise DOM hooks and bind input
+// DOM hook
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("name-input");
   const container = document.getElementById("avatar-root");
 
   async function updateAvatar() {
     const name = input.value.trim();
-    if (!name) {
-      container.innerHTML = "";
-      return;
-    }
-
-    const canvas = await drawSpiralIdenticon(name);
     container.innerHTML = "";
-    container.appendChild(canvas);
+    if (!name) return;
+
+    const avatar = await drawSpiralIdenticon(name);
+    container.appendChild(avatar);
   }
 
   input.addEventListener("input", updateAvatar);
