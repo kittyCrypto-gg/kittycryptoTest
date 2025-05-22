@@ -201,10 +201,14 @@ async function loadChapter(n) {
     // Render the HTML
     readerRoot.innerHTML = htmlContent;
 
-    //Jump to bookmark and start observing
-    restoreBookmark(storyPath, chapter);
-    observeAndSaveBookmarkProgress();
-    
+    // Start tracking scroll progress
+observeAndSaveBookmarkProgress();
+
+    // Scroll to the saved bookmark after DOM layout is ready
+    requestAnimationFrame(() => {
+      restoreBookmark(storyPath, chapter);
+    });
+
     // Activate features
     activateImageNavigation();
     chapter = n;
@@ -556,15 +560,15 @@ function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
 
 function observeAndSaveBookmarkProgress() {
   const bookmarks = Array.from(document.querySelectorAll(".reader-bookmark"));
-  console.log(`[observe] Found ${bookmarks.length} bookmark elements`);
+  //console.log(`[observe] Found ${bookmarks.length} bookmark elements`);
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (!entry.isIntersecting) return;
       const id = entry.target.id;
-      console.log(`[observe] Bookmark entered view: ${id}`);
+      //console.log(`[observe] Bookmark entered view: ${id}`);
       const match = id.match(/^bm-([^]+)-ch(\d+)-\d+$/);
       if (!match) {
-        console.warn(`[observe] Invalid bookmark ID format: ${id}`);
+        //console.warn(`[observe] Invalid bookmark ID format: ${id}`);
         return;
       }
       const storyKey = match[1];
@@ -573,20 +577,20 @@ function observeAndSaveBookmarkProgress() {
       const newIndex = bookmarks.findIndex(el => el.id === id);
       const savedId = localStorage.getItem(key);
       const savedIndex = bookmarks.findIndex(el => el.id === savedId);
-      console.log(`[observe] Checking bookmark index: current=${newIndex}, saved=${savedIndex}`);
+      //console.log(`[observe] Checking bookmark index: current=${newIndex}, saved=${savedIndex}`);
       if (newIndex <= savedIndex) {
-        console.log(`[observe] Not updating bookmark — already at index ${savedIndex}`);
+        //console.log(`[observe] Not updating bookmark — already at index ${savedIndex}`);
         return;
       }
       localStorage.setItem(key, id);
-      console.log(`[observe] Updated bookmark: ${key} → ${id}`);
+      //console.log(`[observe] Updated bookmark: ${key} → ${id}`);
     }
   }, {
     threshold: 0.6
   });
   bookmarks.forEach(el => {
     observer.observe(el);
-    console.log(`[observe] Observing bookmark: ${el.id}`);
+    //console.log(`[observe] Observing bookmark: ${el.id}`);
   });
 }
 
