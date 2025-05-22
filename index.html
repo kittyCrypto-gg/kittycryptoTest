@@ -7,6 +7,7 @@
   <title>Kitty Crypto's Page</title>
   <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
   <script type="module" src="main.js"></script>
+  <script type="module" src="comments.js"></script>
 </head>
 <body>
   <div class="frame">
@@ -16,6 +17,16 @@
       <p>This site is under construction! But feel free to explore it while I build it!</p>
       <p>~Kitty</p>
     </main>
+    <div id="comments" class="comments-container">
+      <div class="comments-header">Comments</div>
+      <div id="comments-box" class="comments-box">
+      <!-- Comments will be dynamically inserted here -->
+      </div>
+      <div class="comment-input">
+        <input type="text" id="comment-nick" maxlength="32" placeholder="Your nickname (max 32 characters)" />
+        <textarea id="new-comment" maxlength="256" rows="4" placeholder="Write your comment here (max 256 characters)..."></textarea>
+        <button id="post-comment-button">Post</button>
+      </div>
     <footer id="main-footer"></footer>
   </div>
 </body>
