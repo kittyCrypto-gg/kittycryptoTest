@@ -196,7 +196,7 @@ async function loadChapter(n) {
     // Process Tategaki and images
     htmlContent = replaceTategaki(htmlContent);
     htmlContent = replaceImageTags(htmlContent);
-    htmlContent = injectBookmarksIntoHTML(htmlContent);
+    htmlContent = injectBookmarksIntoHTML(htmlContent, storyPath, chapter);
 
     //Jump to bookmark and start observing
     restoreBookmark(storyPath, chapter);
@@ -539,9 +539,8 @@ function activateImageNavigation() {
   }
 }
 
-function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
+function injectBookmarksIntoHTML(htmlContent, story, chapter) {
   let counter = 0;
-  const story = encodeURIComponent(storyPath);
 
   return htmlContent.replace(/<\/(p|h1|h2|blockquote)>/g, (match) => {
     const id = `bm-${story}-ch${chapter}-${counter++}`;
