@@ -657,20 +657,18 @@ document.addEventListener("DOMContentLoaded", () => {
   activateImageNavigation();
 });
 
-document.querySelectorAll(".btn-scroll-down").forEach(btn => {
-  btn.onclick = () => {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth"
-    });
-  };
-});
+document.addEventListener("click", (e) => {
+  const target = e.target;
+  const bookmarks = Array.from(document.querySelectorAll(".reader-bookmark"));
+  if (!bookmarks.length) return;
 
-document.querySelectorAll(".btn-scroll-up").forEach(btn => {
-  btn.onclick = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  };
+  if (target.classList.contains("btn-scroll-down")) {
+    bookmarks.at(-1)?.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+
+  if (target.classList.contains("btn-scroll-up")) {
+    bookmarks[0].scrollIntoView({ behavior: "smooth" });
+    return;
+  }
 });
