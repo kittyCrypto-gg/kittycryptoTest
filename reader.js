@@ -540,8 +540,12 @@ function activateImageNavigation() {
   }
 }
 
+function makeStoryKey(storyPath) {
+  return encodeURIComponent(storyPath).replace(/\W/g, '_');
+}
+
 function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
-  const storyKey = encodeURIComponent(storyPath);
+  const storyKey = makeStoryKey(storyPath);
   let counter = 0;
 
   return htmlContent.replace(/<\/(p|h1|h2|blockquote)>/g, (match) => {
@@ -587,20 +591,23 @@ function observeAndSaveBookmarkProgress() {
 }
 
 function restoreBookmark(storyPath, chapter) {
-  const storyKey = encodeURIComponent(storyPath);
+  const storyKey = makeStoryKey(storyPath);
   const key = `bookmark_${storyKey}_ch${chapter}`;
   console.log(`[restoreBookmark] Looking for key: ${key}`);
+
   const id = localStorage.getItem(key);
   if (!id) {
     console.log(`[restoreBookmark] No bookmark ID found in localStorage`);
     return;
   }
+
   console.log(`[restoreBookmark] Bookmark ID from storage: ${id}`);
   const el = document.getElementById(id);
   if (!el) {
     console.warn(`[restoreBookmark] No element found in DOM with ID: ${id}`);
     return;
   }
+
   console.log(`[restoreBookmark] Scrolling to element with ID: ${id}`);
   el.scrollIntoView({ behavior: "smooth" });
 }
