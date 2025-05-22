@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Avatar Generator Test</title>
+  <style>
+    body {
+      background: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 1em;
+    }
+
+    .avatar-container {
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      overflow: hidden;
+      width: 128px;
+      height: 128px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Generated Avatar</h1>
+  <div id="avatar-root" class="avatar-container"></div>
+
+  <script type="module" src="avatar.js"></script>
+</body>
+</html>
