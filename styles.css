@@ -1145,6 +1145,10 @@ body.dark-mode .tategaki-container svg text {
   border-radius: 50%;
 }
 
+.dark-mode .avatar-container {
+  filter: contrast(1.2) brightness(0.85);
+}
+
 /* Updated chat header layout */
 .chat-header {
   display: flex;
