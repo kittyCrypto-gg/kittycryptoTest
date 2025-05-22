@@ -663,12 +663,16 @@ document.addEventListener("click", (e) => {
   if (!bookmarks.length) return;
 
   if (target.classList.contains("btn-scroll-down")) {
-    bookmarks.at(-1)?.scrollIntoView({ behavior: "smooth" });
+    const upBtn = document.querySelector(".btn-scroll-up");
+    if (!upBtn) return;
+    upBtn.scrollIntoView({ behavior: "smooth" });
     return;
   }
 
   if (target.classList.contains("btn-scroll-up")) {
-    bookmarks[0].scrollIntoView({ behavior: "smooth" });
+    const downBtn = document.querySelector(".btn-scroll-down");
+    if (!downBtn) return;
+    downBtn.scrollIntoView({ behavior: "smooth" });
     return;
   }
 });
