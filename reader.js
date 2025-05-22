@@ -550,43 +550,56 @@ function injectBookmarksIntoHTML(htmlContent, story, chapter) {
 
 function observeAndSaveBookmarkProgress() {
   const bookmarks = Array.from(document.querySelectorAll(".reader-bookmark"));
-
+  console.log(`[observe] Found ${bookmarks.length} bookmark elements`);
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-
+      if (!entry.isIntersecting) return;
       const id = entry.target.id;
+      console.log(`[observe] Bookmark entered view: ${id}`);
       const match = id.match(/^bm-(.+)-ch(\d+)-\d+$/);
-      if (!match) continue;
-
+      if (!match) {
+        console.warn(`[observe] Invalid bookmark ID format: ${id}`);
+        return;
+      }
       const storyKey = match[1];
       const chapter = match[2];
       const key = `bookmark_${storyKey}_ch${chapter}`;
-
       const newIndex = bookmarks.findIndex(el => el.id === id);
       const savedId = localStorage.getItem(key);
       const savedIndex = bookmarks.findIndex(el => el.id === savedId);
-
-      if (newIndex <= savedIndex) continue;
-
+      console.log(`[observe] Checking bookmark index: current=${newIndex}, saved=${savedIndex}`);
+      if (newIndex <= savedIndex) {
+        console.log(`[observe] Not updating bookmark — already at index ${savedIndex}`);
+        return;
+      }
       localStorage.setItem(key, id);
+      console.log(`[observe] Updated bookmark: ${key} → ${id}`);
     }
   }, {
     threshold: 0.6
   });
-
-  bookmarks.forEach(el => observer.observe(el));
+  bookmarks.forEach(el => {
+    observer.observe(el);
+    console.log(`[observe] Observing bookmark: ${el.id}`);
+  });
 }
 
 function restoreBookmark(storyPath, chapter) {
   const storyKey = encodeURIComponent(storyPath);
   const key = `bookmark_${storyKey}_ch${chapter}`;
+  console.log(`[restoreBookmark] Looking for key: ${key}`);
   const id = localStorage.getItem(key);
-  if (!id) return;
-
+  if (!id) {
+    console.log(`[restoreBookmark] No bookmark ID found in localStorage`);
+    return;
+  }
+  console.log(`[restoreBookmark] Bookmark ID from storage: ${id}`);
   const el = document.getElementById(id);
-  if (!el) return;
-
+  if (!el) {
+    console.warn(`[restoreBookmark] No element found in DOM with ID: ${id}`);
+    return;
+  }
+  console.log(`[restoreBookmark] Scrolling to element with ID: ${id}`);
   el.scrollIntoView({ behavior: "smooth" });
 }
 
