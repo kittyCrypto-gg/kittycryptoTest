@@ -5,16 +5,29 @@ async function hashString(str) {
   return Array.from(new Uint8Array(hashBuffer));
 }
 
-function drawSpiralArm(ctx, hash, colour, angleOffset) {
+function getHSLColour(seed, offset = 0) {
+  const hue = (seed + offset * 60) % 360;
+  return `hsl(${hue}, 80%, 60%)`;
+}
+
+function pickDistinctColours(seed) {
+  const hues = [seed % 360, (seed + 120) % 360, (seed + 240) % 360];
+  const arms = hues.map(hue => `hsl(${hue}, 80%, 60%)`);
+  const bgHue = (seed + 180) % 360;
+  const background = `hsl(${bgHue}, 50%, 95%)`; // Light pastel background
+  return { arms, background };
+}
+
+function drawSpiralArm(ctx, colour, angleOffset) {
   ctx.save();
   ctx.rotate(angleOffset);
   ctx.strokeStyle = colour;
-  ctx.lineWidth = 1 + (hash[5] % 3);
+  ctx.lineWidth = 2.8;
   ctx.beginPath();
 
   for (let t = 0; t < 60; t++) {
-    const theta = t * 0.25;
-    const r = t * 1.2;
+    const theta = t * 0.28;
+    const r = t * 1.5;
     const x = r * Math.cos(theta);
     const y = r * Math.sin(theta);
     t === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
@@ -26,22 +39,22 @@ function drawSpiralArm(ctx, hash, colour, angleOffset) {
 
 async function drawSpiralIdenticon(username, size = 128) {
   const hash = await hashString(username);
+  const seed = hash[0] + hash[1] * 256;
+  const { arms, background } = pickDistinctColours(seed);
+
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, size, size);
+
+  // Fill background
+  ctx.fillStyle = background;
+  ctx.fillRect(0, 0, size, size);
   ctx.translate(size / 2, size / 2);
 
-  const numArms = 3 + (hash[0] % 3); // 3–5 arms
-  const colours = [
-    `hsl(${hash[1] * 1.4}, 80%, 60%)`,
-    `hsl(${hash[2] * 1.4}, 80%, 50%)`,
-    `hsl(${hash[3] * 1.4}, 80%, 70%)`
-  ];
-
-  for (let arm = 0; arm < numArms; arm++) {
-    const angleOffset = (2 * Math.PI / numArms) * arm;
-    drawSpiralArm(ctx, hash, colours[arm % colours.length], angleOffset);
+  // Draw 3 spiral arms
+  for (let i = 0; i < 3; i++) {
+    const angle = (2 * Math.PI / 3) * i;
+    drawSpiralArm(ctx, arms[i], angle);
   }
 
   return canvas;
@@ -55,12 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
   async function updateAvatar() {
     const name = input.value.trim();
     if (!name) {
-      container.innerHTML = ""; // Clear
+      container.innerHTML = "";
       return;
     }
 
     const canvas = await drawSpiralIdenticon(name);
-    container.innerHTML = ""; // Clear previous
+    container.innerHTML = "";
     container.appendChild(canvas);
   }
 
