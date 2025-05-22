@@ -5,11 +5,27 @@ async function hashString(str) {
   return Array.from(new Uint8Array(hashBuffer));
 }
 
-function pickDistinctColours(seed) {
-  const hues = [seed % 360, (seed + 120) % 360, (seed + 240) % 360];
-  const arms = hues.map(hue => `hsl(${hue}, 80%, 60%)`);
-  const bgHue = (seed + 180) % 360;
-  const background = `hsl(${bgHue}, 50%, 80%)`; // darker background
+function getHSL(hue, sat = 80, light = 60) {
+  return `hsl(${hue % 360}, ${sat}%, ${light}%)`;
+}
+
+function pickDistinctColours(seed, hash) {
+  const baseHue = seed % 360;
+
+  // Triadic arm colours
+  const arms = [
+    getHSL(baseHue),             // Arm 1
+    getHSL(baseHue + 120),       // Arm 2
+    getHSL(baseHue + 240)        // Arm 3
+  ];
+
+  // Choose one of the arms as the background base hue (deterministically from hash)
+  const bgIndex = hash[5] % 3;
+  const bgHue = (baseHue + 120 * bgIndex) % 360;
+
+  // More pastel/light background derived from one of the arms
+  const background = getHSL(bgHue, 40, 85);
+
   return { arms, background };
 }
 
@@ -45,7 +61,7 @@ function getSpiralConfig(hash) {
 async function drawSpiralIdenticon(username, size = 128) {
   const hash = await hashString(username);
   const seed = hash[0] + hash[1] * 256;
-  const { arms, background } = pickDistinctColours(seed);
+  const { arms, background } = pickDistinctColours(seed, hash);
   const spiralConfig = getSpiralConfig(hash);
 
   const canvas = document.createElement("canvas");
