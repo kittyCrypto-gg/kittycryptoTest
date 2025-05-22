@@ -8,10 +8,9 @@ let userIP = null;
 
 // Get full page identifier
 function getPageIdentifier() {
-  const page = window.location.href.replace(window.location.origin, "");
-  const decoded = decodeURIComponent(page);
-  console.log(`🔎 Decoded page: ${decoded}`);
-  return decoded;
+  const path = window.location.pathname;
+  const query = window.location.search;
+  return `${path}${query}`;
 }
 
 // Fetch Session Token
@@ -62,9 +61,9 @@ function formatTimestamp(isoString) {
 async function loadCommentsForPage() {
   const currentPage = getPageIdentifier();
   try {
-    //const encodedPage = encodeURIComponent(currentPage);
-    //const response = await fetch(`${COMMENT_LOAD_URL}?page=${encodedPage}`);
-    const response = await fetch(`${COMMENT_LOAD_URL}?page=${currentPage}`);
+    const encodedPage = encodeURIComponent(currentPage);
+    const response = await fetch(`${COMMENT_LOAD_URL}?page=${encodedPage}`);
+    
     if (!response.ok) throw new Error(`Failed to load comments: ${response.status}`);
 
     const comments = await response.json();
