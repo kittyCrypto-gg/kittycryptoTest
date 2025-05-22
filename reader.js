@@ -198,12 +198,13 @@ async function loadChapter(n) {
     htmlContent = replaceImageTags(htmlContent);
     htmlContent = injectBookmarksIntoHTML(htmlContent, storyPath, chapter);
 
+    // Render the HTML
+    readerRoot.innerHTML = htmlContent;
+
     //Jump to bookmark and start observing
     restoreBookmark(storyPath, chapter);
     observeAndSaveBookmarkProgress();
     
-    // Render the HTML
-    readerRoot.innerHTML = htmlContent;
     // Activate features
     activateImageNavigation();
     chapter = n;
