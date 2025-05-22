@@ -96,7 +96,8 @@ async function renderComments() {
     const avatarWrapper = document.createElement("div");
     avatarWrapper.className = "avatar-container";
 
-    const identicon = await generateIdenticonSVG(`${comment.nick}@${comment.ip}`, 48);
+    // Generate SVG identicon using nick@ip
+    const identicon = await drawSpiralIdenticon(`${comment.nick}@${comment.ip}`, 48);
     avatarWrapper.appendChild(identicon);
 
     // Nickname and timestamp
@@ -108,6 +109,7 @@ async function renderComments() {
     timestampSpan.className = "chat-timestamp";
     timestampSpan.textContent = formatTimestamp(comment.timestamp);
 
+    // Assemble header with avatar, nickname, and timestamp
     header.appendChild(avatarWrapper);
     header.appendChild(nickSpan);
     header.appendChild(timestampSpan);
