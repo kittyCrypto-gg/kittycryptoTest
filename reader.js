@@ -704,11 +704,6 @@ function observeAndSaveBookmarkProgress() {
   });
 }
 
-.reader - highlight {
-  background - color: yellow;
-  transition: background - color 2s ease -in -out;
-}
-
 function restoreBookmark(storyPath, chapter) {
   const storyKey = makeStoryKey(storyPath);
   const key = `bookmark_${storyKey}_ch${chapter}`;
