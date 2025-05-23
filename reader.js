@@ -48,10 +48,18 @@ function updatePrevButtonState() {
   });
 }
 
+function clearBookmarkForCurrentChapter() {
+  const storyKey = makeStoryKey(storyPath);
+  const key = `bookmark_${storyKey}_ch${chapter}`;
+  localStorage.removeItem(key);
+  alert("Bookmark cleared for this chapter.");
+}
+
 // Inject navigation bars at top and bottom
 function injectNav() {
   const navHTML = `
     <div class="chapter-navigation">
+      <button class="btn-clear-bookmark">↩️</button>
       <button class="btn-prev">⏪</button>
       <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
       <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
@@ -133,6 +141,10 @@ function bindNavigationEvents() {
     localStorage.removeItem(chapterCacheKey);
     lastKnownChapter = await discoverChapters();
     updateNav();
+  });
+  
+  document.querySelectorAll(".btn-clear-bookmark").forEach(btn => {
+    btn.onclick = clearBookmarkForCurrentChapter;
   });
 
   document.querySelectorAll(".font-increase").forEach(btn => btn.onclick = () => updateFontSize(0.1));
