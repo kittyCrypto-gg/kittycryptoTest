@@ -716,17 +716,18 @@ function restoreBookmark(storyPath, chapter) {
   const bookmarkDiv = document.getElementById(id);
   if (!bookmarkDiv) return;
 
-  // Scroll into view
-  bookmarkDiv.scrollIntoView({ behavior: "smooth" });
+  // Scroll to the next paragraph if available
+  const next = bookmarkDiv.nextElementSibling || bookmarkDiv;
+  const rect = next.getBoundingClientRect();
+  const scrollY = window.scrollY + rect.top;
 
-  // Apply the highlight
+  window.scrollTo({ top: scrollY, behavior: "smooth" });
+
+  // Apply highlight to the actual bookmarked paragraph (not the one we're scrolling to)
   bookmarkDiv.classList.add("reader-highlight");
 
-  // After 5 seconds, trigger fade out
   setTimeout(() => {
     bookmarkDiv.classList.add("fade-out");
-
-    // Once the transition ends, clean up
     bookmarkDiv.addEventListener("transitionend", () => {
       bookmarkDiv.classList.remove("reader-highlight", "fade-out");
     }, { once: true });
