@@ -59,9 +59,9 @@ function showTemporaryNotice(message) {
   const notice = document.createElement("div");
   notice.textContent = message;
   notice.style.position = "fixed";
-  notice.style.bottom = "20px";
+  notice.style.top = "50%"; // halfway down the viewport
   notice.style.left = "50%";
-  notice.style.transform = "translateX(-50%)";
+  notice.style.transform = "translate(-50%, -50%)"; // centre horizontally and vertically
   notice.style.background = "var(--chatroom-bg-colour)";
   notice.style.color = "var(--chatroom-text-colour)";
   notice.style.padding = "10px 20px";
