@@ -9,7 +9,7 @@
   
   /* Frame */
   --frame-bg-colour: #ffffff;
-  --frame-width: 80%;
+  --frame-width: 90%;
 
   /* Header */
   --header-bg-colour: #b2ebf2;
@@ -168,7 +168,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   overflow: auto;
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 40px);
   height: fit-content;
 }
 
