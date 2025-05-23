@@ -55,7 +55,7 @@ function clearBookmarkForCurrentChapter() {
   showTemporaryNotice("Bookmark cleared for this chapter.");
 }
 
-function showTemporaryNotice(message) {
+function showTemporaryNotice(message, timeout = 1000) {
   const notice = document.createElement("div");
   notice.textContent = message;
   notice.style.position = "fixed";
@@ -72,7 +72,7 @@ function showTemporaryNotice(message) {
 
   setTimeout(() => {
     notice.remove();
-  }, 1000);
+  }, timeout);
 }
 
 // Inject navigation bars at top and bottom
@@ -657,13 +657,17 @@ function makeStoryKey(storyPath) {
 
 function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
   const storyKey = makeStoryKey(storyPath);
+  const bookmarkId = localStorage.getItem(`bookmark_${storyKey}_ch${chapter}`);
   let counter = 0;
 
   return htmlContent.replace(
     /<(p|h1|h2|blockquote)(.*?)>([\s\S]*?)<\/\1>/g,
     (match, tag, attrs, inner) => {
       const id = `bm-${storyKey}-ch${chapter}-${counter++}`;
-      return `<div class="reader-bookmark" id="${id}"><${tag}${attrs}>${inner}</${tag}></div>`;
+      const emojiSpan = id === bookmarkId
+        ? `<span class="bookmark-emoji" aria-label="bookmark">🔖</span> `
+        : '';
+      return `<div class="reader-bookmark" id="${id}"><${tag}${attrs}>${emojiSpan}${inner}</${tag}></div>`;
     }
   );
 }
