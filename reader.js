@@ -92,7 +92,10 @@ function updateFontSize(delta = 0) {
 function bindNavigationEvents() {
   const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
   document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
-    if (!prevBtnEn(chapter, chapters)) return;
+    if (!prevBtnEn(chapter, chapters)) {
+      btn.disabled = true;
+      return;
+    }
     jumpTo(chapter - 1);
   });
 
