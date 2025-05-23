@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <script src="themeLoad.js"></script>
     <meta charset="UTF-8" />
     <script src="main.js"></script>
@@ -9,28 +9,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kitty Crypto Reader</title>
     <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+</head>
+<body>
     <div class="frame">
-      <nav id="main-menu"></nav>
-      <header id="main-header">My Stories</header>
-      <div id="story-picker"></div>
-      <main id="main-content">
-        <!-- Chapter will be injected here -->
-        <div id="reader" class="reader-container"></div>
-        <div id="comments" class="comments-container">
-          <div class="comments-header">Comments</div>
-          <div id="comments-box" class="comments-box">
-            <!-- Comments will be dynamically inserted here -->
-          </div>
-          <div class="comment-input">
-            <input type="text" id="comment-nick" maxlength="32" placeholder="Your nickname (max 32 characters)" />
-            <textarea id="new-comment" maxlength="256" rows="4" placeholder="Write your comment here (max 256 characters)..."></textarea>
-            <button id="post-comment-button">Post</button>
-          </div>
-      </main>
-      <footer id="main-footer"></footer>
-    </div>
-  </body>
-  </body>
+        <div class="frame-content">
+            <nav id="main-menu"></nav>
+            <header id="main-header">My Stories</header>
+            <div id="story-picker"></div>
+            <main id="main-content">
+                <!-- Chapter will be injected here -->
+                <div id="reader" class="reader-container"></div>
+                <div id="comments" class="comments-container">
+                    <div class="comments-header">Comments</div>
+                    <div id="comments-box" class="comments-box">
+                        <!-- Comments will be dynamically inserted here -->
+                    </div>
+                    <div class="comment-input">
+                        <input type="text" id="comment-nick" maxlength="32" placeholder="Your nickname (max 32 characters)" />
+                        <textarea id="new-comment" maxlength="256" rows="4" placeholder="Write your comment here (max 256 characters)..."></textarea>
+                        <button id="post-comment-button">Post</button>
+                    </div>
+            </main>
+            <footer id="main-footer"></footer>
+            </div>
+        </div>
+</body>
+</body>
 </html>
