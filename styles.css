@@ -5,16 +5,18 @@
   /* Body */
   --body-bg-colour: #e8f8f5;
   --body-text-colour: #333;
-  --body-height: auto; /* Fix "hv" to "vh" */
-  
+  --body-height: auto;
+  /* Fix "hv" to "vh" */
+
   /* Frame */
   --frame-bg-colour: #ffffff;
   --frame-width: 95%;
-  
+
   --frame-padding: 20px;
-  
+
   .frame-content {
-    flex-grow: 1; /* Expands to take up available space */
+    flex-grow: 1;
+    /* Expands to take up available space */
   }
 
   /* Header */
@@ -32,13 +34,14 @@
   --footer-bg-colour: #b3e5fc;
   --footer-text-colour: #01579b;
   --footer-border-colour: #01579b;
-  
+
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 
   /* Chatroom */
   --chatroom-border-colour: #ccc;
   --chatroom-bg-colour: #f9f9f9;
-  --chatroom-text-colour: #333; /* For monospace text if needed */
+  --chatroom-text-colour: #333;
+  /* For monospace text if needed */
 
   /* Timestamps, etc. */
   --timestamp-colour: grey;
@@ -73,9 +76,11 @@
   --edit-modal-input-border-colour: #ccc;
 
   /* Modal Buttons (edit / cancel) */
-  --edit-modal-btn-save-bg-colour: #4caf50; /* Light theme green */
+  --edit-modal-btn-save-bg-colour: #4caf50;
+  /* Light theme green */
   --edit-modal-btn-save-hover-colour: #388e3c;
-  --edit-modal-btn-cancel-bg-colour: #d32f2f; /* Light theme red */
+  --edit-modal-btn-cancel-bg-colour: #d32f2f;
+  /* Light theme red */
   --edit-modal-btn-cancel-hover-colour: #b71c1c;
 }
 
@@ -169,7 +174,8 @@ body {
 .frame {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Pushes content and footer apart */
+  justify-content: space-between;
+  /* Pushes content and footer apart */
   min-height: 100vh;
   height: fit-content;
 
@@ -206,7 +212,8 @@ nav {
   border-bottom: 2px solid var(--nav-border-colour);
   overflow-x: auto;
   white-space: nowrap;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  /* Smooth scrolling on mobile */
 }
 
 /* Hide scrollbar on some browsers */
@@ -246,14 +253,14 @@ footer {
   background-color: var(--footer-bg-colour);
   color: var(--footer-text-colour);
   text-align: center;
-  padding: 10px var(--frame-padding); 
+  padding: 10px var(--frame-padding);
   font-size: 0.9rem;
   border-top: 2px solid var(--footer-border-colour);
   left: 0;
   right: 0;
   bottom: 0;
-  box-sizing: border-box; 
-  width: 100%; 
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* Chatroom styles */
@@ -310,7 +317,8 @@ footer {
   display: block;
   /* In dark mode, it's #ffffff; in light, it’s inherited from body. */
   color: inherit;
-  margin-top: 5px; /* from snippet's second .chat-text definition */
+  margin-top: 5px;
+  /* from snippet's second .chat-text definition */
 }
 
 /* Chat input box */
@@ -615,7 +623,8 @@ body.no-scroll {
   border-radius: 4px;
   background-color: var(--chat-input-bg-colour);
   color: var(--chat-input-text-colour);
-  appearance: textfield; /* for Firefox */
+  appearance: textfield;
+  /* for Firefox */
 }
 
 /* Remove spinners in Chrome/Safari */
@@ -626,9 +635,9 @@ body.no-scroll {
 }
 
 /* Remove spinners in Firefox */
-.chapter-input[type=number] {
+/* .chapter-input[type=number] {
   -moz-appearance: textfield;
-}
+} */
 
 /* Readonly display input */
 .chapter-display[readonly] {
@@ -764,7 +773,8 @@ body.no-scroll {
 }
 
 .reader-intense {
-  background-color: rgba(255, 213, 79, 0.1); /* subtle yellow glow */
+  background-color: rgba(255, 213, 79, 0.1);
+  /* subtle yellow glow */
   border-left-color: gold;
 }
 
@@ -793,7 +803,8 @@ body.no-scroll {
 }
 
 .reader-highlight {
-  background-color: #f9e79f; /* soft pale gold */
+  background-color: #f9e79f;
+  /* soft pale gold */
   transition: background-color 2s ease-in-out, color 2s ease-in-out;
 }
 
@@ -812,7 +823,8 @@ body.no-scroll {
 }
 
 .reader-bookmark.fade-out .reader-paragraph {
-  color: var(--chatroom-text-colour); /* or your theme's default text colour */
+  color: var(--chatroom-text-colour);
+  /* or your theme's default text colour */
 }
 
 .bookmark-emoji {
@@ -849,8 +861,10 @@ body.dark-mode .tategaki-container svg text {
 
 /* Padding compensation */
 .tategaki-container svg {
-  margin-left: 5px; /* To prevent left cropping */
-  margin-bottom: 5px; /* To prevent bottom cropping */
+  margin-left: 5px;
+  /* To prevent left cropping */
+  margin-bottom: 5px;
+  /* To prevent bottom cropping */
 }
 
 /* =========================================
@@ -871,7 +885,7 @@ body.dark-mode .tategaki-container svg text {
   height: 100%;
   border: 2px solid var(--body-text-colour);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
   cursor: zoom-in;
   object-fit: cover;
   transition: transform 0.3s ease, transform-origin 0.3s ease;
@@ -883,9 +897,11 @@ body.dark-mode .tategaki-container svg text {
 
 /* Zoom effect */
 .chapter-image.active {
-  transform: scale(2); /* 2x zoom */
+  transform: scale(2);
+  /* 2x zoom */
   cursor: move;
-  touch-action: none; /* disable scroll and gestures while zoomed */
+  touch-action: none;
+  /* disable scroll and gestures while zoomed */
 }
 
 /* =========================================
@@ -904,7 +920,7 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* Show the overlay when the image is zoomed */
-.chapter-image.active + .image-nav {
+.chapter-image.active+.image-nav {
   display: flex;
   opacity: 1;
 }
@@ -1009,8 +1025,10 @@ body.dark-mode .tategaki-container svg text {
 
 .jp-about {
   display: flex;
-  justify-content: flex-end; /* align items to the right */
-  flex-direction: row-reverse; /* ensures right-to-left layout */
+  justify-content: flex-end;
+  /* align items to the right */
+  flex-direction: row-reverse;
+  /* ensures right-to-left layout */
   direction: rtl;
   overflow-x: auto;
   overflow-y: hidden;
@@ -1026,27 +1044,32 @@ body.dark-mode .tategaki-container svg text {
 }
 
 .jp-about::-webkit-scrollbar {
-  height: 8px; /* height of the horizontal scrollbar */
+  height: 8px;
+  /* height of the horizontal scrollbar */
 }
 
 .jp-about::-webkit-scrollbar-thumb {
-  background-color: var(--nav-border-colour); /* colour of the scrollbar handle */
+  background-color: var(--nav-border-colour);
+  /* colour of the scrollbar handle */
   border-radius: 4px;
 }
 
 .jp-about::-webkit-scrollbar-track {
-  background-color: var(--frame-bg-colour); /* colour of the scrollbar track */
+  background-color: var(--frame-bg-colour);
+  /* colour of the scrollbar track */
   border-radius: 4px;
 }
 
 .tategaki-container {
   display: inline-block;
   margin-left: 0;
-  margin-right: 10px; /* spacing between columns */
+  margin-right: 10px;
+  /* spacing between columns */
 }
 
 .tategaki-container svg {
-  margin-left: 10px; /* gives columns space */
+  margin-left: 10px;
+  /* gives columns space */
 }
 
 /* =========================================
@@ -1257,6 +1280,7 @@ body.dark-mode .tategaki-container svg text {
   color: var(--chat-input-text-colour);
   box-sizing: border-box;
 }
+
 .dark-mode #comment-nick {
   background-color: var(--chat-input-bg-colour);
   color: var(--chat-input-text-colour);
@@ -1272,7 +1296,7 @@ body.dark-mode .tategaki-container svg text {
   color: var(--chatroom-text-colour);
   border: 2px solid var(--nav-border-colour);
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   font-weight: bold;
   z-index: 9999;
   transition: opacity 0.3s ease;
@@ -1289,7 +1313,7 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
-   GitHub Commit Feed Styling (Matches Comments)
+  GitHub Commit Feed Styling
 ========================================= */
 
 .github-output-frame {
@@ -1307,7 +1331,21 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
-   Individual Commit Block Styling
+  Side-by-side Commit Panel Layout
+========================================= */
+.commits-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* =========================================
+  Individual Commit Block Styling
 ========================================= */
 
 .commit-block {
@@ -1332,20 +1370,21 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
-   Commit Section Container
+  Commit Section Container
 ========================================= */
 .commits-container {
+  flex: 1;
+  min-width: 360px;
+  max-width: 600px;
   background-color: var(--frame-bg-colour);
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin: 40px auto;
   padding: 20px;
-  width: 90%;
-  max-width: 800px;
   color: var(--body-text-colour);
   display: flex;
   flex-direction: column;
   gap: 20px;
+  box-sizing: border-box;
 }
 
 /* Optional: distinct commit header link style, if needed */

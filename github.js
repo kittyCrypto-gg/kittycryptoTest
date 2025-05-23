@@ -45,7 +45,13 @@ function renderCommits(commits, containerId) {
 
 // Run on load:
 fetchCommits('kittyCrypto-gg', 'kittycrypto')
-  .then(commits => renderCommits(commits, 'github-commits'))
+  .then(commits => renderCommits(commits, 'github-commits-frontend'))
+  .catch(err => {
+    document.getElementById('github-commits').textContent = 'Error: ' + err.message;
+  });
+
+  fetchCommits('kittyCrypto-gg', 'kittyServer')
+  .then(commits => renderCommits(commits, 'github-commits-backend'))
   .catch(err => {
     document.getElementById('github-commits').textContent = 'Error: ' + err.message;
   });

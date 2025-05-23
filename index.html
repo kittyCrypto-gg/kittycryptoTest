@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script src="themeLoad.js"></script>
     <meta charset="UTF-8">
@@ -8,6 +9,7 @@
     <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
     <script type="module" src="main.js"></script>
 </head>
+
 <body>
     <div class="frame">
         <div class="frame-content">
@@ -16,12 +18,22 @@
             <main id="main-content">
                 <p>This site is under construction! But feel free to explore it while I build it!</p>
                 <p>~Kitty</p>
-                 <div class="commits-container">
-                  <a class="comments-header" href="https://github.com/kittyCrypto-gg/" target="_blank" rel="noopener noreferrer">
-                    Front-end Commits
-                  </a>
-                  <div id="github-commits" class="github-output-frame"></div>
-                 </div>
+                <div class="commits-row">
+                    <div class="commits-container">
+                        <a class="comments-header" href="https://github.com/kittyCrypto-gg/" target="_blank"
+                            rel="noopener noreferrer">
+                            Front-end Commits
+                        </a>
+                        <div id="github-commits-frontend" class="github-output-frame"></div>
+                    </div>
+                    <div class="commits-container">
+                        <a class="comments-header" href="https://github.com/kittyCrypto-gg/" target="_blank"
+                            rel="noopener noreferrer">
+                            Back-end Commits
+                        </a>
+                        <div id="github-commits-backend" class="github-output-frame"></div>
+                    </div>
+                </div>
             </main>
             <div id="comments" class="comments-container">
                 <div class="comments-header">Comments</div>
@@ -29,8 +41,10 @@
                     <!-- Comments will be dynamically inserted here -->
                 </div>
                 <div class="comment-input">
-                    <input type="text" id="comment-nick" maxlength="32" placeholder="Your nickname (max 32 characters)" />
-                    <textarea id="new-comment" maxlength="256" rows="4" placeholder="Write your comment here (max 256 characters)..."></textarea>
+                    <input type="text" id="comment-nick" maxlength="32"
+                        placeholder="Your nickname (max 32 characters)" />
+                    <textarea id="new-comment" maxlength="256" rows="4"
+                        placeholder="Write your comment here (max 256 characters)..."></textarea>
                     <button id="post-comment-button">Post</button>
                 </div>
             </div>
@@ -39,4 +53,5 @@
         <script type="module" src="comments.js"></script>
         <script type="module" src="github.js"></script>
 </body>
+
 </html>
