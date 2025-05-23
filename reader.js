@@ -33,13 +33,9 @@ function getElementsByAliases(doc, aliases) {
 
 function prevBtnEn(chapter, chapters) {
   const hasChapter0 = chapters.includes(0);
-  alert(`Current chapter: ${chapter} (type: ${typeof chapter})\nHas chapter 0: ${hasChapter0}`);
-
-  chapter = Number(chapter); // Ensure it's treated as a number
-
-  if (chapter === 1 && hasChapter0) return true;
-  if (chapter === 0) return false;
-  if (chapter < 0) return false;
+  chapter = Number(chapter);
+  if (chapter <= 1 && !hasChapter0) return false;
+  if (chapter <= 0) return false;
   return true;
 }
 
