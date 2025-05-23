@@ -79,7 +79,7 @@ async function loadCommentsForPage() {
 }
 
 // await helper for dom readiness
-function domReady(): Promise<void> {
+function domReady() {
   if (document.readyState !== "loading") return Promise.resolve();
 
   return new Promise(resolve => {
