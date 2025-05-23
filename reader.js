@@ -72,14 +72,6 @@ function injectNav() {
 
   readerRoot.insertAdjacentElement("beforebegin", navTop);
   readerRoot.insertAdjacentElement("afterend", navBottom);
-
-  // Disable prev buttons on load if needed
-  const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
-  document.querySelectorAll(".btn-prev").forEach(btn => {
-    if (!prevBtnEn(chapter, chapters)) {
-      btn.disabled = true;
-    }
-  });
 }
 
 // Font size logic
