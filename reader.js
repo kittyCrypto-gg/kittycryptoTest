@@ -361,9 +361,6 @@ function updateNav() {
   const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
   const hasChapter0 = chapters.includes(0);
 
-  document.querySelectorAll(".btn-prev").forEach(btn => {
-    btn.disabled = chapter === 0 && !hasChapter0;
-  });
   document.querySelectorAll(".btn-next").forEach(btn => {
     btn.disabled = chapter === lastKnownChapter;
   });
