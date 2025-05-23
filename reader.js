@@ -57,9 +57,11 @@ function injectNav() {
       <button class="font-increase">➕</button>
     </div>
   `;
+
   const navTop = document.createElement("div");
   navTop.innerHTML = navHTML;
   const navBottom = navTop.cloneNode(true);
+
   // Replace ⏬ with ⏫ in the bottom nav
   const scrollDownBtn = navBottom.querySelector(".btn-scroll-down");
   if (scrollDownBtn) {
@@ -67,18 +69,17 @@ function injectNav() {
     scrollDownBtn.classList.remove("btn-scroll-down");
     scrollDownBtn.classList.add("btn-scroll-up");
   }
-  
-  
 
   readerRoot.insertAdjacentElement("beforebegin", navTop);
   readerRoot.insertAdjacentElement("afterend", navBottom);
-  
-  // Disable previous buttons if needed
+
+  // Disable prev buttons on load if needed
   const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
   document.querySelectorAll(".btn-prev").forEach(btn => {
-  if (!prevBtnEn(chapter, chapters)) {
-    btn.disabled = true;
-  }
+    if (!prevBtnEn(chapter, chapters)) {
+      btn.disabled = true;
+    }
+  });
 }
 
 // Font size logic
