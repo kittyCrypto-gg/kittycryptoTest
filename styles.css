@@ -1226,3 +1226,13 @@ body.dark-mode .tategaki-container svg text {
   z-index: 9999;
   transition: opacity 0.3s ease;
 }
+
+/* Create a brightened background overlay in dark mode */
+.dark-mode .temporary-notice::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--chatroom-bg-colour);
+  filter: brightness(1.2);
+  z-index: -1;
+}
