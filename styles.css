@@ -1288,42 +1288,66 @@ body.dark-mode .tategaki-container svg text {
   z-index: -1;
 }
 
+/* =========================================
+   GitHub Commit Feed Styling (Matches Comments)
+========================================= */
+
 .github-output-frame {
-  max-width: 800px;
-  height: 400px;
-  overflow-y: auto;
   background-color: var(--chatroom-bg-colour);
+  border: 1px solid var(--chatroom-border-colour);
+  border-radius: 8px;
+  padding: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   color: var(--chatroom-text-colour);
-  font-family: monospace;
-  font-size: 13px;
-  line-height: 1.4;
-  border-left: 2px solid var(--nav-border-colour);
-  margin: 0;
-  padding: 10px 12px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  border-radius: 4px;
-  text-align: left;
 }
 
+/* =========================================
+   Individual Commit Block Styling
+========================================= */
+
 .commit-block {
-  margin-bottom: 0.8em;
-  padding-left: 8px;
-  border-left: 2px solid var(--nav-border-colour);
+  text-align: left;
+  padding: 12px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
 }
+
+/* Alternate Backgrounds for Commits */
+.commit-block:nth-child(odd) {
+  background-color: var(--chatroom-bg-colour);
+}
+
+.commit-block:nth-child(even) {
+  background-color: color-mix(in srgb, var(--chatroom-bg-colour) 85%, black);
+}
+
+.dark-mode .commit-block:nth-child(even) {
+  background-color: color-mix(in srgb, var(--chatroom-bg-colour) 85%, white);
+}
+
+/* =========================================
+   Commit Content Formatting
+========================================= */
 
 .commit-block .commit-message {
   font-weight: bold;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   color: var(--header-text-colour);
 }
 
 .commit-block .commit-meta {
-  font-size: 0.85em;
+  font-size: 0.9em;
   color: var(--timestamp-colour);
-  margin-left: 8px;
+  margin-left: 4px;
 }
 
+/* Commit Link Styling */
 .commit-block a {
   color: var(--menu-button-text-colour);
   font-size: 0.85em;
@@ -1332,12 +1356,4 @@ body.dark-mode .tategaki-container svg text {
 
 .commit-block a:hover {
   text-decoration: none;
-}
-
-.dark-mode .commit-block .commit-message {
-  color: var(--header-text-colour);
-}
-
-.dark-mode .commit-block .commit-meta {
-  color: var(--timestamp-colour);
 }
