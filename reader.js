@@ -43,27 +43,27 @@ function prevBtnEn(chapter, chapters) {
 function injectNav() {
   const navHTML = `
     <div class="chapter-navigation">
-      <button class="btn-prev">âª</button>
+      <button class="btn-prev">⏪</button>
       <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
       <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
-      <button class="btn-jump">â¯ï¸</button>
+      <button class="btn-jump">⏯️</button>
       <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
-      <button class="btn-next">â©</button>
-      <button class="btn-scroll-down">â¬</button>
+      <button class="btn-next">⏩</button>
+      <button class="btn-scroll-down">⏬</button>
     </div>
     <div class="font-controls">
-      <button class="font-decrease">â</button>
-      <button class="font-reset">ð</button>
-      <button class="font-increase">â</button>
+      <button class="font-decrease">➖</button>
+      <button class="font-reset">🔁</button>
+      <button class="font-increase">➕</button>
     </div>
   `;
   const navTop = document.createElement("div");
   navTop.innerHTML = navHTML;
   const navBottom = navTop.cloneNode(true);
-  // Replace â¬ with â« in the bottom nav
+  // Replace ⏬ with ⏫ in the bottom nav
   const scrollDownBtn = navBottom.querySelector(".btn-scroll-down");
   if (scrollDownBtn) {
-    scrollDownBtn.textContent = "â«";
+    scrollDownBtn.textContent = "⏫";
     scrollDownBtn.classList.remove("btn-scroll-down");
     scrollDownBtn.classList.add("btn-scroll-up");
   }
@@ -240,7 +240,7 @@ observeAndSaveBookmarkProgress();
   } catch (err) {
     readerRoot.innerHTML = `
       <div class="chapter-404">
-        <h2>ð Chapter ${n} Not Found</h2>
+        <h2>📕 Chapter ${n} Not Found</h2>
         <p>Looks like this XML chapter doesn't exist yet.</p>
       </div>
     `;
@@ -399,13 +399,13 @@ function activateImageNavigation() {
     const navOverlay = document.createElement("div");
     navOverlay.classList.add("image-nav");
     navOverlay.innerHTML = `
-      <button class="btn-up">â¬ï¸</button>
+      <button class="btn-up">⬆️</button>
       <div class="horizontal">
-        <button class="btn-left">â¬ï¸</button>
-        <button class="btn-center">âºï¸</button>
-        <button class="btn-right">â¡ï¸</button>
+        <button class="btn-left">⬅️</button>
+        <button class="btn-center">⏺️</button>
+        <button class="btn-right">➡️</button>
       </div>
-      <button class="btn-down">â¬ï¸</button>
+      <button class="btn-down">⬇️</button>
     `;
 
     container.appendChild(navOverlay);
@@ -608,7 +608,7 @@ function observeAndSaveBookmarkProgress() {
       if (newIndex <= savedIndex)
         return;
       localStorage.setItem(key, id);
-      //console.log(`[observe] Updated bookmark: ${key} â ${id}`);
+      //console.log(`[observe] Updated bookmark: ${key} → ${id}`);
     }
   }, {
     threshold: 0.6
