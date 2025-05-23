@@ -10,6 +10,8 @@
   /* Frame */
   --frame-bg-colour: #ffffff;
   --frame-width: 95%;
+  
+  --frame-padding: 20px;
 
   /* Header */
   --header-bg-colour: #b2ebf2;
@@ -167,12 +169,12 @@ body {
   width: var(--frame-width);
   max-width: 1200px;
   margin: 20px auto;
-  padding: 20px;
+  padding: var(--frame-padding);
   box-sizing: border-box;
   overflow: auto;
   min-height: 100vh;
   height: fit-content;
-  padding-bottom: var(--safe-bottom);
+  padding-bottom: calc(var(--safe-bottom) + 20px);
   position: relative;
 }
 
@@ -236,12 +238,15 @@ footer {
   background-color: var(--footer-bg-colour);
   color: var(--footer-text-colour);
   text-align: center;
-  padding: 10px;
+  padding: 10px var(--frame-padding); 
   font-size: 0.9rem;
-  width: var(--frame-width);
   border-top: 2px solid var(--footer-border-colour);
   position: absolute;
-  bottom: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box; 
+  width: 100%; 
 }
 
 /* Chatroom styles */
