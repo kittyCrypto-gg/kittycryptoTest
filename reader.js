@@ -52,7 +52,27 @@ function clearBookmarkForCurrentChapter() {
   const storyKey = makeStoryKey(storyPath);
   const key = `bookmark_${storyKey}_ch${chapter}`;
   localStorage.removeItem(key);
-  alert("Bookmark cleared for this chapter.");
+  showTemporaryNotice("Bookmark cleared for this chapter.");
+}
+
+function showTemporaryNotice(message) {
+  const notice = document.createElement("div");
+  notice.textContent = message;
+  notice.style.position = "fixed";
+  notice.style.bottom = "20px";
+  notice.style.left = "50%";
+  notice.style.transform = "translateX(-50%)";
+  notice.style.background = "var(--chatroom-bg-colour)";
+  notice.style.color = "var(--chatroom-text-colour)";
+  notice.style.padding = "10px 20px";
+  notice.style.borderRadius = "8px";
+  notice.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+  notice.style.zIndex = "9999";
+  document.body.appendChild(notice);
+
+  setTimeout(() => {
+    notice.remove();
+  }, 1000);
 }
 
 // Inject navigation bars at top and bottom
