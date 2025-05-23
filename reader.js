@@ -123,15 +123,13 @@ function updateFontSize(delta = 0) {
 
 function showNavigationInfo() {
   alert(`Navigation Button Guide:
-
     ⏪  – Go to previous chapter
     ⏯️  – Jump to a specific chapter
     ⏩  – Go to next chapter
     ⏬  – Scroll to the end of the page
     ⏫  – Scroll to the top of the page
-    ↩️  – Clear the current chapter’s saved position
-
-    Use these to move between chapters or manage where you left off.`);
+    ↩️  – Clear the current bookmark
+    `);
 }
 
 function bindNavigationEvents() {
