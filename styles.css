@@ -1335,6 +1335,28 @@ body.dark-mode .tategaki-container svg text {
    Commit Content Formatting
 ========================================= */
 
+/* Match .comments-header while remaining a link */
+.commit-header-link {
+  display: block;
+  text-align: left;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--nav-border-colour);
+  color: var(--header-text-colour);
+  text-decoration: none;
+}
+
+.commit-header-link:hover {
+  text-decoration: underline;
+}
+
+.dark-mode .commit-header-link {
+  color: var(--header-text-colour);
+  border-bottom-color: var(--nav-border-colour);
+}
+
 .commit-block .commit-message {
   font-weight: bold;
   margin-bottom: 4px;
