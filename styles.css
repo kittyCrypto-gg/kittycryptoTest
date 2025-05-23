@@ -1357,11 +1357,14 @@ body.dark-mode .tategaki-container svg text {
 ========================================= */
 
 .commit-block {
-  text-align: left;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
   padding: 12px;
   border-radius: 6px;
-  display: flex;
-  flex-direction: column;
+  background-color: var(--chatroom-bg-colour);
+  text-align: left;
 }
 
 /* Alternate Backgrounds for Commits */
@@ -1381,27 +1384,19 @@ body.dark-mode .tategaki-container svg text {
   Commit Identicon Styling
 ========================================= */
 
-.commit-block {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 12px;
-  border-radius: 6px;
-}
-
 .commit-identicon {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  min-height: 48px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 6px;
   overflow: hidden;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--chatroom-bg-colour);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .commit-identicon svg {
@@ -1412,10 +1407,11 @@ body.dark-mode .tategaki-container svg text {
 }
 
 .commit-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex-grow: 1;
+  min-width: 0;
 }
 
 .dark-mode .commit-identicon {
@@ -1468,7 +1464,7 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
-   Commit Content Formatting
+  Commit Content Formatting
 ========================================= */
 
 /* Match .comments-header while remaining a link */
