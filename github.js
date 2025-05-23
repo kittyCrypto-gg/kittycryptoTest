@@ -1,3 +1,5 @@
+import { drawTriangularIdenticon } from './commitIdenticon.js';
+
 async function fetchCommits(owner, repo, branch = 'main') {
   const url = `https://api.github.com/repos/${owner}/${repo}/commits?sha=${branch}`;
   const response = await fetch(url, {
@@ -21,15 +23,23 @@ async function fetchCommits(owner, repo, branch = 'main') {
   }));
 }
 
-function renderCommits(commits, containerId) {
+async function renderCommits(commits, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = ''; // Clear previous content
 
-  commits.forEach(commit => {
+  for (const commit of commits) {
     const div = document.createElement('div');
     div.className = 'commit-block';
 
-    div.innerHTML = `
+    const identicon = await drawTriangularIdenticon(commit.sha, 48);
+
+    const identiconWrapper = document.createElement('div');
+    identiconWrapper.className = 'commit-identicon';
+    identiconWrapper.appendChild(identicon);
+
+    const contentWrapper = document.createElement('div');
+    contentWrapper.className = 'commit-content';
+    contentWrapper.innerHTML = `
       <div class="commit-message">${commit.message}</div>
       <div class="commit-meta">
         <span><strong>Author:</strong> ${commit.author}</span><br>
@@ -39,19 +49,25 @@ function renderCommits(commits, containerId) {
       </div>
     `;
 
+    div.appendChild(identiconWrapper);
+    div.appendChild(contentWrapper);
     container.appendChild(div);
-  });
+  }
 }
 
 // Run on load:
-fetchCommits('kittyCrypto-gg', 'kittycrypto')
-  .then(commits => renderCommits(commits, 'github-commits-frontend'))
-  .catch(err => {
+(async () => {
+  try {
+    const frontendCommits = await fetchCommits('kittyCrypto-gg', 'kittycrypto');
+    await renderCommits(frontendCommits, 'github-commits-frontend');
+  } catch (err) {
     document.getElementById('github-commits').textContent = 'Error: ' + err.message;
-  });
+  }
 
-  fetchCommits('kittyCrypto-gg', 'kittyServer')
-  .then(commits => renderCommits(commits, 'github-commits-backend'))
-  .catch(err => {
+  try {
+    const backendCommits = await fetchCommits('kittyCrypto-gg', 'kittyServer');
+    await renderCommits(backendCommits, 'github-commits-backend');
+  } catch (err) {
     document.getElementById('github-commits').textContent = 'Error: ' + err.message;
-  });
+  }
+})();

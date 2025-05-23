@@ -1316,6 +1316,14 @@ body.dark-mode .tategaki-container svg text {
   GitHub Commit Feed Styling
 ========================================= */
 
+.commits-wrapper {
+  margin: 40px auto;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
 .github-output-frame {
   background-color: var(--chatroom-bg-colour);
   border: 1px solid var(--chatroom-border-colour);
@@ -1367,6 +1375,51 @@ body.dark-mode .tategaki-container svg text {
 
 .dark-mode .commit-block:nth-child(even) {
   background-color: color-mix(in srgb, var(--chatroom-bg-colour) 85%, white);
+}
+
+/* =========================================
+  Commit Identicon Styling
+========================================= */
+
+.commit-block {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.commit-identicon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--chatroom-bg-colour);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.commit-identicon svg {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.commit-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.dark-mode .commit-identicon {
+  filter: contrast(1.2) brightness(0.85);
 }
 
 /* =========================================
