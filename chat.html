@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="themeLoad.js"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kitty Crypto Chat</title>
-  <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
-  <script>
-    ["main.js", "chat.js", "message.js"].forEach(scriptName => {
-      const script = document.createElement('script');
-      script.src = `./${scriptName}?v=${Date.now()}`;
-      script.defer = true;
-      document.head.appendChild(script);
-    });
-  </script>
+    <script src="themeLoad.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitty Crypto Chat</title>
+    <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
+    <script>
+        ["main.js", "chat.js", "message.js"].forEach(scriptName => {
+          const script = document.createElement('script');
+          script.src = `./${scriptName}?v=${Date.now()}`;
+          script.defer = true;
+          document.head.appendChild(script);
+        });
+    </script>
 </head>
+
 <body>
-  <div class="frame">
-    <nav id="main-menu"></nav>
-    <header id="main-header">Kitty Crypto Chat</header>
-    <main id="main-content">
-      <div id="chatroom"></div>
-      <div class="chat-inputs">
-        <input type="text" id="nickname" placeholder="Enter your nickname">
-        <input type="text" id="message" placeholder="Type your message here">
-        <button id="send-button">Send</button>
-      </div>
-    </main>
-    <footer id="main-footer"></footer>
-  </div>
+    <div class="frame">
+        <div class="frame-content">
+            <nav id="main-menu"></nav>
+            <header id="main-header">Kitty Crypto Chat</header>
+            <main id="main-content">
+                <div id="chatroom"></div>
+                <div class="chat-inputs">
+                    <input type="text" id="nickname" placeholder="Enter your nickname">
+                    <input type="text" id="message" placeholder="Type your message here">
+                    <button id="send-button">Send</button>
+                </div>
+            </main>
+            <footer id="main-footer"></footer>
+        </div>
+    </div>
 </body>
 </html>
