@@ -659,10 +659,13 @@ function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
   const storyKey = makeStoryKey(storyPath);
   let counter = 0;
 
-  return htmlContent.replace(/<\/(p|h1|h2|blockquote)>/g, (match) => {
-    const id = `bm-${storyKey}-ch${chapter}-${counter++}`;
-    return `${match}\n<div class="reader-bookmark" id="${id}"></div>`;
-  });
+  return htmlContent.replace(
+    /<(p|h1|h2|blockquote)(.*?)>([\s\S]*?)<\/\1>/g,
+    (match, tag, attrs, inner) => {
+      const id = `bm-${storyKey}-ch${chapter}-${counter++}`;
+      return `<div class="reader-bookmark" id="${id}"><${tag}${attrs}>${inner}</${tag}></div>`;
+    }
+  );
 }
 
 function observeAndSaveBookmarkProgress() {
@@ -707,36 +710,29 @@ function observeAndSaveBookmarkProgress() {
 function restoreBookmark(storyPath, chapter) {
   const storyKey = makeStoryKey(storyPath);
   const key = `bookmark_${storyKey}_ch${chapter}`;
-
   const id = localStorage.getItem(key);
   if (!id) return;
 
-  const el = document.getElementById(id);
-  if (!el) return;
+  const bookmarkDiv = document.getElementById(id);
+  if (!bookmarkDiv) return;
 
-  // Scroll to the bookmarked element
-  el.scrollIntoView({ behavior: "smooth" });
+  // Scroll into view
+  bookmarkDiv.scrollIntoView({ behavior: "smooth" });
 
-  // Highlight the paragraph that follows the bookmark
-  const next = el.nextElementSibling;
-  if (next && (next.tagName === 'p' || next.classList.contains('reader-paragraph'))) {
-    next.classList.add("reader-highlight");
+  // Apply highlight directly to the wrapper
+  bookmarkDiv.classList.add("reader-highlight");
+  console.log(`[restore] Highlighting bookmark container: ${bookmarkDiv.tagName} ${bookmarkDiv.classList}`);
 
-    console.log(`[restore] Highlighting paragraph: ${next.tagName} ${next.classList}`);
-
-    // After 5 seconds, start fading out
-    setTimeout(() => {
-      next.style.transition = "background-color 2s ease-in-out";
-      next.style.backgroundColor = "transparent";
-
-      // Clean up the class after transition ends
-      next.addEventListener("transitionend", () => {
-        next.classList.remove("reader-highlight");
-        next.style.transition = "";
-        next.style.backgroundColor = "";
-      }, { once: true });
-    }, 5000);
-  }
+  // Remove highlight after delay
+  setTimeout(() => {
+    bookmarkDiv.style.backgroundColor = "transparent";
+    bookmarkDiv.style.transition = "background-color 2s ease-in-out";
+    bookmarkDiv.addEventListener("transitionend", () => {
+      bookmarkDiv.classList.remove("reader-highlight");
+      bookmarkDiv.style.transition = "";
+      bookmarkDiv.style.backgroundColor = "";
+    }, { once: true });
+  }, 5000);
 }
 
 function restoreLastStoryRead() {
