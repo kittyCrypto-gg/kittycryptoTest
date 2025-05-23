@@ -1287,3 +1287,44 @@ body.dark-mode .tategaki-container svg text {
   filter: brightness(1.2);
   z-index: -1;
 }
+
+.github-output-frame {
+  max-width: 800px;
+  height: 400px;
+  overflow: auto;
+  padding: 1em;
+  border: 1px solid var(--chatroom-border-colour);
+  background-color: var(--chatroom-bg-colour);
+  color: var(--chatroom-text-colour);
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.commit-block {
+  margin-bottom: 1.5em;
+  padding-left: 1em;
+  border-left: 4px solid var(--nav-border-colour);
+}
+
+.commit-block .commit-message {
+  font-weight: bold;
+  color: var(--header-text-colour);
+}
+
+.commit-block .commit-meta {
+  font-size: 0.9em;
+  color: var(--timestamp-colour);
+}
+
+.dark-mode .commit-block .commit-message {
+  color: var(--header-text-colour);
+}
+
+.dark-mode .commit-block .commit-meta {
+  color: var(--timestamp-colour);
+}
+
