@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="themeLoad.js"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kitty Crypto's Page</title>
-  <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
-  <script type="module" src="main.js"></script>
+    <script src="themeLoad.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kitty Crypto's Page</title>
+    <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
+    <script type="module" src="main.js"></script>
 </head>
 <body>
-  <div class="frame">
-    <nav id="main-menu"></nav>
-    <header id="main-header"></header>
-    <main id="main-content">
-      <p>This site is under construction! But feel free to explore it while I build it!</p>
-      <p>~Kitty</p>
-    </main>
-    <div id="comments" class="comments-container">
-      <div class="comments-header">Comments</div>
-      <div id="comments-box" class="comments-box">
-      <!-- Comments will be dynamically inserted here -->
-      </div>
-      <div class="comment-input">
-        <input type="text" id="comment-nick" maxlength="32" placeholder="Your nickname (max 32 characters)" />
-        <textarea id="new-comment" maxlength="256" rows="4" placeholder="Write your comment here (max 256 characters)..."></textarea>
-        <button id="post-comment-button">Post</button>
-      </div>
-    </div>
-    <footer id="main-footer"></footer>
-  <script type="module" src="comments.js"></script>
+    <div class="frame">
+        <div class="frame-content">
+            <nav id="main-menu"></nav>
+            <header id="main-header"></header>
+            <main id="main-content">
+                <p>This site is under construction! But feel free to explore it while I build it!</p>
+                <p>~Kitty</p>
+            </main>
+            <div id="comments" class="comments-container">
+                <div class="comments-header">Comments</div>
+                <div id="comments-box" class="comments-box">
+                    <!-- Comments will be dynamically inserted here -->
+                </div>
+                <div class="comment-input">
+                    <input type="text" id="comment-nick" maxlength="32" placeholder="Your nickname (max 32 characters)" />
+                    <textarea id="new-comment" maxlength="256" rows="4" placeholder="Write your comment here (max 256 characters)..."></textarea>
+                    <button id="post-comment-button">Post</button>
+                </div>
+            </div>
+            <footer id="main-footer"></footer>
+        </div>
+        <script type="module" src="comments.js"></script>
 </body>
 </html>
