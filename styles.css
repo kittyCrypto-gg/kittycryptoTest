@@ -1332,6 +1332,50 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
+   Commit Section Container
+========================================= */
+.commits-container {
+  background-color: var(--frame-bg-colour);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  color: var(--body-text-colour);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Optional: distinct commit header link style, if needed */
+.commit-header-link {
+  display: block;
+  text-align: left;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--nav-border-colour);
+  color: var(--header-text-colour);
+  text-decoration: none;
+}
+
+.commit-header-link:hover {
+  text-decoration: underline;
+}
+
+.dark-mode .commit-header-link {
+  color: var(--header-text-colour);
+  border-bottom-color: var(--nav-border-colour);
+}
+
+.dark-mode .commits-container {
+  background-color: var(--frame-bg-colour);
+  color: var(--body-text-colour);
+}
+
+/* =========================================
    Commit Content Formatting
 ========================================= */
 
