@@ -170,6 +170,7 @@ body {
   overflow: auto;
   min-height: calc(100vh - 50px);
   height: fit-content;
+  position: relative;
 }
 
 /* Header styles */
@@ -235,6 +236,8 @@ footer {
   padding: 10px;
   font-size: 0.9rem;
   border-top: 2px solid var(--footer-border-colour);
+  position: absolute;
+  bottom: 5px;
 }
 
 /* Chatroom styles */
@@ -1072,7 +1075,7 @@ body.dark-mode .tategaki-container svg text {
 
 .comments-container {
   bottom: 10px;
-  
+  position: absolute;
   background-color: var(--frame-bg-colour);
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
