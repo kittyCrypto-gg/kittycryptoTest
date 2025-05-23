@@ -63,20 +63,7 @@ fetch('./main.json').then(response => {
     const themeToggle = document.createElement("button");
     themeToggle.id = "theme-toggle";
     themeToggle.classList.add("theme-toggle-button");
-    const frameDiv = document.querySelector("div.frame");
-    if (frameDiv) {
-      document.body.appendChild(themeToggle); // Still needs to be in body for `fixed` positioning
-
-    const updateButtonPosition = () => {
-      const frameRect = frameDiv.getBoundingClientRect();
-      const buttonOffset = 5; // 5px from the right edge of the frame
-      const rightDistance = window.innerWidth - frameRect.right + buttonOffset;
-      themeToggle.style.right = `${rightDistance}px`;
-    };
-
-    // Run on load and on resize
-    updateButtonPosition();
-    window.addEventListener("resize", updateButtonPosition);
+  
     // Explicit helpers
     const applyLightTheme = () => {
       document.documentElement.classList.remove("dark-mode");
