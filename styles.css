@@ -1242,7 +1242,20 @@ body.dark-mode .tategaki-container svg text {
   transition: background-color 2s ease-in-out, color 2s ease-in-out;
 }
 
-.reader-bookmark.reader-highlight > .reader-paragraph {
+.reader-bookmark.reader-highlight {
+  background-color: #f9e79f;
+  transition: background-color 2s ease-in-out;
+}
+
+.reader-bookmark.reader-highlight .reader-paragraph {
   color: #222;
   transition: color 2s ease-in-out;
+}
+
+.reader-bookmark.fade-out {
+  background-color: transparent !important;
+}
+
+.reader-bookmark.fade-out .reader-paragraph {
+  color: var(--chatroom-text-colour); /* Or whatever your theme uses */
 }
