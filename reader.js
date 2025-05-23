@@ -719,18 +719,16 @@ function restoreBookmark(storyPath, chapter) {
   // Scroll into view
   bookmarkDiv.scrollIntoView({ behavior: "smooth" });
 
-  // Apply highlight directly to the wrapper
+  // Apply the highlight
   bookmarkDiv.classList.add("reader-highlight");
-  console.log(`[restore] Highlighting bookmark container: ${bookmarkDiv.tagName} ${bookmarkDiv.classList}`);
 
-  // Remove highlight after delay
+  // After 5 seconds, trigger fade out
   setTimeout(() => {
-    bookmarkDiv.style.backgroundColor = "transparent";
-    bookmarkDiv.style.transition = "background-color 2s ease-in-out";
+    bookmarkDiv.classList.add("fade-out");
+
+    // Once the transition ends, clean up
     bookmarkDiv.addEventListener("transitionend", () => {
-      bookmarkDiv.classList.remove("reader-highlight");
-      bookmarkDiv.style.transition = "";
-      bookmarkDiv.style.backgroundColor = "";
+      bookmarkDiv.classList.remove("reader-highlight", "fade-out");
     }, { once: true });
   }, 5000);
 }
