@@ -90,12 +90,9 @@ function updateFontSize(delta = 0) {
 }
 
 function bindNavigationEvents() {
+  const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
   document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
-    const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
-    if (!prevBtnEn(chapter, chapters)) {
-      btn.disabled = true; // Disable visually and functionally
-      return;
-    }
+    if (!prevBtnEn(chapter, chapters)) return;
     jumpTo(chapter - 1);
   });
 
