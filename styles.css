@@ -168,7 +168,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   overflow: auto;
-  min-height: calc(100vh - 30rem);
+  min-height: calc(100vh - 30px);
   height: fit-content;
 }
 
@@ -1071,8 +1071,7 @@ body.dark-mode .tategaki-container svg text {
 }
 
 .comments-container {
-  position: absolute;
-  bottom: 10rem;
+  bottom: 10px;
   
   background-color: var(--frame-bg-colour);
   border-radius: 12px;
