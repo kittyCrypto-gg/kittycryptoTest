@@ -12,6 +12,10 @@
   --frame-width: 95%;
   
   --frame-padding: 20px;
+  
+  .frame-content {
+    flex-grow: 1; /* Expands to take up available space */
+  }
 
   /* Header */
   --header-bg-colour: #b2ebf2;
@@ -163,19 +167,23 @@ body {
 
 /* Frame styles */
 .frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes content and footer apart */
+  min-height: 100vh;
+  height: fit-content;
+
+  padding: var(--frame-padding);
+  box-sizing: border-box;
+  position: relative;
+
   background-color: var(--frame-bg-colour);
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: var(--frame-width);
   max-width: 1200px;
   margin: 20px auto;
-  padding: var(--frame-padding);
-  box-sizing: border-box;
   overflow: auto;
-  min-height: 100vh;
-  height: fit-content;
-  padding-bottom: var(--safe-bottom);
-  position: relative;
 }
 
 /* Header styles */
@@ -241,7 +249,6 @@ footer {
   padding: 10px var(--frame-padding); 
   font-size: 0.9rem;
   border-top: 2px solid var(--footer-border-colour);
-  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
@@ -1084,7 +1091,6 @@ body.dark-mode .tategaki-container svg text {
 
 .comments-container {
   bottom: 10px;
-  position: absolute;
   background-color: var(--frame-bg-colour);
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
