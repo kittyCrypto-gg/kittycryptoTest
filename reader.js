@@ -43,27 +43,27 @@ function prevBtnEn(chapter, chapters) {
 function injectNav() {
   const navHTML = `
     <div class="chapter-navigation">
-      <button class="btn-prev">⏪</button>
+      <button class="btn-prev">âª</button>
       <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
       <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
-      <button class="btn-jump">⏯️</button>
+      <button class="btn-jump">â¯ï¸</button>
       <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
-      <button class="btn-next">⏩</button>
-      <button class="btn-scroll-down">⏬</button>
+      <button class="btn-next">â©</button>
+      <button class="btn-scroll-down">â¬</button>
     </div>
     <div class="font-controls">
-      <button class="font-decrease">➖</button>
-      <button class="font-reset">🔁</button>
-      <button class="font-increase">➕</button>
+      <button class="font-decrease">â</button>
+      <button class="font-reset">ð</button>
+      <button class="font-increase">â</button>
     </div>
   `;
   const navTop = document.createElement("div");
   navTop.innerHTML = navHTML;
   const navBottom = navTop.cloneNode(true);
-  // Replace ⏬ with ⏫ in the bottom nav
+  // Replace â¬ with â« in the bottom nav
   const scrollDownBtn = navBottom.querySelector(".btn-scroll-down");
   if (scrollDownBtn) {
-    scrollDownBtn.textContent = "⏫";
+    scrollDownBtn.textContent = "â«";
     scrollDownBtn.classList.remove("btn-scroll-down");
     scrollDownBtn.classList.add("btn-scroll-up");
   }
@@ -91,16 +91,11 @@ function updateFontSize(delta = 0) {
 
 function bindNavigationEvents() {
   const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
-  document.querySelectorAll(".btn-prev").forEach(btn => {
-    btn.onclick = () => {
-      if (!prevBtnEn(chapter, chapters)) {
-        btn.disabled = true; // Disable visually and functionally
-        return;
-      }
+  document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
+    if (chapter > 0 || chapters.includes(0)) {
       jumpTo(chapter - 1);
-    };
+    }
   });
-}
 
   document.querySelectorAll(".btn-next").forEach(btn => btn.onclick = () => {
     if (chapter < lastKnownChapter) jumpTo(chapter + 1);
@@ -246,7 +241,7 @@ observeAndSaveBookmarkProgress();
   } catch (err) {
     readerRoot.innerHTML = `
       <div class="chapter-404">
-        <h2>📕 Chapter ${n} Not Found</h2>
+        <h2>ð Chapter ${n} Not Found</h2>
         <p>Looks like this XML chapter doesn't exist yet.</p>
       </div>
     `;
@@ -405,13 +400,13 @@ function activateImageNavigation() {
     const navOverlay = document.createElement("div");
     navOverlay.classList.add("image-nav");
     navOverlay.innerHTML = `
-      <button class="btn-up">⬆️</button>
+      <button class="btn-up">â¬ï¸</button>
       <div class="horizontal">
-        <button class="btn-left">⬅️</button>
-        <button class="btn-center">⏺️</button>
-        <button class="btn-right">➡️</button>
+        <button class="btn-left">â¬ï¸</button>
+        <button class="btn-center">âºï¸</button>
+        <button class="btn-right">â¡ï¸</button>
       </div>
-      <button class="btn-down">⬇️</button>
+      <button class="btn-down">â¬ï¸</button>
     `;
 
     container.appendChild(navOverlay);
@@ -614,7 +609,7 @@ function observeAndSaveBookmarkProgress() {
       if (newIndex <= savedIndex)
         return;
       localStorage.setItem(key, id);
-      //console.log(`[observe] Updated bookmark: ${key} → ${id}`);
+      //console.log(`[observe] Updated bookmark: ${key} â ${id}`);
     }
   }, {
     threshold: 0.6
