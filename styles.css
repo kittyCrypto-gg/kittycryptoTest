@@ -794,6 +794,12 @@ body.no-scroll {
   color: var(--chatroom-text-colour); /* or your theme's default text colour */
 }
 
+.bookmark-emoji {
+  margin-right: 0.4em;
+  font-size: 1em;
+  vertical-align: middle;
+}
+
 /* =========================================
   Tategaki Vertical Text
 ========================================= */
