@@ -241,6 +241,7 @@ observeAndSaveBookmarkProgress();
     activateImageNavigation();
     chapter = n;
     updateNav();
+    bindNavigationEvents();
     setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
     window.scrollTo(0, 0);
     function injectNav() {
@@ -409,7 +410,6 @@ async function initReader() {
   if (!storyPath) return;
 
   injectNav();
-  bindNavigationEvents();
 
   const chapters = await discoverChapters();
 
