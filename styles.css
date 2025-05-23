@@ -26,6 +26,8 @@
   --footer-bg-colour: #b3e5fc;
   --footer-text-colour: #01579b;
   --footer-border-colour: #01579b;
+  
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 
   /* Chatroom */
   --chatroom-border-colour: #ccc;
@@ -168,8 +170,9 @@ body {
   padding: 20px;
   box-sizing: border-box;
   overflow: auto;
-  min-height: calc(100vh - 50px);
+  min-height: 100vh;
   height: fit-content;
+  padding-bottom: var(--safe-bottom);
   position: relative;
 }
 
@@ -235,7 +238,7 @@ footer {
   text-align: center;
   padding: 10px;
   font-size: 0.9rem;
-  width: 100%;
+  width: var(--frame-width);
   border-top: 2px solid var(--footer-border-colour);
   position: absolute;
   bottom: 0px;
