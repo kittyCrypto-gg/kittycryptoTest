@@ -1236,3 +1236,8 @@ body.dark-mode .tategaki-container svg text {
   filter: brightness(1.2);
   z-index: -1;
 }
+
+.reader - highlight {
+  background - color: yellow;
+  transition: background - color 2s ease -in -out;
+}
