@@ -78,22 +78,23 @@ function showTemporaryNotice(message) {
 // Inject navigation bars at top and bottom
 function injectNav() {
   const navHTML = `
-    <div class="chapter-navigation">
-      <button class="btn-clear-bookmark">↩️</button>
-      <button class="btn-prev">⏪</button>
-      <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
-      <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
-      <button class="btn-jump">⏯️</button>
-      <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
-      <button class="btn-next">⏩</button>
-      <button class="btn-scroll-down">⏬</button>
-    </div>
-    <div class="font-controls">
-      <button class="font-decrease">➖</button>
-      <button class="font-reset">🔁</button>
-      <button class="font-increase">➕</button>
-    </div>
-  `;
+  <div class="chapter-navigation">
+    <button class="btn-clear-bookmark">↩️</button>
+    <button class="btn-prev">⏪</button>
+    <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
+    <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
+    <button class="btn-jump">⏯️</button>
+    <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
+    <button class="btn-next">⏩</button>
+    <button class="btn-scroll-down">⏬</button>
+    <button class="btn-info">ℹ️</button>
+  </div>
+  <div class="font-controls">
+    <button class="font-decrease">➖</button>
+    <button class="font-reset">🔁</button>
+    <button class="font-increase">➕</button>
+  </div>
+`;
 
   const navTop = document.createElement("div");
   navTop.innerHTML = navHTML;
@@ -118,6 +119,19 @@ function updateFontSize(delta = 0) {
   setReaderCookie("fontSize", newSize.toFixed(2));
   readerRoot.style.setProperty("font-size", `${newSize}em`);
   refreshTategakiFont();
+}
+
+function showNavigationInfo() {
+  alert(`Navigation Button Guide:
+
+    ⏪  – Go to previous chapter
+    ⏯️  – Jump to a specific chapter
+    ⏩  – Go to next chapter
+    ⏬  – Scroll to the end of the page
+    ⏫  – Scroll to the top of the page
+    ↩️  – Clear the current chapter’s saved position
+
+    Use these to move between chapters or manage where you left off.`);
 }
 
 function bindNavigationEvents() {
@@ -170,6 +184,7 @@ function bindNavigationEvents() {
   document.querySelectorAll(".font-increase").forEach(btn => btn.onclick = () => updateFontSize(0.1));
   document.querySelectorAll(".font-decrease").forEach(btn => btn.onclick = () => updateFontSize(-0.1));
   document.querySelectorAll(".font-reset").forEach(btn => btn.onclick = () => updateFontSize(0));
+  document.querySelectorAll(".btn-info").forEach(btn => btn.onclick = showNavigationInfo);
 }
 
 async function populateStoryPicker() {
