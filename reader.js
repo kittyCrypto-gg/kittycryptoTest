@@ -67,17 +67,18 @@ function injectNav() {
     scrollDownBtn.classList.remove("btn-scroll-down");
     scrollDownBtn.classList.add("btn-scroll-up");
   }
+  
+  
 
   readerRoot.insertAdjacentElement("beforebegin", navTop);
   readerRoot.insertAdjacentElement("afterend", navBottom);
   
   // Disable previous buttons if needed
   const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
-  const shouldEnable = prevBtnEn(chapter, chapters);
-
   document.querySelectorAll(".btn-prev").forEach(btn => {
-    btn.disabled = !shouldEnable;
-  });
+  if (!prevBtnEn(chapter, chapters)) {
+    btn.disabled = true;
+  }
 }
 
 // Font size logic
