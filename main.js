@@ -63,6 +63,7 @@ fetch('./main.json').then(response => {
     const themeToggle = document.createElement("button");
     themeToggle.id = "theme-toggle";
     themeToggle.classList.add("theme-toggle-button");
+    document.body.appendChild(themeToggle);
   
     // Explicit helpers
     const applyLightTheme = () => {
