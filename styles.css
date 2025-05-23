@@ -1211,3 +1211,18 @@ body.dark-mode .tategaki-container svg text {
   color: var(--chat-input-text-colour);
   border-color: var(--chat-input-border-colour);
 }
+
+.temporary-notice {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  background-color: var(--chatroom-bg-colour);
+  color: var(--chatroom-text-colour);
+  border: 2px solid var(--nav-border-colour);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  font-weight: bold;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
