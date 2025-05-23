@@ -771,6 +771,29 @@ body.no-scroll {
   font-variant: small-caps;
 }
 
+.reader-highlight {
+  background-color: #f9e79f; /* soft pale gold */
+  transition: background-color 2s ease-in-out, color 2s ease-in-out;
+}
+
+.reader-bookmark.reader-highlight {
+  background-color: #f9e79f;
+  transition: background-color 2s ease-in-out;
+}
+
+.reader-bookmark.reader-highlight .reader-paragraph {
+  color: #222;
+  transition: color 2s ease-in-out;
+}
+
+.reader-bookmark.fade-out {
+  background-color: transparent;
+}
+
+.reader-bookmark.fade-out .reader-paragraph {
+  color: var(--chatroom-text-colour); /* or your theme's default text colour */
+}
+
 /* =========================================
   Tategaki Vertical Text
 ========================================= */
@@ -1235,27 +1258,4 @@ body.dark-mode .tategaki-container svg text {
   background-color: var(--chatroom-bg-colour);
   filter: brightness(1.2);
   z-index: -1;
-}
-
-.reader-highlight {
-  background-color: #f9e79f; /* soft pale gold */
-  transition: background-color 2s ease-in-out, color 2s ease-in-out;
-}
-
-.reader-bookmark.reader-highlight {
-  background-color: #f9e79f;
-  transition: background-color 2s ease-in-out;
-}
-
-.reader-bookmark.reader-highlight .reader-paragraph {
-  color: #222;
-  transition: color 2s ease-in-out;
-}
-
-.reader-bookmark.fade-out {
-  background-color: transparent !important;
-}
-
-.reader-bookmark.fade-out .reader-paragraph {
-  color: var(--chatroom-text-colour); /* Or whatever your theme uses */
 }
