@@ -6,9 +6,10 @@
   --body-bg-colour: #e8f8f5;
   --body-text-colour: #333;
   --body-height: auto; /* Fix "hv" to "vh" */
-
+  
   /* Frame */
   --frame-bg-colour: #ffffff;
+  --frame-width: 80%;
 
   /* Header */
   --header-bg-colour: #b2ebf2;
@@ -161,13 +162,13 @@ body {
   background-color: var(--frame-bg-colour);
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  width: 80%;
+  width: var(--frame-width);
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
   box-sizing: border-box;
   overflow: auto;
-  min-height: calc(100vh - 20px);
+  min-height: calc(100vh - 30rem);
   height: fit-content;
 }
 
@@ -349,7 +350,7 @@ footer {
 .theme-toggle-button {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: calc((100% - var(--frame-width)) / 2 + 5rem);
   width: 50px;
   height: 50px;
   font-size: 1.5rem;
@@ -1070,6 +1071,9 @@ body.dark-mode .tategaki-container svg text {
 }
 
 .comments-container {
+  position: absolute;
+  bottom: 10rem;
+  
   background-color: var(--frame-bg-colour);
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
