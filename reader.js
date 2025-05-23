@@ -670,41 +670,37 @@ function injectBookmarksIntoHTML(htmlContent, storyPath, chapter) {
 
 function observeAndSaveBookmarkProgress() {
   const bookmarks = Array.from(document.querySelectorAll(".reader-bookmark"));
-  //console.log(`[observe] Found ${bookmarks.length} bookmark elements`);
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (!entry.isIntersecting) return;
+
       const id = entry.target.id;
-      //console.log(`[observe] Bookmark entered view: ${id}`);
       const match = id.match(/^bm-([^]+)-ch(\d+)-\d+$/);
-      if (!match) {
-        //console.warn(`[observe] Invalid bookmark ID format: ${id}`);
-        return;
-      }
+      if (!match) return;
+
       const storyKey = match[1];
       const chapter = match[2];
       const key = `bookmark_${storyKey}_ch${chapter}`;
       const newIndex = bookmarks.findIndex(el => el.id === id);
-      // If it's the last bookmark, remove it from localStorage
+
       if (newIndex === bookmarks.length - 1) {
         localStorage.removeItem(key);
         return;
       }
+
       const savedId = localStorage.getItem(key);
       const savedIndex = bookmarks.findIndex(el => el.id === savedId);
-      //console.log(`[observe] Checking bookmark index: current=${newIndex}, saved=${savedIndex}`);
-      if (newIndex <= savedIndex)
-        return;
+      if (newIndex <= savedIndex) return;
+
       localStorage.setItem(key, id);
-      //console.log(`[observe] Updated bookmark: ${key} → ${id}`);
     }
   }, {
     threshold: 0.6
   });
-  bookmarks.forEach(el => {
-    observer.observe(el);
-    //console.log(`[observe] Observing bookmark: ${el.id}`);
-  });
+
+  setTimeout(() => {
+    bookmarks.forEach(el => observer.observe(el));
+  }, 1000);
 }
 
 function restoreBookmark(storyPath, chapter) {
