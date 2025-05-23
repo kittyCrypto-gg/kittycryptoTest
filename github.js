@@ -31,7 +31,7 @@ async function renderCommits(commits, containerId) {
     const div = document.createElement('div');
     div.className = 'commit-block';
 
-    const identicon = await drawTriangularIdenticon(commit.sha, 48);
+    const identicon = await drawTriangularIdenticon(commit.sha, 36);
 
     const identiconWrapper = document.createElement('div');
     identiconWrapper.className = 'commit-identicon';
