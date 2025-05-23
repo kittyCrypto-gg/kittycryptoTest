@@ -168,7 +168,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   overflow: auto;
-  min-height: calc(100vh - 45px);
+  min-height: calc(100vh - 50px);
   height: fit-content;
 }
 
