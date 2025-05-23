@@ -174,7 +174,7 @@ body {
   overflow: auto;
   min-height: 100vh;
   height: fit-content;
-  padding-bottom: calc(var(--safe-bottom) + 50px);
+  padding-bottom: var(--safe-bottom);
   position: relative;
 }
 
