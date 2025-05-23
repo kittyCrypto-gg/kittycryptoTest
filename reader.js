@@ -91,11 +91,16 @@ function updateFontSize(delta = 0) {
 
 function bindNavigationEvents() {
   const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
-  document.querySelectorAll(".btn-prev").forEach(btn => btn.onclick = () => {
-    if (chapter > 0 || chapters.includes(0)) {
+  document.querySelectorAll(".btn-prev").forEach(btn => {
+    btn.onclick = () => {
+      if (!prevBtnEn(chapter, chapters)) {
+        btn.disabled = true; // Disable visually and functionally
+        return;
+      }
       jumpTo(chapter - 1);
-    }
+    };
   });
+}
 
   document.querySelectorAll(".btn-next").forEach(btn => btn.onclick = () => {
     if (chapter < lastKnownChapter) jumpTo(chapter + 1);
