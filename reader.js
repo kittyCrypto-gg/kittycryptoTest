@@ -174,7 +174,7 @@ function bindNavigationEvents() {
     lastKnownChapter = await discoverChapters();
     updateNav();
   });
-  
+
   document.querySelectorAll(".btn-clear-bookmark").forEach(btn => {
     btn.onclick = clearBookmarkForCurrentChapter;
   });
@@ -250,20 +250,20 @@ async function loadChapter(n) {
       const runs = isCleaned
         ? [p.textContent || ""]
         : Array.from(p.getElementsByTagName("w:r")).map(run => {
-            const text = Array.from(run.getElementsByTagName("w:t"))
-              .map(t => t.textContent)
-              .join("");
-            const rPr = run.getElementsByTagName("w:rPr")[0];
-            let spanClass = [];
-            if (rPr) {
-              if (rPr.getElementsByTagName("w:b").length) spanClass.push("reader-bold");
-              if (rPr.getElementsByTagName("w:i").length) spanClass.push("reader-italic");
-              if (rPr.getElementsByTagName("w:u").length) spanClass.push("reader-underline");
-              if (rPr.getElementsByTagName("w:strike").length) spanClass.push("reader-strike");
-              if (rPr.getElementsByTagName("w:smallCaps").length) spanClass.push("reader-smallcaps");
-            }
-            return `<span class="${spanClass.join(" ")}">${text}</span>`;
-          }).join("");
+          const text = Array.from(run.getElementsByTagName("w:t"))
+            .map(t => t.textContent)
+            .join("");
+          const rPr = run.getElementsByTagName("w:rPr")[0];
+          let spanClass = [];
+          if (rPr) {
+            if (rPr.getElementsByTagName("w:b").length) spanClass.push("reader-bold");
+            if (rPr.getElementsByTagName("w:i").length) spanClass.push("reader-italic");
+            if (rPr.getElementsByTagName("w:u").length) spanClass.push("reader-underline");
+            if (rPr.getElementsByTagName("w:strike").length) spanClass.push("reader-strike");
+            if (rPr.getElementsByTagName("w:smallCaps").length) spanClass.push("reader-smallcaps");
+          }
+          return `<span class="${spanClass.join(" ")}">${text}</span>`;
+        }).join("");
       return `<${tag} class="${className}">${runs}</${tag}>`;
     }).join("\n");
     // Process Tategaki and images
@@ -275,7 +275,7 @@ async function loadChapter(n) {
     readerRoot.innerHTML = htmlContent;
 
     // Start tracking scroll progress
-observeAndSaveBookmarkProgress();
+    observeAndSaveBookmarkProgress();
 
     // Scroll to the saved bookmark after DOM layout is ready
     requestAnimationFrame(() => {
@@ -290,7 +290,7 @@ observeAndSaveBookmarkProgress();
     setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
     window.scrollTo(0, 0);
     function injectNav() {
-  const navHTML = `
+      const navHTML = `
     <div class="chapter-navigation">
       <button class="btn-prev">⏪</button>
       <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
@@ -307,23 +307,23 @@ observeAndSaveBookmarkProgress();
     </div>
   `;
 
-  const navTop = document.createElement("div");
-  navTop.innerHTML = navHTML;
-  const navBottom = navTop.cloneNode(true);
+      const navTop = document.createElement("div");
+      navTop.innerHTML = navHTML;
+      const navBottom = navTop.cloneNode(true);
 
-  // Replace ⏬ with ⏫ in the bottom nav
-  const scrollDownBtn = navBottom.querySelector(".btn-scroll-down");
-  if (scrollDownBtn) {
-    scrollDownBtn.textContent = "⏫";
-    scrollDownBtn.classList.remove("btn-scroll-down");
-    scrollDownBtn.classList.add("btn-scroll-up");
-  }
+      // Replace ⏬ with ⏫ in the bottom nav
+      const scrollDownBtn = navBottom.querySelector(".btn-scroll-down");
+      if (scrollDownBtn) {
+        scrollDownBtn.textContent = "⏫";
+        scrollDownBtn.classList.remove("btn-scroll-down");
+        scrollDownBtn.classList.add("btn-scroll-up");
+      }
 
-  readerRoot.insertAdjacentElement("beforebegin", navTop);
-  readerRoot.insertAdjacentElement("afterend", navBottom);
-  
-  updatePrevButtonState();
-}
+      readerRoot.insertAdjacentElement("beforebegin", navTop);
+      readerRoot.insertAdjacentElement("afterend", navBottom);
+
+      updatePrevButtonState();
+    }
   } catch (err) {
     readerRoot.innerHTML = `
       <div class="chapter-404">
@@ -446,7 +446,7 @@ function updateNav() {
   document.querySelectorAll(".btn-next").forEach(btn => {
     btn.disabled = chapter === lastKnownChapter;
   });
-  
+
   updatePrevButtonState();
 }
 
@@ -704,26 +704,42 @@ function observeAndSaveBookmarkProgress() {
   });
 }
 
+.reader - highlight {
+  background - color: yellow;
+  transition: background - color 2s ease -in -out;
+}
+
 function restoreBookmark(storyPath, chapter) {
   const storyKey = makeStoryKey(storyPath);
   const key = `bookmark_${storyKey}_ch${chapter}`;
-  //console.log(`[restoreBookmark] Looking for key: ${key}`);
 
   const id = localStorage.getItem(key);
-  if (!id) {
-    //console.log(`[restoreBookmark] No bookmark ID found in localStorage`);
-    return;
-  }
+  if (!id) return;
 
-  //console.log(`[restoreBookmark] Bookmark ID from storage: ${id}`);
   const el = document.getElementById(id);
-  if (!el) {
-    //console.warn(`[restoreBookmark] No element found in DOM with ID: ${id}`);
-    return;
-  }
+  if (!el) return;
 
-  //console.log(`[restoreBookmark] Scrolling to element with ID: ${id}`);
+  // Scroll to the bookmarked element
   el.scrollIntoView({ behavior: "smooth" });
+
+  // Highlight the paragraph that follows the bookmark
+  const next = el.nextElementSibling;
+  if (next && (next.tagName === 'P' || next.classList.contains('reader-paragraph'))) {
+    next.classList.add("reader-highlight");
+
+    // After 5 seconds, start fading out
+    setTimeout(() => {
+      next.style.transition = "background-color 2s ease-in-out";
+      next.style.backgroundColor = "transparent";
+
+      // Clean up the class after transition ends
+      next.addEventListener("transitionend", () => {
+        next.classList.remove("reader-highlight");
+        next.style.transition = "";
+        next.style.backgroundColor = "";
+      }, { once: true });
+    }, 5000);
+  }
 }
 
 function restoreLastStoryRead() {
