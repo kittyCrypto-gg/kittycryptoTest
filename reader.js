@@ -39,6 +39,15 @@ function prevBtnEn(chapter, chapters) {
   return true;
 }
 
+function updatePrevButtonState() {
+  const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
+  const enablePrev = prevBtnEn(chapter, chapters);
+
+  document.querySelectorAll(".btn-prev").forEach(btn => {
+    btn.disabled = !enablePrev;
+  });
+}
+
 // Inject navigation bars at top and bottom
 function injectNav() {
   const navHTML = `
@@ -234,6 +243,41 @@ observeAndSaveBookmarkProgress();
     updateNav();
     setReaderCookie(`bookmark_${encodeURIComponent(storyPath)}`, chapter);
     window.scrollTo(0, 0);
+    function injectNav() {
+  const navHTML = `
+    <div class="chapter-navigation">
+      <button class="btn-prev">⏪</button>
+      <input class="chapter-display" type="text" value="1" readonly style="width: 2ch; text-align: center; border: none; background: transparent; font-weight: bold;" />
+      <input class="chapter-input" type="number" min="0" style="width: 2ch; text-align: center;" />
+      <button class="btn-jump">⏯️</button>
+      <button class="chapter-end" disabled style="width: 2ch; text-align: center; font-weight: bold;"></button>
+      <button class="btn-next">⏩</button>
+      <button class="btn-scroll-down">⏬</button>
+    </div>
+    <div class="font-controls">
+      <button class="font-decrease">➖</button>
+      <button class="font-reset">🔁</button>
+      <button class="font-increase">➕</button>
+    </div>
+  `;
+
+  const navTop = document.createElement("div");
+  navTop.innerHTML = navHTML;
+  const navBottom = navTop.cloneNode(true);
+
+  // Replace ⏬ with ⏫ in the bottom nav
+  const scrollDownBtn = navBottom.querySelector(".btn-scroll-down");
+  if (scrollDownBtn) {
+    scrollDownBtn.textContent = "⏫";
+    scrollDownBtn.classList.remove("btn-scroll-down");
+    scrollDownBtn.classList.add("btn-scroll-up");
+  }
+
+  readerRoot.insertAdjacentElement("beforebegin", navTop);
+  readerRoot.insertAdjacentElement("afterend", navBottom);
+  
+  updatePrevButtonState();
+}
   } catch (err) {
     readerRoot.innerHTML = `
       <div class="chapter-404">
@@ -356,6 +400,8 @@ function updateNav() {
   document.querySelectorAll(".btn-next").forEach(btn => {
     btn.disabled = chapter === lastKnownChapter;
   });
+  
+  updatePrevButtonState();
 }
 
 async function initReader() {
