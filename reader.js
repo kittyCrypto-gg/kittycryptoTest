@@ -716,12 +716,12 @@ function restoreBookmark(storyPath, chapter) {
   const bookmarkDiv = document.getElementById(id);
   if (!bookmarkDiv) return;
 
-  // Scroll to the next paragraph if available
-  const next = bookmarkDiv.nextElementSibling || bookmarkDiv;
-  const rect = next.getBoundingClientRect();
-  const scrollY = window.scrollY + rect.top;
-
-  window.scrollTo({ top: scrollY, behavior: "smooth" });
+  // Scroll to the next bokmark if available
+  const nextBookmark = bookmarkDiv.nextElementSibling;
+  if (nextBookmark){
+    const scrollY = nextBookmark.getBoundingClientRect().top
+    window.scrollTo({ top: scrollY, behavior: "smooth" });
+  }
 
   // Apply highlight to the actual bookmarked paragraph (not the one we're scrolling to)
   bookmarkDiv.classList.add("reader-highlight");
