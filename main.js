@@ -64,7 +64,9 @@ fetch('./main.json')
     const themeToggle = document.createElement("button");
     themeToggle.id = "theme-toggle";
     themeToggle.classList.add("theme-toggle-button");
-    document.body.appendChild(themeToggle);
+    const mainContent = document.getElementById("main-content");
+    if (mainContent)
+      mainContent.appendChild(themeToggle);
     // Explicit helpers
     const applyLightTheme = () => {
       document.documentElement.classList.remove("dark-mode");
