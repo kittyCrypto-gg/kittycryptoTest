@@ -24,8 +24,7 @@ const repaint = () => {
   void document.body.offsetHeight;
 };
 // Load JSON file for UI elements
-fetch('./main.json')
-  .then(response => {
+fetch('./main.json').then(response => {
     if (!response.ok)
       throw new Error(`HTTP error! status: ${response.status}`);
     return response.json();
@@ -65,8 +64,19 @@ fetch('./main.json')
     themeToggle.id = "theme-toggle";
     themeToggle.classList.add("theme-toggle-button");
     const frameDiv = document.querySelector("div.frame");
-    if (frameDiv)
-      frameDiv.appendChild(themeToggle);
+    if (frameDiv) {
+      document.body.appendChild(themeToggle); // Still needs to be in body for `fixed` positioning
+
+    const updateButtonPosition = () => {
+      const frameRect = frameDiv.getBoundingClientRect();
+      const buttonOffset = 5; // 5px from the right edge of the frame
+      const rightDistance = window.innerWidth - frameRect.right + buttonOffset;
+      themeToggle.style.right = `${rightDistance}px`;
+    };
+
+    // Run on load and on resize
+    updateButtonPosition();
+    window.addEventListener("resize", updateButtonPosition);
     // Explicit helpers
     const applyLightTheme = () => {
       document.documentElement.classList.remove("dark-mode");
