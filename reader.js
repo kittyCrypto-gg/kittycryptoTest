@@ -719,8 +719,10 @@ function restoreBookmark(storyPath, chapter) {
 
   // Highlight the paragraph that follows the bookmark
   const next = el.nextElementSibling;
-  if (next && (next.tagName === 'P' || next.classList.contains('reader-paragraph'))) {
+  if (next && (next.tagName === 'p' || next.classList.contains('reader-paragraph'))) {
     next.classList.add("reader-highlight");
+
+    console.log(`[restore] Highlighting paragraph: ${next.tagName} ${next.classList}`);
 
     // After 5 seconds, start fading out
     setTimeout(() => {
