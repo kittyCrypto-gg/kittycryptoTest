@@ -78,50 +78,66 @@ async function loadCommentsForPage() {
   }
 }
 
-// Inject comments into DOM
-async function renderComments() {
-  const comments = await loadCommentsForPage();
+// await helper for dom readiness
+function domReady(): Promise<void> {
+  if (document.readyState !== "loading") return Promise.resolve();
+
+  return new Promise(resolve => {
+    document.addEventListener("DOMContentLoaded", () => resolve(), { once: true });
+  });
+}
+
+// Loads comments on the page waiting for dom
+async function renderComments(): Promise<void> {
   const box = document.getElementById("comments-box");
-  if (!box) return;
 
-  box.innerHTML = "";
-  for (const comment of comments) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "comment-message";
+  if (box) {
+    const comments = await loadCommentsForPage();
+    box.innerHTML = "";
 
-    const header = document.createElement("div");
-    header.className = "chat-header";
+    for (const comment of comments) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "comment-message";
 
-    // Avatar container
-    const avatarWrapper = document.createElement("div");
-    avatarWrapper.className = "avatar-container";
+      const header = document.createElement("div");
+      header.className = "chat-header";
 
-    // Generate SVG identicon using nick@ip
-    const identicon = await drawSpiralIdenticon(`${comment.nick}@${comment.ip}`, 48);
-    avatarWrapper.appendChild(identicon);
+      const avatarWrapper = document.createElement("div");
+      avatarWrapper.className = "avatar-container";
 
-    // Nickname and timestamp
-    const nickSpan = document.createElement("span");
-    nickSpan.className = "chat-nick";
-    nickSpan.textContent = comment.nick;
+      const identicon = await drawSpiralIdenticon(`${comment.nick}@${comment.ip}`, 48);
+      avatarWrapper.appendChild(identicon);
 
-    const timestampSpan = document.createElement("span");
-    timestampSpan.className = "chat-timestamp";
-    timestampSpan.textContent = formatTimestamp(comment.timestamp);
+      const nickSpan = document.createElement("span");
+      nickSpan.className = "chat-nick";
+      nickSpan.textContent = comment.nick;
 
-    // Assemble header with avatar, nickname, and timestamp
-    header.appendChild(avatarWrapper);
-    header.appendChild(nickSpan);
-    header.appendChild(timestampSpan);
+      const timestampSpan = document.createElement("span");
+      timestampSpan.className = "chat-timestamp";
+      timestampSpan.textContent = formatTimestamp(comment.timestamp);
 
-    const message = document.createElement("span");
-    message.className = "chat-text";
-    message.textContent = comment.msg;
+      header.appendChild(avatarWrapper);
+      header.appendChild(nickSpan);
+      header.appendChild(timestampSpan);
 
-    wrapper.appendChild(header);
-    wrapper.appendChild(message);
-    box.appendChild(wrapper);
+      const message = document.createElement("span");
+      message.className = "chat-text";
+      message.textContent = comment.msg;
+
+      wrapper.appendChild(header);
+      wrapper.appendChild(message);
+      box.appendChild(wrapper);
+    }
+
+    return;
   }
+
+  await domReady();
+
+  const lateBox = document.getElementById("comments-box");
+  if (!lateBox) return;
+
+  await renderComments();
 }
 
 // Send comment to server
