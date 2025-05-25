@@ -1607,16 +1607,22 @@ body.dark-mode .tategaki-container svg text {
   white-space: nowrap;
 }
 
-.emoticon-blink {
+/* Blinking emoticons behave like a single inline word */
+.emoticons .emoticon-blink {
   display: inline-block;
   white-space: nowrap;
+  vertical-align: baseline;
   position: relative;
+  line-height: 1;
 }
 
-.blink-open, .blink-closed {
+/* Both visible and blink frames stay aligned */
+.emoticons .blink-open,
+.emoticons .blink-closed {
   position: absolute;
   top: 0;
   left: 0;
+  white-space: nowrap;
 }
 
 .blink-open {
