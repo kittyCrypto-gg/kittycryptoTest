@@ -1594,3 +1594,53 @@ body.dark-mode .tategaki-container svg text {
 .commit-block a:hover {
   text-decoration: none;
 }
+
+.emoticons {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  position: relative;
+}
+
+.emoticon {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.emoticon-blink {
+  display: inline-block;
+  white-space: nowrap;
+  position: relative;
+}
+
+.blink-open, .blink-closed {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.blink-open {
+  animation: blinkOpen 6s infinite;
+}
+
+.blink-closed {
+  animation: blinkClosed 6s infinite;
+}
+
+@keyframes blinkOpen {
+  0%, 83.33% {
+    opacity: 1;
+  }
+  83.34%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes blinkClosed {
+  0%, 83.33% {
+    opacity: 0;
+  }
+  83.34%, 100% {
+    opacity: 1;
+  }
+}
