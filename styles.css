@@ -1588,7 +1588,8 @@ body.dark-mode .tategaki-container svg text {
   border-top: 1px solid var(--nav-border-colour);
 }
 
-.twitter-link svg {
+.twitter-link svg,
+.twitter-link img.miku-icon {
   vertical-align: middle;
   margin-right: 0.5em;
 }
