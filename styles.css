@@ -1588,6 +1588,11 @@ body.dark-mode .tategaki-container svg text {
   border-top: 1px solid var(--nav-border-colour);
 }
 
+.twitter-link svg {
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+
 .twitter-link a {
   color: var(--menu-button-text-colour);
   text-decoration: underline;
