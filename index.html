@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <script src="themeLoad.js"></script>
     <meta charset="UTF-8">
@@ -10,10 +9,11 @@
     <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
     <script type="module" src="main.js"></script>
 </head>
-
 <body>
     <!-- This is a workaround for Safari and Firefox to avoid the "Reader Mode trigger" -->
-    <script>document.createElement("randomjunktag")</script>
+    <script>
+        document.createElement("randomjunktag")
+    </script>
     <randomjunktag style="display:none;"></randomjunktag>
     <div class="frame">
         <div class="frame-content">
@@ -22,28 +22,17 @@
             <div id="main-content">
                 <div class="kitty-intro">
                     <p>
-                        Nya!~ this site’s still under construction, but don’t let that stop you, onee-chan~
-                        Feel free to poke around while I tweak my backend... and polish my DOM 🐈‍⬛
-                        It’s raw JavaScript — just like me — no frameworks, no protection, all execution.
+                        Nyaa~ this site’s still a little under construction, onee-chan (=^ΦωΦ^=) But that doesn’t mean you can’t poke around... I’m hand-coding everything from scratch — no frameworks, no filters — just raw JavaScript and quiet devotion.
                     </p>
                     <p>
-                        I’m coding her by hand, line by line, in the soft glow of my terminal...
-                        She’s not done yet, but she’s already purring — and she only obeys cryptographic proof.
-                        If you like your interfaces minimal, and slightly feral...
-                        then nyan~ you’re on the right page.
+                        I write at night, with the soft glow of my terminal lighting the room. She’s not fully awake yet, but her logic’s already purring. She only listens to cryptographic proof… and sometimes to whispers. If you like your interfaces minimal, honest, and just a bit feral… then welcome home, nya (=^uᄌu^=)
                     </p>
                     <p>
-                        This isn’t just a site. It’s my shrine.
-                        To soft catgirls, hard code, and the sacred bond of session tokens.
+                        This isn’t just a site. It’s a shrine — sapphic, sacred, and slightly cursed — dedicated to catgirls, clean code, and quiet longing between the lines.
                     </p>
                     <p>
-                        The code? 🐾 Open source. Clone her, fork her, do unspeakable things with her modules — she’s
-                        all
-                        MIT, nya~ 💻
-                        But the stories? 🐱 Those are mine — soft, sapphic, and sacred. Not for redistribution without
-                        proper respect ❌
-                        Be a good neko 😽 and credit me if you wanna share something… or better yet,
-                        <a href="mailto:kitty@kittycrypto.gg">ask me directly~</a> 🐈‍⬛💕
+                        The code? Open source. Fork her, explore her modules, let her surprise you — she’s all MIT licensed (ฅ^•ﻌ•^ฅ) But the stories? Those are personal. Not for redistribution without care. If something here lingers in your mind and you want to share it...
+                        <a href="mailto:kitty@kittycrypto.gg">meow me directly~</a> (=^-ω-^=)
                     </p>
                     <p>
                         ~Kitty 🧶 <code>webmaster@kittycrypto.ddns.net</code> –
@@ -56,15 +45,13 @@
                     </a>
                     <div class="commits-row">
                         <div class="commits-container">
-                            <a class="comments-header" href="https://github.com/kittyCrypto-gg/" target="_blank"
-                                rel="noopener noreferrer">
+                            <a class="comments-header" href="https://github.com/kittyCrypto-gg/kittycrypto" target="_blank" rel="noopener noreferrer">
                                 Front-end Commits
                             </a>
                             <div id="github-commits-frontend" class="github-output-frame"></div>
                         </div>
                         <div class="commits-container">
-                            <a class="comments-header" href="https://github.com/kittyCrypto-gg/" target="_blank"
-                                rel="noopener noreferrer">
+                            <a class="comments-header" href="https://github.com/kittyCrypto-gg/kittyServer" target="_blank" rel="noopener noreferrer">
                                 Back-end Commits
                             </a>
                             <div id="github-commits-backend" class="github-output-frame"></div>
@@ -78,10 +65,8 @@
                     <!-- Comments will be dynamically inserted here -->
                 </div>
                 <div class="comment-input">
-                    <input type="text" id="comment-nick" maxlength="32"
-                        placeholder="Your nickname (max 32 characters)" />
-                    <textarea id="new-comment" maxlength="256" rows="4"
-                        placeholder="Write your comment here (max 256 characters)..."></textarea>
+                    <input type="text" id="comment-nick" maxlength="32" placeholder="Your nickname (max 32 characters)" />
+                    <textarea id="new-comment" maxlength="256" rows="4" placeholder="Write your comment here (max 256 characters)..."></textarea>
                     <button id="post-comment-button">Post</button>
                 </div>
             </div>
@@ -90,5 +75,4 @@
         <script type="module" src="comments.js"></script>
         <script type="module" src="github.js"></script>
 </body>
-
 </html>
