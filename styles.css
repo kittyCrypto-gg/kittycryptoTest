@@ -1584,6 +1584,15 @@ body.dark-mode .tategaki-container svg text {
   margin-left: 4px;
 }
 
+.twitter-link{
+  border-top: 1px solid var(--nav-border-colour);
+}
+
+.twitter-link a {
+  color: var(--menu-button-text-colour);
+  text-decoration: underline;
+}
+
 /* Commit Link Styling */
 .commit-block a {
   color: var(--menu-button-text-colour);
