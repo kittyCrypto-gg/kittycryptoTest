@@ -39,15 +39,16 @@ fetch('./main.json').then(response => {
       });
     }
     // Inject the banner image above the menu
-    if (data.bannerImage) {
-      const bannerDiv = document.createElement('div');
-      bannerDiv.id = 'banner-container';
-      const bannerImg = document.createElement('img');
-      bannerImg.src = data.bannerImage;
-      bannerImg.alt = 'Banner image';
-      bannerImg.id = 'banner-image';
-  bannerDiv.appendChild(bannerImg);
-    // Populate the menu
+  if (data.bannerImage) {
+    const bannerDiv = document.createElement('div');
+    bannerDiv.id = 'banner-container';
+    const bannerImg = document.createElement('img');
+    bannerImg.src = data.bannerImage;
+    bannerImg.alt = 'Banner image';
+    bannerImg.id = 'banner-image';
+    bannerDiv.appendChild(bannerImg);
+  }
+  // Populate the menu
     const menu = document.getElementById('main-menu');
     if (!menu) throw new Error('Element #main-menu not found!');
     for (const [text, link] of Object.entries(data.mainMenu)) {
