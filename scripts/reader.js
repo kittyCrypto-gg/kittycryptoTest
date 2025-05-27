@@ -188,7 +188,7 @@ function bindNavigationEvents() {
 async function populateStoryPicker() {
   if (!storyPickerRoot) return;
   try {
-    const res = await fetch("/stories.json");
+    const res = await fetch("scripts/stories.json");
     if (!res.ok) throw new Error("No stories found");
     const stories = await res.json();
 
