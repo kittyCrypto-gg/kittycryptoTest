@@ -24,7 +24,7 @@ const repaint = () => {
   void document.body.offsetHeight;
 };
 // Load JSON file for UI elements
-fetch('main.json').then(response => {
+fetch('scripts/main.json').then(response => {
     if (!response.ok)
       throw new Error(`HTTP error! status: ${response.status}`);
     return response.json();
