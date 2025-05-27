@@ -38,6 +38,15 @@ fetch('./main.json').then(response => {
         document.head.appendChild(script);
       });
     }
+    // Inject the banner image above the menu
+    if (data.bannerImage) {
+      const bannerDiv = document.createElement('div');
+      bannerDiv.id = 'banner-container';
+      const bannerImg = document.createElement('img');
+      bannerImg.src = data.bannerImage;
+      bannerImg.alt = 'Banner image';
+      bannerImg.id = 'banner-image';
+  bannerDiv.appendChild(bannerImg);
     // Populate the menu
     const menu = document.getElementById('main-menu');
     if (!menu) throw new Error('Element #main-menu not found!');
@@ -50,10 +59,9 @@ fetch('./main.json').then(response => {
     }
     // Populate the header
     const header = document.getElementById('main-header');
-    const headerText = header ? header.textContent : data.header;
-    header.textContent = headerText;
     if (!header) throw new Error('Element #main-header not found!');
-    header.textContent = data.header;
+    if (!header.textContent.trim())
+      header.textContent = data.header;
     // Populate the footer
     const footer = document.getElementById('main-footer');
     if (!footer) throw new Error('Element #main-footer not found!');

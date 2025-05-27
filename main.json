@@ -1,11 +1,12 @@
 {
+  "bannerImage": "./images/banner.png",
   "mainMenu": {
     "🏠Main": "./index.html",
     "❓About": "./about.html",
     "📚Stories": "./reader.html",
     "💬Chat": "./chat.html"
   },
-  "header": "Kitty Crypto's Website!",
+  "header": "${pageTitle}",
   "footer": "Kitty's website is open-source. 1991 - ${year}",
   "themeToggle": {
     "light": "🌙", 

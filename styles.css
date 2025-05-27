@@ -203,6 +203,31 @@ header {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Banner styles */
+#banner-container {
+  width: 100%;
+  min-width: 100%;
+  max-width: 1200px;
+  max-height: 300px; /* Fixed visible height */
+  margin: 0 auto 20px auto;
+  border: 2px solid var(--nav-border-colour);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#banner-container img {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
 /* Menu styles */
 nav {
   background-color: var(--nav-bg-colour);
@@ -606,7 +631,6 @@ body.no-scroll {
   overflow: hidden;
 }
 
-
 /* =========================================
   Chapter Navigation Buttons
 ========================================= */
@@ -755,7 +779,6 @@ body.no-scroll {
   color: var(--menu-button-text-colour);
   border-color: var(--nav-border-colour);
 }
-
 
 /* =========================================
   Chapter Reader Container
@@ -933,7 +956,7 @@ body.dark-mode .tategaki-container svg text {
   height: 100%;
   border: 2px solid var(--body-text-colour);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: zoom-in;
   object-fit: cover;
   transition: transform 0.3s ease, transform-origin 0.3s ease;
@@ -968,7 +991,7 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* Show the overlay when the image is zoomed */
-.chapter-image.active+.image-nav {
+.chapter-image.active + .image-nav {
   display: flex;
   opacity: 1;
 }
@@ -1084,7 +1107,7 @@ body.dark-mode .tategaki-container svg text {
   border-top: 1px solid var(--nav-border-colour);
   padding: 20px 0 10px 0;
   margin-top: 30px;
-  font-family: 'Noto Serif JP', 'Yu Mincho', serif;
+  font-family: "Noto Serif JP", "Yu Mincho", serif;
 
   /* Custom Scrollbar Styles */
   scrollbar-width: thin;
@@ -1174,7 +1197,6 @@ body.dark-mode .tategaki-container svg text {
   object-fit: cover;
   display: block;
 }
-
 
 /* =========================================
   Comment Section Styling
@@ -1584,7 +1606,7 @@ body.dark-mode .tategaki-container svg text {
   margin-left: 4px;
 }
 
-.twitter-link{
+.twitter-link {
   border-top: 1px solid var(--nav-border-colour);
 }
 
@@ -1649,19 +1671,23 @@ body.dark-mode .tategaki-container svg text {
 }
 
 @keyframes blinkOpen {
-  0%, 83.33% {
+  0%,
+  83.33% {
     opacity: 1;
   }
-  83.34%, 100% {
+  83.34%,
+  100% {
     opacity: 0;
   }
 }
 
 @keyframes blinkClosed {
-  0%, 83.33% {
+  0%,
+  83.33% {
     opacity: 0;
   }
-  83.34%, 100% {
+  83.34%,
+  100% {
     opacity: 1;
   }
 }
