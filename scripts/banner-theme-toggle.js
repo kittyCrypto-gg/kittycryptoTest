@@ -3,17 +3,19 @@ function setBannerTheme() {
     const bannerLight = document.getElementById('banner-light');
     const bannerDark = document.getElementById('banner-dark');
 
-    if (dark) {
-        bannerLight.style.display = 'none';
-        bannerDark.style.display = 'block';
-    } else {
-        bannerLight.style.display = 'block';
-        bannerDark.style.display = 'none';
-    }
+    if (!bannerLight || !bannerDark) return;
+
+    bannerLight.style.display = dark ? 'none' : 'block';
+    bannerDark.style.display = dark ? 'block' : 'none';
 }
 
-// Run on load
-document.addEventListener('DOMContentLoaded', setBannerTheme);
+// Run immediately if possible, or wait for DOM
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setBannerTheme);
+} else {
+    setBannerTheme();
+}
 
+// Observe theme changes on <html>
 const observer = new MutationObserver(setBannerTheme);
-observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
