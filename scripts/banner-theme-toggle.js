@@ -1,5 +1,5 @@
 function setBannerTheme() {
-    const dark = document.body.classList.contains('dark-mode');
+    const dark = document.documentElement.classList.contains('dark-mode');
     const bannerLight = document.getElementById('banner-light');
     const bannerDark = document.getElementById('banner-dark');
 
