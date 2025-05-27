@@ -12,6 +12,5 @@
     "dark": "☀️"
   },
   "headScripts": [
-    "./scripts/banner-theme-toggle.js"
   ]
 }

@@ -3,14 +3,9 @@
 
 <head>
     <script src="./scripts/themeLoad.js"></script>
-    <script>
-        ["./scripts/main.js", "./scripts/chat.js", "./scripts/message.js"].forEach(scriptName => {
-            const script = document.createElement('script');
-            script.src = `./${scriptName}?v=${Date.now()}`;
-            script.defer = true;
-            document.head.appendChild(script);
-        });
-    </script>
+    <script type="module" src="./scripts/main.js"></script>
+    <script type="module" src="./scripts/chat.js"></script>
+    <script type="module" src="./scripts/message.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitty Crypto Chat</title>

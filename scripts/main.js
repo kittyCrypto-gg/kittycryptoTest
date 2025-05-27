@@ -1,3 +1,11 @@
+import { setBannerTheme, observer } from './banner-theme-toggle.js';
+
+document.readyState === 'loading'
+  ? document.addEventListener('DOMContentLoaded', setBannerTheme)
+  : setBannerTheme();
+
+observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
 document.addEventListener("DOMContentLoaded", () => {
   document.body.style.visibility = "visible";
   document.body.style.opacity = "1";
@@ -10,26 +18,31 @@ const getCookie = (name) => {
   const cookie = cookies.find(row => row.startsWith(`${name}=`));
   return cookie ? cookie.split("=")[1] : null;
 };
+
 // Function to set a cookie
 const setCookie = (name, value, days = 365) => {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
   document.cookie = `${name}=${value}; expires=${expires}; path=/`;
 };
+
 // Function to delete a cookie
 const deleteCookie = (name) => {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
 };
+
 // Force page reflow to ensure theme change is immediately reflected
 const repaint = () => {
   void document.body.offsetHeight;
 };
+
 // Load JSON file for UI elements
-fetch('scripts/main.json').then(response => {
-  if (!response.ok)
-    throw new Error(`HTTP error! status: ${response.status}`);
-  return response.json();
-})
-  .then(data => {
+const initialiseUI = async () => {
+  try {
+    // Load JSON file for UI elements
+    const response = await fetch('scripts/main.json');
+    if (!response.ok)
+      throw new Error(`HTTP error! status: ${response.status}`);
+    const data = await response.json();
     // Inject any scripts defined in main.json into <head>
     if (data.headScripts) {
       data.headScripts.forEach(scriptSrc => {
@@ -64,8 +77,7 @@ fetch('scripts/main.json').then(response => {
     themeToggle.id = "theme-toggle";
     themeToggle.classList.add("theme-toggle-button");
     document.body.appendChild(themeToggle);
-
-    // Explicit helpers
+    // Theme application helpers
     const applyLightTheme = () => {
       document.documentElement.classList.remove("dark-mode");
       document.documentElement.classList.add("light-mode");
@@ -98,7 +110,9 @@ fetch('scripts/main.json').then(response => {
         console.warn("currentTheme was null or invalid, fallback logic used.");
       }
     });
-  })
-  .catch(error => {
+  } catch (error) {
     console.error('Error loading JSON or updating DOM:', error);
-  });
+  }
+};
+
+initialiseUI();
