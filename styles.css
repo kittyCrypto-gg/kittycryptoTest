@@ -342,7 +342,7 @@ footer {
 /* Chatroom styles */
 #chatroom {
   width: 100%;
-  height: 400px;
+  height: 100%;
   padding: 10px;
   border: 1px solid var(--chatroom-border-colour);
   background: var(--chatroom-bg-colour);

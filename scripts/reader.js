@@ -123,14 +123,20 @@ function updateFontSize(delta = 0) {
 
 function showNavigationInfo() {
   alert(`Navigation Button Guide:
-    
-    ⏪  – Go to previous chapter
-    ⏯️  – Jump to a specific chapter
-    ⏩  – Go to next chapter
-    ⏬  – Scroll to the end of the page
-    ⏫  – Scroll to the top of the page
-    ↩️  – Clear the current bookmark`);
+
+  ↩️  – Clear the current bookmark
+  ⏪  – Go to previous chapter
+  ⏯️  – Jump to a specific chapter
+  ⏩  – Go to next chapter
+  ⏬  – Scroll to the end of the page
+  ⏫  – Scroll to the top of the page
+
+Font Controls:
+  ➖  – Decrease font size
+  🔁  – Reset font size to default
+  ➕  – Increase font size`);
 }
+
 
 function bindNavigationEvents() {
   const chapters = JSON.parse(localStorage.getItem(chapterCacheKey) || "[]");
@@ -718,7 +724,7 @@ function restoreBookmark(storyPath, chapter) {
 
   // Scroll to the next bokmark if available
   const nextBookmark = bookmarkDiv.nextElementSibling;
-  if (nextBookmark){
+  if (nextBookmark) {
     const scrollY = nextBookmark.getBoundingClientRect().top
     window.scrollTo({ top: scrollY, behavior: "smooth" });
   }
