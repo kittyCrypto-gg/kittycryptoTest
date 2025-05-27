@@ -208,7 +208,7 @@ header {
   width: 100%;
   min-width: 100%;
   max-width: 1200px;
-  max-height: 300px; /* Fixed visible height */
+  max-height: 300px;
   margin: 0 auto 20px auto;
   border: 2px solid var(--nav-border-colour);
   border-radius: 12px;

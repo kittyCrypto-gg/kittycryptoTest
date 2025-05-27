@@ -8,16 +8,19 @@
     <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
     <script>
         ["main.js", "chat.js", "message.js"].forEach(scriptName => {
-          const script = document.createElement('script');
-          script.src = `./${scriptName}?v=${Date.now()}`;
-          script.defer = true;
-          document.head.appendChild(script);
-        });
+            const script = document.createElement('script');
+            script.src = `./${scriptName}?v=${Date.now()}`;
+            script.defer = true;
+            document.head.appendChild(script);
+        }); z
     </script>
 </head>
 <body>
     <div class="frame">
         <div class="frame-content">
+            <div id="banner-container">
+                <img id="banner-image" src="./images/banner.png" alt="Banner image">
+            </div>
             <nav id="main-menu"></nav>
             <header id="main-header">Kitty Crypto Chat</header>
             <main id="main-content">

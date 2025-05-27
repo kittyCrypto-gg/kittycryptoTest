@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script src="themeLoad.js"></script>
     <meta charset="UTF-8" />
@@ -10,9 +11,13 @@
     <title>Kitty Crypto Reader</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
     <div class="frame">
         <div class="frame-content">
+            <div id="banner-container">
+                <img id="banner-image" src="./images/banner.png" alt="Banner image">
+            </div>
             <nav id="main-menu"></nav>
             <header id="main-header">My Stories</header>
             <div id="story-picker"></div>
@@ -25,14 +30,17 @@
                         <!-- Comments will be dynamically inserted here -->
                     </div>
                     <div class="comment-input">
-                        <input type="text" id="comment-nick" maxlength="32" placeholder="Your nickname (max 32 characters)" />
-                        <textarea id="new-comment" maxlength="256" rows="4" placeholder="Write your comment here (max 256 characters)..."></textarea>
+                        <input type="text" id="comment-nick" maxlength="32"
+                            placeholder="Your nickname (max 32 characters)" />
+                        <textarea id="new-comment" maxlength="256" rows="4"
+                            placeholder="Write your comment here (max 256 characters)..."></textarea>
                         <button id="post-comment-button">Post</button>
                     </div>
             </main>
             <footer id="main-footer"></footer>
-            </div>
         </div>
+    </div>
 </body>
 </body>
+
 </html>

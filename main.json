@@ -1,5 +1,4 @@
 {
-  "bannerImage": "./images/banner.png",
   "mainMenu": {
     "🏠Main": "./index.html",
     "❓About": "./about.html",
