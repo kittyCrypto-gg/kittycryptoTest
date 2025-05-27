@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <script src="themeLoad.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitty Crypto Chat</title>
-    <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
+    <script src="./scripts/themeLoad.js"></script>
     <script>
-        ["main.js", "chat.js", "message.js"].forEach(scriptName => {
+        ["./scripts/main.js", "./scripts/chat.js", "./scripts/message.js"].forEach(scriptName => {
             const script = document.createElement('script');
             script.src = `./${scriptName}?v=${Date.now()}`;
             script.defer = true;
             document.head.appendChild(script);
-        }); z
+        });
     </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitty Crypto Chat</title>
+    <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
+
 </head>
+
 <body>
     <div class="frame">
         <div class="frame-content">
             <div id="banner-container">
-                <img id="banner-image" src="./images/banner.png" alt="Banner image">
+                <img id="banner-light" src="./images/banner-light.png" alt="Banner Light">
+                <img id="banner-dark" src="./images/banner-dark.png" alt="Banner Dark" style="display: none;">
             </div>
             <nav id="main-menu"></nav>
             <header id="main-header">Kitty Crypto Chat</header>
@@ -35,4 +39,5 @@
         </div>
     </div>
 </body>
+
 </html>

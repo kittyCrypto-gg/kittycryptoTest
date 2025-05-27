@@ -8,9 +8,10 @@
   "header": "${pageTitle}",
   "footer": "Kitty's website is open-source. 1991 - ${year}",
   "themeToggle": {
-    "light": "🌙", 
+    "light": "🌙",
     "dark": "☀️"
   },
   "headScripts": [
+    "./scripts/banner-theme-toggle.js"
   ]
 }

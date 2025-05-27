@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <script>
-        (function () {
-            const m = document.cookie.match(/(^| )darkMode=(true|false)/);
-            document.documentElement.classList.add(m?.[2] === "true" ? "dark-mode" : "light-mode");
-        })();
-    </script>
+    <script src="./scripts/themeLoad.js"></script>
+    <script type="module" src="./scripts/main.js"></script>
+    <script type="module" src="./scripts/tategaki.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:type" content="website">
     <title>Kitty Crypto's Page</title>
     <link id="theme-stylesheet" rel="stylesheet" href="styles.css">
-    <script type="module" src="main.js"></script>
-    <script type="module" src="./tategaki.js"></script>
 </head>
+
 <body>
     <!-- This is a workaround for Safari and Firefox to avoid the "Reader Mode trigger" -->
     <script>document.createElement("randomjunktag")</script>
@@ -22,7 +19,8 @@
     <div class="frame">
         <div class="frame-content">
             <div id="banner-container">
-                <img id="banner-image" src="./images/banner.png" alt="Banner image">
+                <img id="banner-light" src="./images/banner-light.png" alt="Banner Light">
+                <img id="banner-dark" src="./images/banner-dark.png" alt="Banner Dark" style="display: none;">
             </div>
             <nav id="main-menu"></nav>
             <header id="main-header">About Me</header>
@@ -99,4 +97,5 @@
         </div>
     </div>
 </body>
+
 </html>
