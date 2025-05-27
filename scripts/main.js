@@ -25,20 +25,21 @@ const repaint = () => {
 };
 // Load JSON file for UI elements
 fetch('scripts/main.json').then(response => {
-    if (!response.ok)
-      throw new Error(`HTTP error! status: ${response.status}`);
-    return response.json();
-  })
+  if (!response.ok)
+    throw new Error(`HTTP error! status: ${response.status}`);
+  return response.json();
+})
   .then(data => {
     // Inject any scripts defined in main.json into <head>
     if (data.headScripts) {
-      data.headScripts.forEach(scriptContent => {
+      data.headScripts.forEach(scriptSrc => {
         const script = document.createElement("script");
-        script.textContent = scriptContent;
+        script.src = scriptSrc;
+        script.defer = true;
         document.head.appendChild(script);
       });
     }
-  // Populate the menu
+    // Populate the menu
     const menu = document.getElementById('main-menu');
     if (!menu) throw new Error('Element #main-menu not found!');
     for (const [text, link] of Object.entries(data.mainMenu)) {
@@ -63,7 +64,7 @@ fetch('scripts/main.json').then(response => {
     themeToggle.id = "theme-toggle";
     themeToggle.classList.add("theme-toggle-button");
     document.body.appendChild(themeToggle);
-  
+
     // Explicit helpers
     const applyLightTheme = () => {
       document.documentElement.classList.remove("dark-mode");
