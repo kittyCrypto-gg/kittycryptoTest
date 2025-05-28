@@ -394,7 +394,6 @@ header {
 ==================================== */
 #terminal-window {
   border-radius: 8px;
-  overflow: scroll;
   width: 100%;
   max-width: 100%;
   font-family: "Courier New", Courier, "Lucida Console", monospace;
@@ -403,8 +402,29 @@ header {
   border: 1px solid rgba(0, 0, 0, 0.3);
   display: inline-block;
   position: relative;
+  overflow: hidden; /* no scroll here */
 }
 
+#terminal-scroll {
+  max-height: 500px; /* or any max you prefer */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem;
+}
+
+#terminal-header {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--term-header-bg);
+  color: var(--term-header-fg);
+  padding: 0 8px;
+  font-size: 11px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 #terminal-wrapper {
   padding: 0.5rem;
 }
