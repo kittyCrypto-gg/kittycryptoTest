@@ -99,31 +99,24 @@ function scaleBannerToFit() {
 
         const actualHeight = banner.offsetHeight;
         const actualWidth = banner.offsetWidth;
-
-        if (actualHeight < 50) {
-            requestAnimationFrame(waitUntilReady);
-            return;
-        }
+        const viewportHeight = window.innerHeight;
 
         let scaleFactor = 1;
 
         if (isMobileDevice()) {
-            const availableHeight = Math.floor(window.innerHeight * 0.4);
-            if (actualHeight > availableHeight) {
-                scaleFactor = availableHeight / actualHeight;
-                banner.style.transform = `scale(${scaleFactor})`;
-                scaler.style.height = `${availableHeight}px`;
-                scaler.style.overflow = 'hidden';
-            }
+            scaleFactor = 0.625;
+            banner.style.transform = `scale(${scaleFactor})`;
+            scaler.style.height = `${Math.floor(actualHeight * scaleFactor)}px`;
+            scaler.style.overflow = 'hidden';
         }
 
         if (debug) {
             debug.innerText = `[scaleBannerToFit]
-scaleFactor: ${scaleFactor.toFixed(3)}
-actualHeight: ${actualHeight}
-actualWidth: ${actualWidth}
-viewportHeight: ${window.innerHeight}
-scaler height: ${scaler.offsetHeight}`;
+            scaleFactor: ${scaleFactor.toFixed(3)}
+            actualHeight: ${actualHeight}
+            actualWidth: ${actualWidth}
+            viewportHeight: ${viewportHeight}
+            scaler height: ${scaler.offsetHeight}`;
         }
     };
 
