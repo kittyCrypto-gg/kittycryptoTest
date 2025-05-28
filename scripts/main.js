@@ -6,7 +6,7 @@
 
 // observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-import { loadBanner } from "./banner";
+import { loadBanner } from "./banner.js";
 
 loadBanner().then(() => {
   console.log("Banner loaded successfully");
