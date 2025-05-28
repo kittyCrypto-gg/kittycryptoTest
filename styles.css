@@ -1409,7 +1409,6 @@ body.dark-mode .tategaki-container svg text {
   border: 2px solid var(--nav-border-colour);
   flex-shrink: 0;
   align-self: center;
-  padding-top: 5px;
 }
 
 .pfp img {
@@ -1417,6 +1416,7 @@ body.dark-mode .tategaki-container svg text {
   height: 100%;
   object-fit: cover;
   display: block;
+  padding-top: 5px;
 }
 
 /* =========================================
@@ -1444,7 +1444,6 @@ body.dark-mode .tategaki-container svg text {
   border: 2px solid var(--nav-border-colour);
   flex-shrink: 0;
   align-self: center;
-  padding-top: 5px;
 }
 
 .irl-pic img {
@@ -1452,6 +1451,7 @@ body.dark-mode .tategaki-container svg text {
   height: 100%;
   object-fit: cover;
   display: block;
+  padding-top: 5px; 
 }
 
 /* =========================================
