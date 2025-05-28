@@ -9,7 +9,10 @@ export async function loadBanner() {
     promptRow.appendChild(prompt);
     container.appendChild(promptRow);
 
-    const response = await fetch('images/miku.txt');
+    const isDark = document.documentElement.classList.contains('dark-mode');
+    const asciiPath = isDark ? 'images/miku-dark.txt' : 'images/miku-light.txt';
+    const response = await fetch(asciiPath);
+
     const asciiText = await response.text();
     const asciiLines = asciiText.trim().split('\n');
 
@@ -41,7 +44,7 @@ export async function loadBanner() {
         'Bash: /bin/purr',
         'Battery: 69% (charging by longing)',
         'GPU: NVIDIA RTX 5090 MikuCore 36.3 GiB',
-        'Memory: 19.2 GiB DDR fangirl',
+        'Memory: 119.21 GiB DDR5',
         '~* this system purrs for catgirls *~'
     ];
     infoLines.forEach((line, i) => {

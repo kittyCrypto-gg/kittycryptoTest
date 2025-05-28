@@ -15,11 +15,10 @@
   --frame-padding: 20px;
 
   /* Banner */
-  --banner-green: #006600;
-  --banner-blue: #003366;
-  --banner-teal: #005a5a;
-  --banner-teal-bright: #007a7a;
-
+  --banner-green: #007733;
+  --banner-blue: #004488;
+  --banner-teal: #006b6b;
+  --banner-teal-bright: #009999;
   --banner-text-main: var(--banner-teal);
   --banner-text-header: var(--banner-teal-bright);
   --banner-text-footer: var(--banner-teal);
@@ -391,7 +390,7 @@ header {
   overflow: hidden;
   width: 100%;
   max-width: 100%;
-  font-family: 'Courier New', Courier, 'Lucida Console', monospace;
+  font-family: "Courier New", Courier, "Lucida Console", monospace;
   background: var(--term-bg);
   box-shadow: 0 8px 24px var(--term-shadow);
   border: 1px solid rgba(0, 0, 0, 0.3);
