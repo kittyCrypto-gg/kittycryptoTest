@@ -83,15 +83,14 @@ function scaleBannerToFit(maxHeight = 250) {
     const banner = document.getElementById('banner');
 
     banner.style.transform = '';
-    banner.style.transformOrigin = 'top left';
-    wrapper.style.overflow = '';
+    banner.style.transformOrigin = 'top left'; // keep scaling aligned
+    wrapper.style.overflow = 'visible'; // match new CSS
 
     const actualHeight = banner.offsetHeight;
 
     if (isMobileDevice() && actualHeight > maxHeight) {
         const scaleFactor = maxHeight / actualHeight;
         banner.style.transform = `scale(${scaleFactor})`;
-        wrapper.style.overflow = 'visible';
     }
 }
 
