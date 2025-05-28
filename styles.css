@@ -237,8 +237,8 @@ header {
 
 #banner {
   font-family: "Courier New", Courier, "Lucida Console", monospace;
-  font-size: 11px; 
-  line-height: 1;
+  font-size: 11px;
+  line-height: 10px; /* Tighter than font-size */
   white-space: pre;
   background: transparent;
   color: #00c8c8;
@@ -286,13 +286,16 @@ header {
 =========================== */
 .ascii-block {
   display: block;
-  line-height: 1;
+  line-height: 10px;
 }
 
 .ascii-line {
   color: #00c8c8;
   display: block;
   font-family: inherit;
+  line-height: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 /* ===========================
@@ -302,7 +305,8 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: calc(1em * 19); /* Match ASCII height */
+  margin-top: 30px;
+  height: auto;
 }
 
 .info-line {
