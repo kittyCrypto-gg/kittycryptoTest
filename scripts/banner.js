@@ -193,6 +193,7 @@ export async function setupTerminalWindow() {
         const isMinimised = terminalWrapper.style.display === 'none';
         if (isMinimised) {
             terminalWrapper.style.display = 'block';
+            floatBtn.classList.remove('hidden'); // show float button again
             localStorage.removeItem('terminal-minimised');
         } else {
             windowWrapper.classList.remove('floating');
@@ -208,6 +209,7 @@ export async function setupTerminalWindow() {
             });
             localStorage.removeItem('terminal-floating');
             terminalWrapper.style.display = 'none';
+            floatBtn.classList.add('hidden'); // hide float button when minimised
             localStorage.setItem('terminal-minimised', 'true');
         }
     });
@@ -326,6 +328,9 @@ export async function setupTerminalWindow() {
 
     if (localStorage.getItem('terminal-minimised') === 'true') {
         terminalWrapper.style.display = 'none';
+        floatBtn.classList.add('hidden'); // make sure it’s hidden on load if minimised
+    } else {
+        floatBtn.classList.remove('hidden');
     }
 }
 
