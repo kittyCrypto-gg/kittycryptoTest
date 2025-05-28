@@ -69,6 +69,7 @@ export async function loadBanner() {
     cursorRow.appendChild(cursor);
     container.appendChild(cursorRow);
 
+    await waitForElementHeight(container);
     scaleBannerToFit(250);
     window.addEventListener('resize', () => scaleBannerToFit(250));
     observeThemeChange();
@@ -264,5 +265,15 @@ async function updateAsciiArt() {
         span.textContent = line;
         asciiBlock.appendChild(span);
         asciiBlock.appendChild(document.createElement('br'));
+    });
+}
+
+async function waitForElementHeight(el, minHeight = 100) {
+    return new Promise((resolve) => {
+        const check = () => {
+            if (el.offsetHeight >= minHeight) return resolve();
+            requestAnimationFrame(check);
+        };
+        check();
     });
 }
