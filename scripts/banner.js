@@ -76,8 +76,7 @@ export async function loadBanner() {
 }
 
 function isMobileDevice() {
-    //return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    return true; // For testing purposes, always return true
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 function scaleBannerToFit(maxHeight = 250) {
@@ -86,7 +85,7 @@ function scaleBannerToFit(maxHeight = 250) {
 
     wrapBannerForScaling();
 
-    const scaler = banner.parentElement; // .banner-scaler
+    const scaler = banner.parentElement;
     banner.style.transform = '';
     banner.style.transformOrigin = 'top left';
     scaler.style.height = 'auto';
@@ -94,10 +93,11 @@ function scaleBannerToFit(maxHeight = 250) {
     const actualHeight = banner.offsetHeight;
     const actualWidth = banner.offsetWidth;
 
-    console.log('[scaleBannerToFit] isMobileDevice:', isMobileDevice());
-    console.log('[scaleBannerToFit] banner.offsetHeight:', actualHeight);
-    console.log('[scaleBannerToFit] banner.offsetWidth:', actualWidth);
-    console.log('[scaleBannerToFit] maxHeight:', maxHeight);
+    alert(`[scaleBannerToFit]
+  isMobile: ${isMobileDevice()}
+  height: ${actualHeight}
+  width: ${actualWidth}
+  maxHeight: ${maxHeight}`);
 
     if (isMobileDevice() && actualHeight > maxHeight) {
         const scaleFactor = maxHeight / actualHeight;
@@ -105,15 +105,15 @@ function scaleBannerToFit(maxHeight = 250) {
         scaler.style.height = `${maxHeight}px`;
         scaler.style.overflow = 'hidden';
 
-        console.log(`[scaleBannerToFit] 🚨 Scaling applied: scale(${scaleFactor.toFixed(3)})`);
+        alert(`🚨 Scaling applied: scale(${scaleFactor.toFixed(3)})`);
     } else {
-        console.log('[scaleBannerToFit] ✅ No scaling applied.');
+        alert('✅ No scaling applied.');
     }
 
-    // Log computed style as well
     const computed = window.getComputedStyle(banner);
-    console.log('[scaleBannerToFit] Computed font-size:', computed.fontSize);
-    console.log('[scaleBannerToFit] Computed line-height:', computed.lineHeight);
+    alert(`[computed style]
+  font-size: ${computed.fontSize}
+  line-height: ${computed.lineHeight}`);
 }
 
 function wrapBannerForScaling() {
