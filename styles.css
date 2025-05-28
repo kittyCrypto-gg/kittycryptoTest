@@ -1863,6 +1863,7 @@ body.dark-mode .tategaki-container svg text {
 
 .twitter-link {
   border-top: 1px solid var(--nav-border-colour);
+  text-align: center;
 }
 
 .twitter-link svg,
