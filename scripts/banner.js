@@ -110,16 +110,13 @@ function scaleBannerToFit() {
         let scaleFactor = 1;
 
         if (isMobileDevice()) {
-            scaleFactor = 0.625;
-            banner.style.transform = `scale(${scaleFactor})`;
+            const availableHeight = window.innerHeight;
+            const bannerHeight = banner.offsetHeight;
 
-            // Force Safari repaint after applying transform
-            banner.offsetHeight;
-            banner.style.display = 'none';
-            banner.offsetHeight;
-            banner.style.display = '';
+            const idealScale = Math.min(1, availableHeight * 0.4 / bannerHeight); // 40% of screen, tweak as needed
 
-            scaler.style.height = `${Math.floor(actualHeight * scaleFactor)}px`;
+            banner.style.transform = `scale(${idealScale})`;
+            scaler.style.height = `${Math.floor(bannerHeight * idealScale)}px`;
             scaler.style.overflow = 'hidden';
         }
 
