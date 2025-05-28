@@ -76,7 +76,8 @@ export async function loadBanner() {
 }
 
 function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    //return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    return true; // For testing purposes, always return true
 }
 
 function scaleBannerToFit(maxHeight = 250) {
@@ -85,28 +86,34 @@ function scaleBannerToFit(maxHeight = 250) {
 
     wrapBannerForScaling();
 
-    const scaler = banner.parentElement; 
+    const scaler = banner.parentElement; // .banner-scaler
     banner.style.transform = '';
     banner.style.transformOrigin = 'top left';
     scaler.style.height = 'auto';
 
-    const waitUntilReady = () => {
-        const actualHeight = banner.offsetHeight;
+    const actualHeight = banner.offsetHeight;
+    const actualWidth = banner.offsetWidth;
 
-        if (actualHeight < 50) {
-            requestAnimationFrame(waitUntilReady);
-            return;
-        }
+    console.log('[scaleBannerToFit] isMobileDevice:', isMobileDevice());
+    console.log('[scaleBannerToFit] banner.offsetHeight:', actualHeight);
+    console.log('[scaleBannerToFit] banner.offsetWidth:', actualWidth);
+    console.log('[scaleBannerToFit] maxHeight:', maxHeight);
 
-        if (isMobileDevice() && actualHeight > maxHeight) {
-            const scaleFactor = maxHeight / actualHeight;
-            banner.style.transform = `scale(${scaleFactor})`;
-            scaler.style.height = `${maxHeight}px`;
-            scaler.style.overflow = 'hidden';
-        }
-    };
+    if (isMobileDevice() && actualHeight > maxHeight) {
+        const scaleFactor = maxHeight / actualHeight;
+        banner.style.transform = `scale(${scaleFactor})`;
+        scaler.style.height = `${maxHeight}px`;
+        scaler.style.overflow = 'hidden';
 
-    waitUntilReady();
+        console.log(`[scaleBannerToFit] 🚨 Scaling applied: scale(${scaleFactor.toFixed(3)})`);
+    } else {
+        console.log('[scaleBannerToFit] ✅ No scaling applied.');
+    }
+
+    // Log computed style as well
+    const computed = window.getComputedStyle(banner);
+    console.log('[scaleBannerToFit] Computed font-size:', computed.fontSize);
+    console.log('[scaleBannerToFit] Computed line-height:', computed.lineHeight);
 }
 
 function wrapBannerForScaling() {
