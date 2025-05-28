@@ -106,7 +106,7 @@ function scaleBannerToFit() {
         let scaleFactor = 1;
 
         if (isMobileDevice()) {
-            scaleFactor = 0.625;
+            scaleFactor = 0.7;
             banner.style.transform = `scale(${scaleFactor})`;
             banner.style.height = 'auto';
             scaler.style.height = `${Math.floor(actualHeight * scaleFactor)}px`;
