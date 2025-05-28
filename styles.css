@@ -1416,7 +1416,6 @@ body.dark-mode .tategaki-container svg text {
   height: 100%;
   object-fit: cover;
   display: block;
-  padding-top: 5px;
 }
 
 /* =========================================
@@ -1430,6 +1429,7 @@ body.dark-mode .tategaki-container svg text {
   padding: 0 2rem;
   box-sizing: border-box;
   margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
 /* =========================================
@@ -1451,7 +1451,6 @@ body.dark-mode .tategaki-container svg text {
   height: 100%;
   object-fit: cover;
   display: block;
-  padding-top: 5px; 
 }
 
 /* =========================================
