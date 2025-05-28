@@ -406,9 +406,9 @@ header {
 }
 
 #terminal-scroll {
-  max-height: 500px; /* or any max you prefer */
+  max-height: 600px; /* or any max you prefer */
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: scroll;
   padding: 0.5rem;
 }
 
