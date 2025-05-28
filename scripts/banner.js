@@ -97,9 +97,15 @@ function scaleBannerToFit() {
         banner.offsetHeight;
         banner.style.display = '';
 
+        const rect = banner.getBoundingClientRect();
         const actualHeight = banner.offsetHeight;
         const actualWidth = banner.offsetWidth;
-        const viewportHeight = window.innerHeight;
+        const scalerHeight = scaler.offsetHeight;
+        const wrapperHeight = wrapper.offsetHeight;
+        const docHeight = document.documentElement.clientHeight;
+        const docWidth = document.documentElement.clientWidth;
+        const fontSize = getComputedStyle(banner).fontSize;
+        const lineHeight = getComputedStyle(banner).lineHeight;
 
         let scaleFactor = 1;
 
@@ -112,11 +118,23 @@ function scaleBannerToFit() {
 
         if (debug) {
             debug.innerText = `[scaleBannerToFit]
-            scaleFactor: ${scaleFactor.toFixed(3)}
-            actualHeight: ${actualHeight}
-            actualWidth: ${actualWidth}
-            viewportHeight: ${viewportHeight}
-            scaler height: ${scaler.offsetHeight}`;
+📱 isMobile: ${isMobileDevice()}
+📏 scaleFactor: ${scaleFactor.toFixed(3)}
+
+🖼️ banner.offsetHeight: ${actualHeight}
+🖼️ banner.offsetWidth: ${actualWidth}
+🖼️ banner.getBoundingClientRect(): { top: ${rect.top}, left: ${rect.left}, width: ${rect.width}, height: ${rect.height} }
+
+📦 scaler.offsetHeight: ${scalerHeight}
+📦 wrapper.offsetHeight: ${wrapperHeight}
+
+🌐 window.innerHeight: ${window.innerHeight}
+🌐 window.innerWidth: ${window.innerWidth}
+🌐 document.documentElement.clientHeight: ${docHeight}
+🌐 document.documentElement.clientWidth: ${docWidth}
+
+🔤 font-size: ${fontSize}
+🔤 line-height: ${lineHeight}`;
         }
     };
 
