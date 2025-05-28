@@ -1,4 +1,4 @@
-import { loadBanner, setupTerminalWindow } from "./banner.js";
+import { loadBanner, setupTerminalWindow, scaleBannerToFit } from "./banner.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.style.visibility = "visible";
@@ -6,8 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadBanner().then(async () => {
     await setupTerminalWindow();
+    await scaleBannerToFit();
     await new Promise(resolve => {
       document.getElementById('terminal-loading')?.style.setProperty('display', 'none');
+      window.addEventListener('resize', () => scaleBannerToFit());
       console.log("Banner loaded successfully");
       resolve();
     });

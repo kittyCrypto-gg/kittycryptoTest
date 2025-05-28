@@ -70,8 +70,6 @@ export async function loadBanner() {
     container.appendChild(cursorRow);
 
     await waitForElementHeight(container);
-    scaleBannerToFit();
-    window.addEventListener('resize', () => scaleBannerToFit());
     observeThemeChange();
 }
 
@@ -79,7 +77,7 @@ function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-function scaleBannerToFit() {
+export async function scaleBannerToFit() {
     const wrapper = document.getElementById('banner-wrapper');
     const banner = document.getElementById('banner');
     const debug = document.getElementById('debug');
@@ -91,11 +89,18 @@ function scaleBannerToFit() {
     banner.style.transformOrigin = 'top left';
     scaler.style.height = 'auto';
 
-    const waitUntilReady = () => {
-        banner.offsetHeight;
-        banner.style.display = 'none';
-        banner.offsetHeight;
-        banner.style.display = '';
+    const waitUntilReady = async () => {
+        // wait for the banner to be fully rendered
+        await (document.readyState === 'complete'
+            ? Promise.resolve()
+            : new Promise(resolve => window.addEventListener('load', resolve)));
+
+        if (needsSafariRepaint()) {
+            banner.offsetHeight;
+            banner.style.display = 'none';
+            banner.offsetHeight;
+            banner.style.display = '';
+        }
 
         const rect = banner.getBoundingClientRect();
         const actualHeight = banner.offsetHeight;
@@ -137,10 +142,7 @@ function scaleBannerToFit() {
         }
     };
 
-    waitUntilReady();
-    window.addEventListener('load', () => {
-        scaleBannerToFit();
-    });
+    await waitUntilReady();
 }
 
 function wrapBannerForScaling() {
@@ -319,4 +321,9 @@ async function waitForElementHeight(el, minHeight = 100) {
         };
         check();
     });
+}
+
+function needsSafariRepaint() {
+    const ua = navigator.userAgent;
+    return /iP(hone|od|ad)/i.test(ua) && /Safari/i.test(ua) && !/Chrome/i.test(ua);
 }
