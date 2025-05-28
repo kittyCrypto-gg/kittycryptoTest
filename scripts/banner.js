@@ -85,19 +85,28 @@ function scaleBannerToFit(maxHeight = 250) {
 
     wrapBannerForScaling();
 
-    const scaler = banner.parentElement; // .banner-scaler
+    const scaler = banner.parentElement; 
     banner.style.transform = '';
     banner.style.transformOrigin = 'top left';
     scaler.style.height = 'auto';
 
-    const actualHeight = banner.offsetHeight;
+    const waitUntilReady = () => {
+        const actualHeight = banner.offsetHeight;
 
-    if (isMobileDevice() && actualHeight > maxHeight) {
-        const scaleFactor = maxHeight / actualHeight;
-        banner.style.transform = `scale(${scaleFactor})`;
-        scaler.style.height = `${maxHeight}px`;
-        scaler.style.overflow = 'hidden';
-    }
+        if (actualHeight < 50) {
+            requestAnimationFrame(waitUntilReady);
+            return;
+        }
+
+        if (isMobileDevice() && actualHeight > maxHeight) {
+            const scaleFactor = maxHeight / actualHeight;
+            banner.style.transform = `scale(${scaleFactor})`;
+            scaler.style.height = `${maxHeight}px`;
+            scaler.style.overflow = 'hidden';
+        }
+    };
+
+    waitUntilReady();
 }
 
 function wrapBannerForScaling() {
