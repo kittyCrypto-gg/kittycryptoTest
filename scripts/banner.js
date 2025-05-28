@@ -82,6 +82,7 @@ function isMobileDevice() {
 function scaleBannerToFit() {
     const wrapper = document.getElementById('banner-wrapper');
     const banner = document.getElementById('banner');
+    const debug = document.getElementById('debug');
 
     wrapBannerForScaling();
 
@@ -91,22 +92,38 @@ function scaleBannerToFit() {
     scaler.style.height = 'auto';
 
     const waitUntilReady = () => {
-        // Force layout reflow
         banner.offsetHeight;
         banner.style.display = 'none';
         banner.offsetHeight;
         banner.style.display = '';
 
         const actualHeight = banner.offsetHeight;
+        const actualWidth = banner.offsetWidth;
+
+        if (actualHeight < 50) {
+            requestAnimationFrame(waitUntilReady);
+            return;
+        }
+
+        let scaleFactor = 1;
 
         if (isMobileDevice()) {
-            const availableHeight = Math.floor(window.innerHeight * 0.4); // e.g. 40% of screen
+            const availableHeight = Math.floor(window.innerHeight * 0.4);
             if (actualHeight > availableHeight) {
-                const scaleFactor = availableHeight / actualHeight;
+                scaleFactor = availableHeight / actualHeight;
                 banner.style.transform = `scale(${scaleFactor})`;
                 scaler.style.height = `${availableHeight}px`;
                 scaler.style.overflow = 'hidden';
             }
+        }
+
+        if (debug) {
+            debug.innerText = `[scaleBannerToFit]
+scaleFactor: ${scaleFactor.toFixed(3)}
+actualHeight: ${actualHeight}
+actualWidth: ${actualWidth}
+viewportHeight: ${window.innerHeight}
+scaler height: ${scaler.offsetHeight}`;
         }
     };
 
