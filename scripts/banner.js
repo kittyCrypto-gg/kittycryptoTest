@@ -69,8 +69,8 @@ export async function loadBanner() {
     cursorRow.appendChild(cursor);
     container.appendChild(cursorRow);
 
-    scaleBannerToFit(300);
-    window.addEventListener('resize', () => scaleBannerToFit(300));
+    scaleBannerToFit(250);
+    window.addEventListener('resize', () => scaleBannerToFit(250));
     observeThemeChange();
 }
 
@@ -78,12 +78,12 @@ function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-function scaleBannerToFit(maxHeight = 300) {
+function scaleBannerToFit(maxHeight = 250) {
     const wrapper = document.getElementById('banner-wrapper');
     const banner = document.getElementById('banner');
 
     banner.style.transform = '';
-    wrapper.style.maxHeight = '';
+    banner.style.transformOrigin = 'top left';
     wrapper.style.overflow = '';
 
     const actualHeight = banner.offsetHeight;
@@ -91,8 +91,7 @@ function scaleBannerToFit(maxHeight = 300) {
     if (isMobileDevice() && actualHeight > maxHeight) {
         const scaleFactor = maxHeight / actualHeight;
         banner.style.transform = `scale(${scaleFactor})`;
-        wrapper.style.maxHeight = `${maxHeight}px`;
-        wrapper.style.overflow = 'hidden';
+        wrapper.style.overflow = 'visible';
     }
 }
 
