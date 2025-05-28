@@ -203,7 +203,7 @@ header {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Banner styles */
+/* 
 #banner-container {
   width: 100%;
   max-width: 1200px;
@@ -228,8 +228,89 @@ header {
   object-fit: cover;
   object-position: left top;
   display: block;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease; 
+}*/
+
+/* =========================================
+  Banner
+========================================= */
+
+#banner {
+  font-family: 'Courier New', Courier, 'Lucida Console', monospace;
+  font-size: 14px;
+  white-space: pre;
+  background: transparent;
+  color: #00c8c8;
+  user-select: none;
+  line-height: 1.2;
 }
+
+.row {
+  display: block;
+  width: 100%;
+}
+
+.row.content {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.command-line {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.command-line span.green {
+  color: #44ff44;
+}
+
+.command-line span.blue {
+  color: #00c0ff;
+}
+
+.command-line span.teal {
+  color: #00c8c8;
+}
+
+.ascii-block {
+  display: block;
+  line-height: 1.2;
+}
+
+.ascii-line {
+  color: #00c8c8;
+  display: block;
+  font-family: inherit;
+}
+
+.info-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: calc(1.2em * 19); /* align with 19-line ASCII */
+  padding-top: 0.5em;
+}
+
+.info-line {
+  color: #00c8c8;
+  display: block;
+  font-family: inherit;
+  font-weight: normal;
+}
+
+.info-header {
+  color: #00e0e0;
+}
+
+.info-footer {
+  color: #00c8c8;
+}
+
+/* =========================================
+  Menu
+========================================= */
 
 /* Menu styles */
 nav {
@@ -436,11 +517,7 @@ footer {
 }
 
 .chat-inputs button:hover {
-  /* For dark mode, we override with #2e7d32; in light, use #4dd0e1 or anything you prefer. 
-       But your snippet specifically uses #4CAF50 -> #388e3c in light mode, so let’s keep consistent. */
   background: var(--menu-button-hover-bg-colour, #388e3c);
-  /* Fallback if not defined, but we have a variable for the menu button hover. 
-       Alternatively, define a separate var for the button hover if you want them different. */
 }
 
 /* Ensuring fluid design for very small screens */

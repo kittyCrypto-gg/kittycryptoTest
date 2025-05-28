@@ -1,10 +1,16 @@
-import { setBannerTheme, observer } from './banner-theme-toggle.js';
+// import { setBannerTheme, observer } from './banner-theme-toggle.js';
 
-document.readyState === 'loading'
-  ? document.addEventListener('DOMContentLoaded', setBannerTheme)
-  : setBannerTheme();
+// document.readyState === 'loading'
+//   ? document.addEventListener('DOMContentLoaded', setBannerTheme)
+//   : setBannerTheme();
 
-observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+// observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+import { loadBanner } from "./banner";
+
+loadBanner().then(() => {
+  console.log("Banner loaded successfully");
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.style.visibility = "visible";
