@@ -69,8 +69,8 @@ export async function loadBanner() {
     cursorRow.appendChild(cursor);
     container.appendChild(cursorRow);
 
-    scaleBannerToFit(250);
-    window.addEventListener('resize', () => scaleBannerToFit(250));
+    scaleBannerToFit(300);
+    window.addEventListener('resize', () => scaleBannerToFit(300));
     observeThemeChange();
 }
 
@@ -78,7 +78,7 @@ function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-function scaleBannerToFit(maxHeight = 250) {
+function scaleBannerToFit(maxHeight = 300) {
     const wrapper = document.getElementById('banner-wrapper');
     const banner = document.getElementById('banner');
 
