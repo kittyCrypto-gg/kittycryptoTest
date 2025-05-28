@@ -1,8 +1,12 @@
 import { loadBanner, setupTerminalWindow } from "./banner.js";
 
-loadBanner().then(() => {
-  setupTerminalWindow();
-  console.log("Banner loaded successfully");
+loadBanner().then(async () => {
+  await setupTerminalWindow();
+  await new Promise(resolve => {
+    document.getElementById('terminal-loading')?.style.setProperty('display', 'none');
+    console.log("Banner loaded successfully");
+    resolve();
+  });
 });
 
 

@@ -92,7 +92,7 @@ function scaleBannerToFit(maxHeight = 250) {
     }
 }
 
-export function setupTerminalWindow() {
+export async function setupTerminalWindow() {
     const terminalWrapper = document.getElementById('terminal-wrapper');
     const windowWrapper = document.createElement('div');
     windowWrapper.id = 'terminal-window';
