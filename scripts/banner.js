@@ -71,6 +71,7 @@ export async function loadBanner() {
 
     scaleBannerToFit(250);
     window.addEventListener('resize', () => scaleBannerToFit(250));
+    observeThemeChange();
 }
 
 function isMobileDevice() {
@@ -215,4 +216,38 @@ function makeIconDraggable() {
         icon.style.left = savedX;
         icon.style.top = savedY;
     }
+}
+
+function observeThemeChange() {
+    const target = document.documentElement;
+    const observer = new MutationObserver(mutations => {
+        for (const mutation of mutations) {
+            if (mutation.attributeName === 'class') {
+                updateAsciiArt();
+                break;
+            }
+        }
+    });
+
+    observer.observe(target, { attributes: true });
+}
+
+async function updateAsciiArt() {
+    const isDark = document.documentElement.classList.contains('dark-mode');
+    const asciiPath = isDark ? 'images/miku-dark.txt' : 'images/miku-light.txt';
+    const response = await fetch(asciiPath);
+    const asciiText = await response.text();
+    const asciiLines = asciiText.trim().split('\n');
+
+    const asciiBlock = document.querySelector('.ascii-block');
+    if (!asciiBlock) return;
+
+    asciiBlock.innerHTML = ''; // clear previous lines
+    asciiLines.forEach(line => {
+        const span = document.createElement('span');
+        span.classList.add('ascii-line');
+        span.textContent = line;
+        asciiBlock.appendChild(span);
+        asciiBlock.appendChild(document.createElement('br'));
+    });
 }
