@@ -344,7 +344,7 @@ header {
 #banner-wrapper {
   height: auto;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 #banner-wrapper::after {
@@ -389,7 +389,7 @@ header {
 #terminal-window {
   border-radius: 8px;
   overflow: hidden;
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
   font-family: 'Courier New', Courier, 'Lucida Console', monospace;
   background: var(--term-bg);
