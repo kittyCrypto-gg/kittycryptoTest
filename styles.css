@@ -418,6 +418,7 @@ header {
   color: var(--term-header-fg);
   padding: 0 8px;
   font-size: 11px;
+  position: sticky;
 }
 
 .window-controls {
