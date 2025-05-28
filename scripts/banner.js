@@ -138,13 +138,10 @@ function scaleBannerToFit() {
     };
 
     waitUntilReady();
-    window.addEventListener('load', () => scaleBannerToFit());
+    window.addEventListener('load', () => {
+        scaleBannerToFit();
+    });
 }
-
-waitUntilReady();
-window.addEventListener('load', () => {
-    scaleBannerToFit(); // triggers repaint after all layout stabilises
-});
 
 function wrapBannerForScaling() {
     const banner = document.getElementById('banner');
