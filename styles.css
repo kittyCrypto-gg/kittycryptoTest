@@ -329,10 +329,9 @@ header {
 =========================== */
 
 #banner-wrapper {
-  max-height: 250px;
-  overflow: hidden;
-  display: inline-block;
-  width: fit-content;
+  height: auto;
+  width: 100%;
+  overflow: scroll;
 }
 
 #banner-wrapper::after {

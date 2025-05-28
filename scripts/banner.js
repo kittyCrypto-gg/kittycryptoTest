@@ -74,17 +74,20 @@ function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-function scaleBannerToFit(maxHeight) {
+function scaleBannerToFit(maxHeight = 250) {
     const wrapper = document.getElementById('banner-wrapper');
     const banner = document.getElementById('banner');
 
     banner.style.transform = '';
-    banner.style.transformOrigin = 'top left';
+    wrapper.style.maxHeight = '';
+    wrapper.style.overflow = '';
 
     const actualHeight = banner.offsetHeight;
 
     if (isMobileDevice() && actualHeight > maxHeight) {
         const scaleFactor = maxHeight / actualHeight;
         banner.style.transform = `scale(${scaleFactor})`;
+        wrapper.style.maxHeight = `${maxHeight}px`;
+        wrapper.style.overflow = 'hidden';
     }
 }
