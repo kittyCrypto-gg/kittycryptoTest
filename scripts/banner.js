@@ -91,3 +91,113 @@ function scaleBannerToFit(maxHeight = 250) {
         wrapper.style.overflow = 'hidden';
     }
 }
+
+export function setupTerminalWindow() {
+    const original = document.getElementById('terminal');
+    const wrapper = document.createElement('div');
+    wrapper.id = 'terminal-window';
+
+    const header = document.createElement('div');
+    header.id = 'terminal-header';
+
+    const controls = document.createElement('div');
+    controls.classList.add('window-controls');
+
+    const closeBtn = document.createElement('span');
+    closeBtn.classList.add('btn', 'close');
+    closeBtn.textContent = '🔴';
+    closeBtn.addEventListener('click', () => {
+        wrapper.style.display = 'none';
+        document.getElementById('icon').style.display = 'inline-block';
+    });
+
+    const minimizeBtn = document.createElement('span');
+    minimizeBtn.classList.add('btn', 'minimize');
+    minimizeBtn.textContent = '🟡';
+    minimizeBtn.addEventListener('click', () => {
+        document.getElementById('terminal-content').style.display = 'none';
+        minimizeBtn.classList.add('hidden');
+        maximizeBtn.classList.remove('hidden');
+    });
+
+    const maximizeBtn = document.createElement('span');
+    maximizeBtn.classList.add('btn', 'maximize', 'hidden');
+    maximizeBtn.textContent = '🟢';
+    maximizeBtn.addEventListener('click', () => {
+        document.getElementById('terminal-content').style.display = 'block';
+        maximizeBtn.classList.add('hidden');
+        minimizeBtn.classList.remove('hidden');
+    });
+
+    const title = document.createElement('span');
+    title.classList.add('window-title');
+    title.textContent = 'YuriGreen Terminal Emulator — /home/kitty/';
+
+    controls.appendChild(closeBtn);
+    controls.appendChild(minimizeBtn);
+    controls.appendChild(maximizeBtn);
+    header.appendChild(controls);
+    header.appendChild(title);
+
+    const content = document.createElement('div');
+    content.id = 'terminal-content';
+
+    wrapper.appendChild(header);
+    wrapper.appendChild(content);
+
+    const parent = original.parentNode;
+    parent.replaceChild(wrapper, original);
+    content.appendChild(original);
+
+    // Handle icon double-click to restore
+    const icon = document.getElementById('term-icon');
+    icon.src = '/images/terminal.svg';
+    icon.alt = 'Terminal icon';
+    icon.addEventListener('dblclick', () => {
+        wrapper.style.display = 'block';
+        icon.style.display = 'none';
+    });
+
+    icon.title = "Double-click to open terminal";
+
+    makeIconDraggable();
+}
+
+function makeIconDraggable() {
+    const icon = document.getElementById('term-icon');
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    icon.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - icon.offsetLeft;
+        offsetY = e.clientY - icon.offsetTop;
+        icon.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+        icon.style.left = `${x}px`;
+        icon.style.top = `${y}px`;
+        localStorage.setItem('term-icon-x', icon.style.left);
+        localStorage.setItem('term-icon-y', icon.style.top);
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            icon.style.cursor = 'grab';
+        }
+    });
+
+    // Restore saved position if available
+    const savedX = localStorage.getItem('term-icon-x');
+    const savedY = localStorage.getItem('term-icon-y');
+    if (savedX && savedY) {
+        icon.style.left = savedX;
+        icon.style.top = savedY;
+    }
+}

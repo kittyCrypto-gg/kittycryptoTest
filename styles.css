@@ -29,6 +29,13 @@
   --header-bg-colour: #b2ebf2;
   --header-text-colour: #004d40;
 
+  /* Terminal Window */
+  --term-bg: linear-gradient(to bottom, #e5e5e5, #d0d0d0);
+  --term-header-bg: linear-gradient(to bottom, #cccccc, #b0b0b0);
+  --term-header-fg: #222222;
+  --term-title: #333333;
+  --term-shadow: rgba(0, 0, 0, 0.25);
+
   /* Navigation / Menu */
   --nav-bg-colour: #a7ffeb;
   --nav-border-colour: #004d40;
@@ -110,6 +117,13 @@
   --banner-text-main: var(--banner-teal);
   --banner-text-header: var(--banner-teal-bright);
   --banner-text-footer: var(--banner-teal);
+
+  /* Terminal Window */
+  --term-bg: linear-gradient(to bottom, #1b1b1b, #0e0e0e);
+  --term-header-bg: linear-gradient(to bottom, #252525, #111111);
+  --term-header-fg: #cccccc;
+  --term-title: #dddddd;
+  --term-shadow: rgba(0, 255, 255, 0.1);
 
   /* Header */
   --header-bg-colour: #004d40;
@@ -242,13 +256,17 @@ header {
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
-/* ===========================
-  Rows and layout
-=========================== */
+/* Row styles */
+
 .row {
   display: block;
   width: 100%;
@@ -260,9 +278,8 @@ header {
   gap: 2rem;
 }
 
-/* ===========================
-  Command line
-=========================== */
+/* Command Line Block */
+
 .command-line {
   display: block;
   font-weight: bold;
@@ -281,9 +298,8 @@ header {
   color: var(--banner-teal);
 }
 
-/* ===========================
-  ASCII Block
-=========================== */
+/* ASCII Art Block */
+
 .ascii-block {
   display: block;
   line-height: 10px;
@@ -298,9 +314,8 @@ header {
   padding: 0;
 }
 
-/* ===========================
-  Info Block
-=========================== */
+/* Info Block */
+
 .info-block {
   display: flex;
   flex-direction: column;
@@ -324,14 +339,12 @@ header {
   color: var(--banner-text-footer);
 }
 
-/* ===========================
-  Banner Wrapper
-=========================== */
+/* Banner Wrapper */
 
 #banner-wrapper {
   height: auto;
   width: 100%;
-  overflow: visible;
+  overflow: scroll;
 }
 
 #banner-wrapper::after {
@@ -349,6 +362,89 @@ header {
     transparent 1px,
     transparent 2px
   );
+}
+
+/* Terminal Icon */
+#term-icon {
+  display: none;
+  cursor: grab;
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  margin: 1rem;
+  user-select: none;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+}
+
+#term-icon:hover {
+  filter: drop-shadow(0 0 3px var(--accent));
+}
+
+/* ====================================
+  Terminal Window Frame & Header
+==================================== */
+#terminal-window {
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+  max-width: 100%;
+  font-family: 'Courier New', Courier, 'Lucida Console', monospace;
+  background: var(--term-bg);
+  box-shadow: 0 8px 24px var(--term-shadow);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#terminal-header {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--term-header-bg);
+  color: var(--term-header-fg);
+  padding: 0 8px;
+  font-size: 11px;
+}
+
+.window-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.btn {
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.2);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.window-title {
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  flex: 1;
+  font-family: inherit;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--term-title);
+}
+
+#terminal-content {
+  padding: 0.5rem;
 }
 
 /* =========================================

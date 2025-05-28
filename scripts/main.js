@@ -1,16 +1,10 @@
-// import { setBannerTheme, observer } from './banner-theme-toggle.js';
-
-// document.readyState === 'loading'
-//   ? document.addEventListener('DOMContentLoaded', setBannerTheme)
-//   : setBannerTheme();
-
-// observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-import { loadBanner } from "./banner.js";
+import { loadBanner, setupTerminalWindow } from "./banner.js";
 
 loadBanner().then(() => {
+  setupTerminalWindow();
   console.log("Banner loaded successfully");
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.style.visibility = "visible";
