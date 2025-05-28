@@ -364,8 +364,8 @@ function makeIconDraggable() {
     }
 }
 
-function makeTermDragWPrnt(el: HTMLElement, parent: HTMLElement) {
-    const header = el.querySelector('#terminal-header') as HTMLElement;
+function makeTermDragWPrnt() {
+    const header = el.querySelector('#terminal-header');
     if (!header) return;
 
     let isDragging = false;
