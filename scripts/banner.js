@@ -179,12 +179,27 @@ export async function setupTerminalWindow() {
         maximiseBtn.classList.add('hidden');
         localStorage.setItem('terminal-closed', 'true');
         localStorage.removeItem('terminal-minimised'); // Clear minimise state
+        icon.style.display = 'inline-block';
     });
 
     const minimiseBtn = document.createElement('span');
     minimiseBtn.classList.add('btn', 'minimise');
     minimiseBtn.textContent = '🟡';
     minimiseBtn.addEventListener('click', () => {
+        windowWrapper.classList.remove('floating');
+        Object.assign(windowWrapper.style, {
+            position: 'relative',
+            zIndex: '',
+            width: '100%',
+            height: '',
+            resize: '',
+            overflow: '',
+            left: '',
+            top: '',
+        });
+
+        localStorage.removeItem('terminal-floating');
+
         terminalWrapper.style.display = 'none';
         minimiseBtn.classList.add('hidden');
         maximiseBtn.classList.remove('hidden');
@@ -306,6 +321,24 @@ export async function setupTerminalWindow() {
         windowWrapper.style.display = 'block';
         terminalWrapper.style.display = 'block';
         icon.style.display = 'none';
+
+        const shouldFloat = localStorage.getItem('terminal-floating') === 'true';
+        if (shouldFloat) {
+            windowWrapper.classList.add('floating');
+            Object.assign(windowWrapper.style, {
+                position: 'absolute',
+                zIndex: '9999',
+                width: localStorage.getItem('terminal-width') || '50%',
+                height: localStorage.getItem('terminal-height') || '',
+                left: localStorage.getItem('terminal-x') || '10px',
+                top: localStorage.getItem('terminal-y') || '10px',
+                resize: 'both',
+                overflow: 'auto'
+            });
+            setTimeout(() => {
+                makeTermDragWPrnt(windowWrapper, document.getElementById('banner-wrapper'));
+            });
+        }
         localStorage.removeItem('terminal-closed');
         localStorage.removeItem('terminal-minimised');
     });
@@ -405,7 +438,6 @@ function makeTermDragWPrnt(el, parent) {
         }
     });
 }
-
 
 function observeThemeChange() {
     const target = document.documentElement;
