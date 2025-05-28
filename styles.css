@@ -255,8 +255,7 @@ header {
 }
 
 @keyframes blink {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
   }
   50% {
@@ -392,21 +391,26 @@ header {
 /* ====================================
   Terminal Window Frame & Header
 ==================================== */
+
 #terminal-window {
   border-radius: 8px;
-  overflow: scroll;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 100%;
   font-family: "Courier New", Courier, "Lucida Console", monospace;
   background: var(--term-bg);
   box-shadow: 0 8px 24px var(--term-shadow);
   border: 1px solid rgba(0, 0, 0, 0.3);
-  display: inline-block;
   position: relative;
+  max-height: 400px; /* Optional: constrain height for scrolling */
 }
 
 #terminal-wrapper {
   padding: 0.5rem;
+  overflow-y: auto;
+  flex: 1;
 }
 
 #terminal-header {
@@ -420,6 +424,7 @@ header {
   font-size: 11px;
   position: sticky;
   top: 0;
+  z-index: 10;
 }
 
 .window-controls {
