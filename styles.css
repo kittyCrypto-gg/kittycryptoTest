@@ -338,6 +338,17 @@ header {
   color: var(--banner-text-footer);
 }
 
+/* Smooth transitions for colour changes */
+.command-line span.green,
+.command-line span.blue,
+.command-line span.teal,
+.ascii-line,
+.info-line,
+.info-header,
+.info-footer {
+  transition: color 0.3s ease;
+}
+
 /* Banner Wrapper */
 
 #banner-wrapper {
@@ -462,6 +473,45 @@ header {
 
 .btn:hover {
   transform: scale(1.2);
+}
+
+.window-controls .btn {
+  position: relative;
+}
+
+/* Pseudo-element for hover symbol */
+.window-controls .btn::after {
+  content: '';
+  position: absolute;
+  font-size: 10px;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* Show on hover */
+.window-controls .btn:hover::after {
+  opacity: 1;
+}
+
+/* Specific hover symbols and colours */
+.window-controls .btn.close::after {
+  content: '×';
+  color: #8b0000; /* Dark red */
+}
+
+.window-controls .btn.toggle-view::after {
+  content: '–';
+  color: #b8860b; /* Mustard / dark goldenrod */
+}
+
+.window-controls .btn.float::after {
+  content: '+';
+  color: #006400; /* Dark green */
 }
 
 .hidden {
