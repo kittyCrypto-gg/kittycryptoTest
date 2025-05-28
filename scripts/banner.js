@@ -172,10 +172,13 @@ export async function setupTerminalWindow() {
     closeBtn.classList.add('btn', 'close');
     closeBtn.textContent = '🔴';
     closeBtn.addEventListener('click', () => {
-        windowWrapper.style.display = 'none';
-        document.getElementById('term-icon').style.display = 'inline-block';
-        localStorage.setItem('terminal-closed', 'true');
-    });
+    windowWrapper.style.display = 'none';
+    terminalWrapper.style.display = 'block'; // Reset to maximised view
+    minimizeBtn.classList.remove('hidden');
+    maximizeBtn.classList.add('hidden');
+    localStorage.setItem('terminal-closed', 'true');
+    localStorage.removeItem('terminal-minimised'); // Clear minimise state
+  });
 
     const minimizeBtn = document.createElement('span');
     minimizeBtn.classList.add('btn', 'minimize');
