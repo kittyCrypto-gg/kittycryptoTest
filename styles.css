@@ -236,15 +236,19 @@ header {
 ========================================= */
 
 #banner {
-  font-family: 'Courier New', Courier, 'Lucida Console', monospace;
-  font-size: 14px;
+  font-family: "Courier New", Courier, "Lucida Console", monospace;
+  font-size: 11px; 
+  line-height: 1;
   white-space: pre;
   background: transparent;
   color: #00c8c8;
   user-select: none;
-  line-height: 1.2;
+  display: inline-block;
 }
 
+/* ===========================
+  Rows and layout
+=========================== */
 .row {
   display: block;
   width: 100%;
@@ -256,10 +260,13 @@ header {
   gap: 2rem;
 }
 
+/* ===========================
+  Command line
+=========================== */
 .command-line {
   display: block;
   font-weight: bold;
-  margin-bottom: 0.5em;
+  margin-bottom: 4px;
 }
 
 .command-line span.green {
@@ -274,9 +281,12 @@ header {
   color: #00c8c8;
 }
 
+/* ===========================
+  ASCII Block
+=========================== */
 .ascii-block {
   display: block;
-  line-height: 1.2;
+  line-height: 1;
 }
 
 .ascii-line {
@@ -285,12 +295,14 @@ header {
   font-family: inherit;
 }
 
+/* ===========================
+  Info Block
+=========================== */
 .info-block {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: calc(1.2em * 19); /* align with 19-line ASCII */
-  padding-top: 0.5em;
+  height: calc(1em * 19); /* Match ASCII height */
 }
 
 .info-line {

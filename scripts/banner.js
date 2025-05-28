@@ -5,10 +5,7 @@ export async function loadBanner() {
     promptRow.classList.add('row');
     const prompt = document.createElement('span');
     prompt.classList.add('command-line');
-    prompt.innerHTML = `
-    <span class="green">kitty@kittycrypto</span>
-    <span class="blue">:~</span>
-    <span class="teal">$ neofetch</span>`;
+    prompt.innerHTML = '<span class="green">kitty@kittycrypto</span><span class="blue">:~</span><span class="teal">$ neofetch</span>';
     promptRow.appendChild(prompt);
     container.appendChild(promptRow);
 
