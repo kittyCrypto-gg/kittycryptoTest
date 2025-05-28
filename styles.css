@@ -331,7 +331,7 @@ header {
 #banner-wrapper {
   height: auto;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 #banner-wrapper::after {
