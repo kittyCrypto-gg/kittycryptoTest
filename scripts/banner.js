@@ -364,7 +364,7 @@ function makeIconDraggable() {
     }
 }
 
-function makeTermDragWPrnt() {
+function makeTermDragWPrnt(el, parent) {
     const header = el.querySelector('#terminal-header');
     if (!header) return;
 
@@ -386,38 +386,26 @@ function makeTermDragWPrnt() {
 
         const x = e.clientX - startX;
         const y = e.clientY - startY;
-
-        // Keep within parent bounds
-        const parentRect = parent.getBoundingClientRect();
-        const elRect = el.getBoundingClientRect();
-
-        const maxLeft = parentRect.width - el.offsetWidth;
-        const maxTop = parentRect.height - el.offsetHeight;
-
-        const newX = Math.min(Math.max(0, x), maxLeft);
-        const newY = Math.min(Math.max(0, y), maxTop);
-
-        el.style.left = `${newX}px`;
-        el.style.top = `${newY}px`;
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
         el.style.transform = 'none';
 
-        // Save position
-        localStorage.setItem('terminal-x', `${newX}px`);
-        localStorage.setItem('terminal-y', `${newY}px`);
-        localStorage.setItem('term-icon-x', `${newX}px`);
-        localStorage.setItem('term-icon-y', `${newY}px`);
+        localStorage.setItem('terminal-x', el.style.left);
+        localStorage.setItem('terminal-y', el.style.top);
+        localStorage.setItem('term-icon-x', el.style.left);
+        localStorage.setItem('term-icon-y', el.style.top);
     });
 
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
             el.style.cursor = 'default';
-
             localStorage.setItem('terminal-width', el.offsetWidth + 'px');
             localStorage.setItem('terminal-height', el.offsetHeight + 'px');
         }
     });
 }
+
 
 function observeThemeChange() {
     const target = document.documentElement;
