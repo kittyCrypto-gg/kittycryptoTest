@@ -419,6 +419,7 @@ header {
   padding: 0 8px;
   font-size: 11px;
   position: sticky;
+  top: 0;
 }
 
 .window-controls {
