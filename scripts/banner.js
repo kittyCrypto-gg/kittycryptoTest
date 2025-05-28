@@ -207,8 +207,12 @@ export async function setupTerminalWindow() {
     header.appendChild(controls);
     header.appendChild(title);
 
+    const scrollArea = document.createElement('div');
+    scrollArea.id = 'terminal-scroll';
+    scrollArea.appendChild(terminalWrapper);
+
     windowWrapper.appendChild(header);
-    windowWrapper.appendChild(terminalWrapper);
+    windowWrapper.appendChild(scrollArea);
 
     const parent = document.getElementById('banner-wrapper');
     parent.insertBefore(windowWrapper, parent.firstChild);
