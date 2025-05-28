@@ -76,7 +76,8 @@ export async function loadBanner() {
 }
 
 function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    //return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    return false;
 }
 
 function scaleBannerToFit() {
@@ -110,13 +111,16 @@ function scaleBannerToFit() {
         let scaleFactor = 1;
 
         if (isMobileDevice()) {
-            const availableHeight = window.innerHeight;
-            const bannerHeight = banner.offsetHeight;
+            scaleFactor = 0.625;
+            banner.style.transform = `scale(${scaleFactor})`;
 
-            const idealScale = Math.min(1, availableHeight * 0.4 / bannerHeight); // 40% of screen, tweak as needed
+            // Force Safari repaint after applying transform
+            banner.offsetHeight;
+            banner.style.display = 'none';
+            banner.offsetHeight;
+            banner.style.display = '';
 
-            banner.style.transform = `scale(${idealScale})`;
-            scaler.style.height = `${Math.floor(bannerHeight * idealScale)}px`;
+            scaler.style.height = `${Math.floor(actualHeight * scaleFactor)}px`;
             scaler.style.overflow = 'hidden';
         }
 
