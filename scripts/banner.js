@@ -9,11 +9,9 @@ export async function loadBanner() {
     promptRow.appendChild(prompt);
     container.appendChild(promptRow);
 
-
     const response = await fetch('images/miku.txt');
     const asciiText = await response.text();
     const asciiLines = asciiText.trim().split('\n');
-
 
     const contentRow = document.createElement('div');
     contentRow.classList.add('row', 'content');
@@ -68,22 +66,24 @@ export async function loadBanner() {
     cursorRow.appendChild(cursor);
     container.appendChild(cursorRow);
 
-
     scaleBannerToFit(250);
     window.addEventListener('resize', () => scaleBannerToFit(250));
 }
 
-function scaleBannerToFit(maxHeight = 250) {
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+function scaleBannerToFit(maxHeight) {
     const wrapper = document.getElementById('banner-wrapper');
     const banner = document.getElementById('banner');
 
-    // Reset any previous scaling
     banner.style.transform = '';
     banner.style.transformOrigin = 'top left';
 
     const actualHeight = banner.offsetHeight;
 
-    if (actualHeight > maxHeight) {
+    if (isMobileDevice() && actualHeight > maxHeight) {
         const scaleFactor = maxHeight / actualHeight;
         banner.style.transform = `scale(${scaleFactor})`;
     }
