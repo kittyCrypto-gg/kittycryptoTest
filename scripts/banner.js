@@ -82,16 +82,33 @@ function scaleBannerToFit(maxHeight = 250) {
     const wrapper = document.getElementById('banner-wrapper');
     const banner = document.getElementById('banner');
 
+    wrapBannerForScaling();
+
+    const scaler = banner.parentElement; // .banner-scaler
     banner.style.transform = '';
-    banner.style.transformOrigin = 'top left'; // keep scaling aligned
-    wrapper.style.overflow = 'visible'; // match new CSS
+    banner.style.transformOrigin = 'top left';
+    scaler.style.height = 'auto';
 
     const actualHeight = banner.offsetHeight;
 
     if (isMobileDevice() && actualHeight > maxHeight) {
         const scaleFactor = maxHeight / actualHeight;
         banner.style.transform = `scale(${scaleFactor})`;
+        scaler.style.height = `${maxHeight}px`;
+        scaler.style.overflow = 'hidden';
     }
+}
+
+function wrapBannerForScaling() {
+    const banner = document.getElementById('banner');
+    const parent = banner.parentElement;
+
+    if (!banner || banner.parentElement.classList.contains('banner-scaler')) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'banner-scaler';
+    parent.replaceChild(wrapper, banner);
+    wrapper.appendChild(banner);
 }
 
 export async function setupTerminalWindow() {

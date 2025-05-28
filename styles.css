@@ -363,6 +363,13 @@ header {
   );
 }
 
+.banner-scaler {
+  width: fit-content;
+  height: auto;
+  overflow: visible;
+  display: inline-block;
+}
+
 /* Terminal Icon */
 #term-icon {
   display: none;
