@@ -76,8 +76,7 @@ export async function loadBanner() {
 }
 
 function isMobileDevice() {
-    //return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    return false;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 function scaleBannerToFit() {
@@ -101,10 +100,6 @@ function scaleBannerToFit() {
         const rect = banner.getBoundingClientRect();
         const actualHeight = banner.offsetHeight;
         const actualWidth = banner.offsetWidth;
-        const scalerHeight = scaler.offsetHeight;
-        const wrapperHeight = wrapper.offsetHeight;
-        const docHeight = document.documentElement.clientHeight;
-        const docWidth = document.documentElement.clientWidth;
         const fontSize = getComputedStyle(banner).fontSize;
         const lineHeight = getComputedStyle(banner).lineHeight;
 
@@ -113,15 +108,13 @@ function scaleBannerToFit() {
         if (isMobileDevice()) {
             scaleFactor = 0.625;
             banner.style.transform = `scale(${scaleFactor})`;
-
-            // Force Safari repaint after applying transform
-            banner.offsetHeight;
-            banner.style.display = 'none';
-            banner.offsetHeight;
-            banner.style.display = '';
-
+            banner.style.height = 'auto';
             scaler.style.height = `${Math.floor(actualHeight * scaleFactor)}px`;
             scaler.style.overflow = 'hidden';
+        } else {
+            banner.style.height = 'auto';
+            scaler.style.height = 'auto';
+            scaler.style.overflow = 'visible';
         }
 
         if (debug) {
@@ -133,13 +126,11 @@ function scaleBannerToFit() {
             🖼️ banner.offsetWidth: ${actualWidth}
             🖼️ banner.getBoundingClientRect(): { top: ${rect.top}, left: ${rect.left}, width: ${rect.width}, height: ${rect.height} }
 
-            📦 scaler.offsetHeight: ${scalerHeight}
-            📦 wrapper.offsetHeight: ${wrapperHeight}
+            📦 scaler.offsetHeight: ${scaler.offsetHeight}
+            📦 wrapper.offsetHeight: ${wrapper.offsetHeight}
 
             🌐 window.innerHeight: ${window.innerHeight}
             🌐 window.innerWidth: ${window.innerWidth}
-            🌐 document.documentElement.clientHeight: ${docHeight}
-            🌐 document.documentElement.clientWidth: ${docWidth}
 
             🔤 font-size: ${fontSize}
             🔤 line-height: ${lineHeight}`;
@@ -147,9 +138,13 @@ function scaleBannerToFit() {
     };
 
     waitUntilReady();
-    window.addEventListener('load', () => {
-        scaleBannerToFit(); // triggers repaint after all layout stabilises
-    });
+    window.addEventListener('load', () => scaleBannerToFit());
+}
+
+waitUntilReady();
+window.addEventListener('load', () => {
+    scaleBannerToFit(); // triggers repaint after all layout stabilises
+});
 }
 
 function wrapBannerForScaling() {
