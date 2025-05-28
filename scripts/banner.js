@@ -161,6 +161,7 @@ export async function setupTerminalWindow() {
     const terminalWrapper = document.getElementById('terminal-wrapper');
     const windowWrapper = document.createElement('div');
     windowWrapper.id = 'terminal-window';
+    windowWrapper.style.position = 'relative';
 
     const header = document.createElement('div');
     header.id = 'terminal-header';
@@ -172,32 +173,107 @@ export async function setupTerminalWindow() {
     closeBtn.classList.add('btn', 'close');
     closeBtn.textContent = '🔴';
     closeBtn.addEventListener('click', () => {
-    windowWrapper.style.display = 'none';
-    terminalWrapper.style.display = 'block'; // Reset to maximised view
-    minimizeBtn.classList.remove('hidden');
-    maximizeBtn.classList.add('hidden');
-    localStorage.setItem('terminal-closed', 'true');
-    localStorage.removeItem('terminal-minimised'); // Clear minimise state
-  });
+        windowWrapper.style.display = 'none';
+        terminalWrapper.style.display = 'block'; // Reset to maximised view
+        minimiseBtn.classList.remove('hidden');
+        maximiseBtn.classList.add('hidden');
+        localStorage.setItem('terminal-closed', 'true');
+        localStorage.removeItem('terminal-minimised'); // Clear minimise state
+    });
 
-    const minimizeBtn = document.createElement('span');
-    minimizeBtn.classList.add('btn', 'minimize');
-    minimizeBtn.textContent = '🟡';
-    minimizeBtn.addEventListener('click', () => {
+    const minimiseBtn = document.createElement('span');
+    minimiseBtn.classList.add('btn', 'minimise');
+    minimiseBtn.textContent = '🟡';
+    minimiseBtn.addEventListener('click', () => {
         terminalWrapper.style.display = 'none';
-        minimizeBtn.classList.add('hidden');
-        maximizeBtn.classList.remove('hidden');
+        minimiseBtn.classList.add('hidden');
+        maximiseBtn.classList.remove('hidden');
         localStorage.setItem('terminal-minimised', 'true');
     });
 
-    const maximizeBtn = document.createElement('span');
-    maximizeBtn.classList.add('btn', 'maximize', 'hidden');
-    maximizeBtn.textContent = '🟢';
-    maximizeBtn.addEventListener('click', () => {
+    const maximiseBtn = document.createElement('span');
+    maximiseBtn.classList.add('btn', 'maximise', 'hidden');
+    maximiseBtn.textContent = '🔵';
+    maximiseBtn.addEventListener('click', () => {
         terminalWrapper.style.display = 'block';
-        maximizeBtn.classList.add('hidden');
-        minimizeBtn.classList.remove('hidden');
+        maximiseBtn.classList.add('hidden');
+        minimiseBtn.classList.remove('hidden');
         localStorage.removeItem('terminal-minimised');
+    });
+
+    const floatBtn = document.createElement('span');
+    floatBtn.classList.add('btn', 'float');
+    floatBtn.textContent = '🟠';
+
+    floatBtn.addEventListener('click', () => {
+        const isFloating = windowWrapper.classList.toggle('floating');
+        if (isFloating) {
+            floatBtn.textContent = '🟢';
+            windowWrapper.style.position = 'absolute';
+            windowWrapper.style.width = '50%';
+            windowWrapper.style.resize = isFloating ? 'both' : 'none';
+            windowWrapper.style.overflow = 'auto';
+            makeTermDragWPrnt(windowWrapper, document.getElementById('banner-wrapper'));
+            localStorage.setItem('terminal-floating', 'true');
+        } else {
+            floatBtn.textContent = '🟠';
+            windowWrapper.style.position = 'relative';
+            windowWrapper.style.width = '100%';
+            windowWrapper.style.resize = '';
+            windowWrapper.style.left = '';
+            windowWrapper.style.top = '';
+            windowWrapper.style.transform = '';
+            localStorage.removeItem('terminal-floating');
+            localStorage.removeItem('terminal-x');
+            localStorage.removeItem('terminal-y');
+        }
+    });
+
+    // Restore floating state if saved
+    const shouldFloat = localStorage.getItem('terminal-floating') !== 'false';
+
+    if (shouldFloat) {
+        windowWrapper.classList.add('floating');
+        windowWrapper.style.position = 'absolute';
+        windowWrapper.style.width = '50%';
+        windowWrapper.style.resize = 'both';
+        windowWrapper.style.overflow = 'auto';
+        makeTermDragWPrnt(windowWrapper, document.getElementById('banner-wrapper'));
+        floatBtn.textContent = '🟢';
+
+        const savedX = localStorage.getItem('terminal-x');
+        const savedY = localStorage.getItem('terminal-y');
+        const savedWidth = localStorage.getItem('terminal-width');
+        const savedHeight = localStorage.getItem('terminal-height');
+
+        windowWrapper.style.width = savedWidth || '50%';
+        windowWrapper.style.height = savedHeight || '';
+        windowWrapper.style.left = savedX || '10px';
+        windowWrapper.style.top = savedY || '10px';
+    } else {
+        windowWrapper.style.position = 'relative';
+        windowWrapper.style.width = '100%';
+        windowWrapper.style.resize = '';
+        windowWrapper.style.left = '';
+        windowWrapper.style.top = '';
+    }
+
+    // Update closeBtn logic
+    closeBtn.addEventListener('click', () => {
+        windowWrapper.style.display = 'none';
+        terminalWrapper.style.display = 'block'; // Restore to maximised
+        maximiseBtn.classList.add('hidden');
+        minimiseBtn.classList.remove('hidden');
+        floatBtn.textContent = '🟠';
+        windowWrapper.classList.remove('floating');
+        windowWrapper.style.position = 'relative';
+        windowWrapper.style.width = '100%';
+        windowWrapper.style.resize = '';
+        localStorage.setItem('terminal-closed', 'true');
+        localStorage.removeItem('terminal-minimised');
+        localStorage.removeItem('terminal-floating');
+        localStorage.removeItem('terminal-x');
+        localStorage.removeItem('terminal-y');
     });
 
     const title = document.createElement('span');
@@ -205,8 +281,9 @@ export async function setupTerminalWindow() {
     title.textContent = 'YuriGreen Terminal Emulator — /home/kitty/';
 
     controls.appendChild(closeBtn);
-    controls.appendChild(minimizeBtn);
-    controls.appendChild(maximizeBtn);
+    controls.appendChild(minimiseBtn);
+    controls.appendChild(maximiseBtn);
+    controls.appendChild(floatBtn);
     header.appendChild(controls);
     header.appendChild(title);
 
@@ -242,8 +319,8 @@ export async function setupTerminalWindow() {
 
     if (localStorage.getItem('terminal-minimised') === 'true') {
         terminalWrapper.style.display = 'none';
-        minimizeBtn.classList.add('hidden');
-        maximizeBtn.classList.remove('hidden');
+        minimiseBtn.classList.add('hidden');
+        maximiseBtn.classList.remove('hidden');
     }
 }
 
@@ -286,6 +363,54 @@ function makeIconDraggable() {
     }
 }
 
+function makeTermDragWPrnt(el, parent) {
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+
+    el.addEventListener('mousedown', (e) => {
+        if (!el.classList.contains('floating')) return;
+        isDragging = true;
+        startX = e.clientX - el.offsetLeft;
+        startY = e.clientY - el.offsetTop;
+        el.style.cursor = 'grabbing';
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const newX = e.clientX - startX;
+        const newY = e.clientY - startY;
+
+        // Boundaries
+        const parentRect = parent.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+
+        const maxX = parentRect.width - el.offsetWidth;
+        const maxY = parentRect.height - el.offsetHeight;
+
+        const clampedX = Math.max(0, Math.min(newX, maxX));
+        const clampedY = Math.max(0, Math.min(newY, maxY));
+
+        el.style.left = `${clampedX}px`;
+        el.style.top = `${clampedY}px`;
+        el.style.transform = 'none';
+
+        localStorage.setItem('terminal-x', el.style.left);
+        localStorage.setItem('terminal-y', el.style.top);
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            el.style.cursor = 'default';
+        }
+        localStorage.setItem('terminal-width', el.offsetWidth + 'px');
+        localStorage.setItem('terminal-height', el.offsetHeight + 'px');
+    });
+}
+
 function observeThemeChange() {
     const target = document.documentElement;
     const observer = new MutationObserver(mutations => {
@@ -296,7 +421,6 @@ function observeThemeChange() {
             }
         }
     });
-
     observer.observe(target, { attributes: true });
 }
 
