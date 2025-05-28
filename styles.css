@@ -14,10 +14,16 @@
 
   --frame-padding: 20px;
 
-  .frame-content {
-    flex-grow: 1;
-    /* Expands to take up available space */
-  }
+  /* Banner */
+  --banner-green: #006600;
+  --banner-blue: #003366;
+  --banner-teal: #005a5a;
+  --banner-teal-bright: #007a7a;
+
+  --banner-text-main: var(--banner-teal);
+  --banner-text-header: var(--banner-teal-bright);
+  --banner-text-footer: var(--banner-teal);
+  --banner-background: transparent;
 
   /* Header */
   --header-bg-colour: #b2ebf2;
@@ -94,6 +100,16 @@
 
   /* Frame */
   --frame-bg-colour: #1e1e1e;
+
+  /* Banner */
+  --banner-green: #44ff44;
+  --banner-blue: #00c0ff;
+  --banner-teal: #00c8c8;
+  --banner-teal-bright: #00e0e0;
+
+  --banner-text-main: var(--banner-teal);
+  --banner-text-header: var(--banner-teal-bright);
+  --banner-text-footer: var(--banner-teal);
 
   /* Header */
   --header-bg-colour: #004d40;
@@ -203,34 +219,6 @@ header {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* 
-#banner-container {
-  width: 100%;
-  max-width: 1200px;
-  aspect-ratio: 6144 / 1280;
-  height: auto;
-  max-height: 250px;
-  margin: 0 auto 20px auto;
-  border: 2px solid var(--nav-border-colour);
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  position: relative;
-}
-
-#banner-container img {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: auto;
-  min-width: 100%;
-  object-fit: cover;
-  object-position: left top;
-  display: block;
-  transition: opacity 0.3s ease; 
-}*/
-
 /* =========================================
   Banner
 ========================================= */
@@ -240,8 +228,8 @@ header {
   font-size: 11px;
   line-height: 10px; /* Tighter than font-size */
   white-space: pre;
-  background: transparent;
-  color: #00c8c8;
+  background: var(--banner-background);
+  color: var(--banner-text-main);
   user-select: none;
   display: inline-block;
   transform-origin: top left;
@@ -282,15 +270,15 @@ header {
 }
 
 .command-line span.green {
-  color: #44ff44;
+  color: var(--banner-green);
 }
 
 .command-line span.blue {
-  color: #00c0ff;
+  color: var(--banner-blue);
 }
 
 .command-line span.teal {
-  color: #00c8c8;
+  color: var(--banner-teal);
 }
 
 /* ===========================
@@ -302,7 +290,7 @@ header {
 }
 
 .ascii-line {
-  color: #00c8c8;
+  color: var(--banner-text-main);
   display: block;
   font-family: inherit;
   line-height: 10px;
@@ -322,18 +310,18 @@ header {
 }
 
 .info-line {
-  color: #00c8c8;
+  color: var(--banner-text-main);
   display: block;
   font-family: inherit;
   font-weight: normal;
 }
 
 .info-header {
-  color: #00e0e0;
+  color: var(--banner-text-header);
 }
 
 .info-footer {
-  color: #00c8c8;
+  color: var(--banner-text-footer);
 }
 
 /* ===========================
@@ -348,9 +336,10 @@ header {
 }
 
 #banner-wrapper::after {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
@@ -361,6 +350,14 @@ header {
     transparent 1px,
     transparent 2px
   );
+}
+
+/* =========================================
+  Frame
+========================================= */
+.frame-content {
+  flex-grow: 1;
+  /* Expands to take up available space */
 }
 
 /* =========================================
