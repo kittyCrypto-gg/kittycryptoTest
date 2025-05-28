@@ -383,6 +383,9 @@ header {
   top: 1rem;
   left: 1rem;
   z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--frame-bg-colour);
+  border-radius: 4px;
 }
 
 #term-icon:hover {

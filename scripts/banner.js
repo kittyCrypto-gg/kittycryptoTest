@@ -172,72 +172,30 @@ export async function setupTerminalWindow() {
     const closeBtn = document.createElement('span');
     closeBtn.classList.add('btn', 'close');
     closeBtn.textContent = '🔴';
-    closeBtn.addEventListener('click', () => {
-        windowWrapper.style.display = 'none';
-        terminalWrapper.style.display = 'block'; // Reset to maximised view
-        minimiseBtn.classList.remove('hidden');
-        maximiseBtn.classList.add('hidden');
-        localStorage.setItem('terminal-closed', 'true');
-        localStorage.removeItem('terminal-minimised'); // Clear minimise state
-        icon.style.display = 'inline-block';
-    });
 
-    const minimiseBtn = document.createElement('span');
-    minimiseBtn.classList.add('btn', 'minimise');
-    minimiseBtn.textContent = '🟡';
-    minimiseBtn.addEventListener('click', () => {
-        windowWrapper.classList.remove('floating');
-        Object.assign(windowWrapper.style, {
-            position: 'relative',
-            zIndex: '',
-            width: '100%',
-            height: '',
-            resize: '',
-            overflow: '',
-            left: '',
-            top: '',
-        });
-
-        localStorage.removeItem('terminal-floating');
-
-        terminalWrapper.style.display = 'none';
-        minimiseBtn.classList.add('hidden');
-        maximiseBtn.classList.remove('hidden');
-        localStorage.setItem('terminal-minimised', 'true');
-    });
-
-    const maximiseBtn = document.createElement('span');
-    maximiseBtn.classList.add('btn', 'maximise', 'hidden');
-    maximiseBtn.textContent = '🔵';
-    maximiseBtn.addEventListener('click', () => {
-        terminalWrapper.style.display = 'block';
-        maximiseBtn.classList.add('hidden');
-        minimiseBtn.classList.remove('hidden');
-        localStorage.removeItem('terminal-minimised');
-    });
+    const toggleViewBtn = document.createElement('span');
+    toggleViewBtn.classList.add('btn', 'toggle-view');
+    toggleViewBtn.textContent = '🟡';
 
     const floatBtn = document.createElement('span');
     floatBtn.classList.add('btn', 'float');
     floatBtn.textContent = '🟢';
 
-    floatBtn.addEventListener('click', () => {
-        const isFloating = windowWrapper.classList.toggle('floating');
-        if (isFloating) {
-            windowWrapper.style.position = 'absolute';
-            windowWrapper.style.zIndex = '9999';
-            windowWrapper.style.width = localStorage.getItem('terminal-width') || '50%';
-            windowWrapper.style.height = localStorage.getItem('terminal-height') || '';
-            windowWrapper.style.resize = 'both';
-            windowWrapper.style.overflow = 'auto';
+    closeBtn.addEventListener('click', () => {
+        windowWrapper.style.display = 'none';
+        terminalWrapper.style.display = 'block';
+        localStorage.setItem('terminal-closed', 'true');
+        localStorage.removeItem('terminal-minimised');
+        icon.style.display = 'inline-block';
+    });
 
-            const savedX = localStorage.getItem('term-icon-x') || '10px';
-            const savedY = localStorage.getItem('term-icon-y') || '10px';
-            windowWrapper.style.left = savedX;
-            windowWrapper.style.top = savedY;
-
-            makeTermDragWPrnt(windowWrapper, document.body);
-            localStorage.setItem('terminal-floating', 'true');
+    toggleViewBtn.addEventListener('click', () => {
+        const isMinimised = terminalWrapper.style.display === 'none';
+        if (isMinimised) {
+            terminalWrapper.style.display = 'block';
+            localStorage.removeItem('terminal-minimised');
         } else {
+            windowWrapper.classList.remove('floating');
             Object.assign(windowWrapper.style, {
                 position: 'relative',
                 zIndex: '',
@@ -249,56 +207,71 @@ export async function setupTerminalWindow() {
                 top: '',
             });
             localStorage.removeItem('terminal-floating');
+            terminalWrapper.style.display = 'none';
+            localStorage.setItem('terminal-minimised', 'true');
         }
     });
 
-    // Restore floating state if saved
-    const shouldFloat = localStorage.getItem('terminal-floating') !== 'false';
-
-    if (shouldFloat) {
-        windowWrapper.classList.add('floating');
-        windowWrapper.style.position = 'absolute';
-        windowWrapper.style.zIndex = '9999';
-        windowWrapper.style.width = localStorage.getItem('terminal-width') || '50%';
-        windowWrapper.style.height = localStorage.getItem('terminal-height') || '';
-        windowWrapper.style.resize = 'both';
-        windowWrapper.style.overflow = 'auto';
-        windowWrapper.style.left = localStorage.getItem('term-icon-x') || '10px';
-        windowWrapper.style.top = localStorage.getItem('term-icon-y') || '10px';
-        makeTermDragWPrnt(windowWrapper, document.body);
-    } else {
-        windowWrapper.style.position = 'relative';
-        windowWrapper.style.width = '100%';
-        windowWrapper.style.resize = '';
-        windowWrapper.style.left = '';
-        windowWrapper.style.top = '';
-    }
-
-    // Update closeBtn logic
-    closeBtn.addEventListener('click', () => {
-        windowWrapper.style.display = 'none';
-        terminalWrapper.style.display = 'block'; // Restore to maximised
-        maximiseBtn.classList.add('hidden');
-        minimiseBtn.classList.remove('hidden');
-        floatBtn.textContent = '🟠';
-        windowWrapper.classList.remove('floating');
-        windowWrapper.style.position = 'relative';
-        windowWrapper.style.width = '100%';
-        windowWrapper.style.resize = '';
-        localStorage.setItem('terminal-closed', 'true');
-        localStorage.removeItem('terminal-minimised');
-        localStorage.removeItem('terminal-floating');
-        localStorage.removeItem('terminal-x');
-        localStorage.removeItem('terminal-y');
+    floatBtn.addEventListener('click', () => {
+        const isFloating = windowWrapper.classList.toggle('floating');
+        if (isFloating) {
+            Object.assign(windowWrapper.style, {
+                position: 'absolute',
+                zIndex: '9999',
+                width: localStorage.getItem('terminal-width') || '50%',
+                height: localStorage.getItem('terminal-height') || '',
+                resize: 'both',
+                overflow: 'auto',
+                left: localStorage.getItem('term-icon-x') || '10px',
+                top: localStorage.getItem('term-icon-y') || '10px'
+            });
+            makeTermDragWPrnt(windowWrapper, document.getElementById('banner-wrapper'));
+            localStorage.setItem('terminal-floating', 'true');
+        } else {
+            Object.assign(windowWrapper.style, {
+                position: 'relative',
+                zIndex: '',
+                width: '100%',
+                height: '',
+                resize: '',
+                overflow: '',
+                left: '',
+                top: ''
+            });
+            localStorage.removeItem('terminal-floating');
+        }
     });
+
+    // Restore floating state
+    if (localStorage.getItem('terminal-floating') === 'true') {
+        windowWrapper.classList.add('floating');
+        Object.assign(windowWrapper.style, {
+            position: 'absolute',
+            zIndex: '9999',
+            width: localStorage.getItem('terminal-width') || '50%',
+            height: localStorage.getItem('terminal-height') || '',
+            resize: 'both',
+            overflow: 'auto',
+            left: localStorage.getItem('term-icon-x') || '10px',
+            top: localStorage.getItem('term-icon-y') || '10px'
+        });
+        makeTermDragWPrnt(windowWrapper, document.getElementById('banner-wrapper'));
+    } else {
+        Object.assign(windowWrapper.style, {
+            position: 'relative',
+            width: '100%',
+            resize: '',
+            left: '',
+            top: ''
+        });
+    }
 
     const title = document.createElement('span');
     title.classList.add('window-title');
     title.textContent = 'YuriGreen Terminal Emulator — /home/kitty/';
 
     controls.appendChild(closeBtn);
-    controls.appendChild(minimiseBtn);
-    controls.appendChild(maximiseBtn);
+    controls.appendChild(toggleViewBtn);
     controls.appendChild(floatBtn);
     header.appendChild(controls);
     header.appendChild(title);
@@ -317,35 +290,35 @@ export async function setupTerminalWindow() {
     icon.src = '/images/terminal.svg';
     icon.alt = 'Terminal icon';
     icon.title = 'Double-click to open terminal';
+
     icon.addEventListener('dblclick', () => {
         windowWrapper.style.display = 'block';
         terminalWrapper.style.display = 'block';
         icon.style.display = 'none';
 
-        const shouldFloat = localStorage.getItem('terminal-floating') === 'true';
-        if (shouldFloat) {
+        if (localStorage.getItem('terminal-floating') === 'true') {
             windowWrapper.classList.add('floating');
             Object.assign(windowWrapper.style, {
                 position: 'absolute',
                 zIndex: '9999',
                 width: localStorage.getItem('terminal-width') || '50%',
                 height: localStorage.getItem('terminal-height') || '',
-                left: localStorage.getItem('terminal-x') || '10px',
-                top: localStorage.getItem('terminal-y') || '10px',
                 resize: 'both',
-                overflow: 'auto'
+                overflow: 'auto',
+                left: localStorage.getItem('terminal-x') || '10px',
+                top: localStorage.getItem('terminal-y') || '10px'
             });
             setTimeout(() => {
                 makeTermDragWPrnt(windowWrapper, document.getElementById('banner-wrapper'));
             });
         }
+
         localStorage.removeItem('terminal-closed');
         localStorage.removeItem('terminal-minimised');
     });
 
     makeIconDraggable();
 
-    // Restore from localStorage
     if (localStorage.getItem('terminal-closed') === 'true') {
         windowWrapper.style.display = 'none';
         icon.style.display = 'inline-block';
@@ -353,8 +326,6 @@ export async function setupTerminalWindow() {
 
     if (localStorage.getItem('terminal-minimised') === 'true') {
         terminalWrapper.style.display = 'none';
-        minimiseBtn.classList.add('hidden');
-        maximiseBtn.classList.remove('hidden');
     }
 }
 
