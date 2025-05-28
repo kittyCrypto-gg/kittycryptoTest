@@ -90,30 +90,32 @@ function scaleBannerToFit(maxHeight = 250) {
     banner.style.transformOrigin = 'top left';
     scaler.style.height = 'auto';
 
-    const actualHeight = banner.offsetHeight;
-    const actualWidth = banner.offsetWidth;
+    const waitUntilReady = () => {
+        // 🛠 Force layout reflow hack
+        banner.offsetHeight;
+        banner.style.display = 'none';
+        banner.offsetHeight;
+        banner.style.display = '';
 
-    alert(`[scaleBannerToFit]
-  isMobile: ${isMobileDevice()}
-  height: ${actualHeight}
-  width: ${actualWidth}
-  maxHeight: ${maxHeight}`);
+        const actualHeight = banner.offsetHeight;
+        alert(`[scaleBannerToFit]\nforced reflow\nheight: ${actualHeight}`);
 
-    if (isMobileDevice() && actualHeight > maxHeight) {
-        const scaleFactor = maxHeight / actualHeight;
-        banner.style.transform = `scale(${scaleFactor})`;
-        scaler.style.height = `${maxHeight}px`;
-        scaler.style.overflow = 'hidden';
+        if (actualHeight < 50) {
+            requestAnimationFrame(waitUntilReady);
+            return;
+        }
 
-        alert(`🚨 Scaling applied: scale(${scaleFactor.toFixed(3)})`);
-    } else {
-        alert('✅ No scaling applied.');
-    }
+        if (isMobileDevice() && actualHeight > maxHeight) {
+            const scaleFactor = maxHeight / actualHeight;
+            banner.style.transform = `scale(${scaleFactor})`;
+            banner.parentElement.style.height = `${maxHeight}px`;
+            banner.parentElement.style.overflow = 'hidden';
+            alert(`🚨 Scaling applied: scale(${scaleFactor.toFixed(3)})`);
+        }
+    };
 
-    const computed = window.getComputedStyle(banner);
-    alert(`[computed style]
-  font-size: ${computed.fontSize}
-  line-height: ${computed.lineHeight}`);
+
+    waitUntilReady();
 }
 
 function wrapBannerForScaling() {
