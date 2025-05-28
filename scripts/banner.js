@@ -112,33 +112,43 @@ function scaleBannerToFit() {
         if (isMobileDevice()) {
             scaleFactor = 0.625;
             banner.style.transform = `scale(${scaleFactor})`;
+
+            // Force Safari repaint after applying transform
+            banner.offsetHeight;
+            banner.style.display = 'none';
+            banner.offsetHeight;
+            banner.style.display = '';
+
             scaler.style.height = `${Math.floor(actualHeight * scaleFactor)}px`;
             scaler.style.overflow = 'hidden';
         }
 
         if (debug) {
             debug.innerText = `[scaleBannerToFit]
-📱 isMobile: ${isMobileDevice()}
-📏 scaleFactor: ${scaleFactor.toFixed(3)}
+            📱 isMobile: ${isMobileDevice()}
+            📏 scaleFactor: ${scaleFactor.toFixed(3)}
 
-🖼️ banner.offsetHeight: ${actualHeight}
-🖼️ banner.offsetWidth: ${actualWidth}
-🖼️ banner.getBoundingClientRect(): { top: ${rect.top}, left: ${rect.left}, width: ${rect.width}, height: ${rect.height} }
+            🖼️ banner.offsetHeight: ${actualHeight}
+            🖼️ banner.offsetWidth: ${actualWidth}
+            🖼️ banner.getBoundingClientRect(): { top: ${rect.top}, left: ${rect.left}, width: ${rect.width}, height: ${rect.height} }
 
-📦 scaler.offsetHeight: ${scalerHeight}
-📦 wrapper.offsetHeight: ${wrapperHeight}
+            📦 scaler.offsetHeight: ${scalerHeight}
+            📦 wrapper.offsetHeight: ${wrapperHeight}
 
-🌐 window.innerHeight: ${window.innerHeight}
-🌐 window.innerWidth: ${window.innerWidth}
-🌐 document.documentElement.clientHeight: ${docHeight}
-🌐 document.documentElement.clientWidth: ${docWidth}
+            🌐 window.innerHeight: ${window.innerHeight}
+            🌐 window.innerWidth: ${window.innerWidth}
+            🌐 document.documentElement.clientHeight: ${docHeight}
+            🌐 document.documentElement.clientWidth: ${docWidth}
 
-🔤 font-size: ${fontSize}
-🔤 line-height: ${lineHeight}`;
+            🔤 font-size: ${fontSize}
+            🔤 line-height: ${lineHeight}`;
         }
     };
 
     waitUntilReady();
+    window.addEventListener('load', () => {
+        scaleBannerToFit(); // triggers repaint after all layout stabilises
+    });
 }
 
 function wrapBannerForScaling() {
