@@ -22,7 +22,7 @@
   --banner-text-main: var(--banner-teal);
   --banner-text-header: var(--banner-teal-bright);
   --banner-text-footer: var(--banner-teal);
-  --banner-background: transparent;
+  --banner-background: var(--chatroom-bg-colour);
 
   /* Header */
   --header-bg-colour: #b2ebf2;
