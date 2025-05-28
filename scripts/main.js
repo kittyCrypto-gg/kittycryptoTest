@@ -1,18 +1,17 @@
 import { loadBanner, setupTerminalWindow } from "./banner.js";
 
-loadBanner().then(async () => {
-  await setupTerminalWindow();
-  await new Promise(resolve => {
-    document.getElementById('terminal-loading')?.style.setProperty('display', 'none');
-    console.log("Banner loaded successfully");
-    resolve();
-  });
-});
-
-
 document.addEventListener("DOMContentLoaded", () => {
   document.body.style.visibility = "visible";
   document.body.style.opacity = "1";
+
+  loadBanner().then(async () => {
+    await setupTerminalWindow();
+    await new Promise(resolve => {
+      document.getElementById('terminal-loading')?.style.setProperty('display', 'none');
+      console.log("Banner loaded successfully");
+      resolve();
+    });
+  });
 });
 
 let currentTheme = null;

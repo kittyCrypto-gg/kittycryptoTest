@@ -91,14 +91,13 @@ function scaleBannerToFit(maxHeight = 250) {
     scaler.style.height = 'auto';
 
     const waitUntilReady = () => {
-        // 🛠 Force layout reflow hack
         banner.offsetHeight;
         banner.style.display = 'none';
         banner.offsetHeight;
         banner.style.display = '';
 
         const actualHeight = banner.offsetHeight;
-        alert(`[scaleBannerToFit]\nforced reflow\nheight: ${actualHeight}`);
+        //alert(`[scaleBannerToFit]\nforced reflow\nheight: ${actualHeight}`);
 
         if (actualHeight < 50) {
             requestAnimationFrame(waitUntilReady);
@@ -110,7 +109,7 @@ function scaleBannerToFit(maxHeight = 250) {
             banner.style.transform = `scale(${scaleFactor})`;
             banner.parentElement.style.height = `${maxHeight}px`;
             banner.parentElement.style.overflow = 'hidden';
-            alert(`🚨 Scaling applied: scale(${scaleFactor.toFixed(3)})`);
+            //alert(`🚨 Scaling applied: scale(${scaleFactor.toFixed(3)})`);
         }
     };
 
