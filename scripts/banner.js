@@ -93,9 +93,9 @@ function scaleBannerToFit(maxHeight = 250) {
 }
 
 export function setupTerminalWindow() {
-    const original = document.getElementById('terminal');
-    const wrapper = document.createElement('div');
-    wrapper.id = 'terminal-window';
+    const terminalWrapper = document.getElementById('terminal-wrapper');
+    const windowWrapper = document.createElement('div');
+    windowWrapper.id = 'terminal-window';
 
     const header = document.createElement('div');
     header.id = 'terminal-header';
@@ -107,26 +107,29 @@ export function setupTerminalWindow() {
     closeBtn.classList.add('btn', 'close');
     closeBtn.textContent = '🔴';
     closeBtn.addEventListener('click', () => {
-        wrapper.style.display = 'none';
-        document.getElementById('icon').style.display = 'inline-block';
+        windowWrapper.style.display = 'none';
+        document.getElementById('term-icon').style.display = 'inline-block';
+        localStorage.setItem('terminal-closed', 'true');
     });
 
     const minimizeBtn = document.createElement('span');
     minimizeBtn.classList.add('btn', 'minimize');
     minimizeBtn.textContent = '🟡';
     minimizeBtn.addEventListener('click', () => {
-        document.getElementById('terminal-content').style.display = 'none';
+        terminalWrapper.style.display = 'none';
         minimizeBtn.classList.add('hidden');
         maximizeBtn.classList.remove('hidden');
+        localStorage.setItem('terminal-minimised', 'true');
     });
 
     const maximizeBtn = document.createElement('span');
     maximizeBtn.classList.add('btn', 'maximize', 'hidden');
     maximizeBtn.textContent = '🟢';
     maximizeBtn.addEventListener('click', () => {
-        document.getElementById('terminal-content').style.display = 'block';
+        terminalWrapper.style.display = 'block';
         maximizeBtn.classList.add('hidden');
         minimizeBtn.classList.remove('hidden');
+        localStorage.removeItem('terminal-minimised');
     });
 
     const title = document.createElement('span');
@@ -139,28 +142,37 @@ export function setupTerminalWindow() {
     header.appendChild(controls);
     header.appendChild(title);
 
-    const content = document.createElement('div');
-    content.id = 'terminal-content';
+    windowWrapper.appendChild(header);
+    windowWrapper.appendChild(terminalWrapper);
 
-    wrapper.appendChild(header);
-    wrapper.appendChild(content);
+    const parent = document.getElementById('banner-wrapper');
+    parent.insertBefore(windowWrapper, parent.firstChild);
 
-    const parent = original.parentNode;
-    parent.replaceChild(wrapper, original);
-    content.appendChild(original);
-
-    // Handle icon double-click to restore
     const icon = document.getElementById('term-icon');
     icon.src = '/images/terminal.svg';
     icon.alt = 'Terminal icon';
+    icon.title = 'Double-click to open terminal';
     icon.addEventListener('dblclick', () => {
-        wrapper.style.display = 'block';
+        windowWrapper.style.display = 'block';
+        terminalWrapper.style.display = 'block';
         icon.style.display = 'none';
+        localStorage.removeItem('terminal-closed');
+        localStorage.removeItem('terminal-minimised');
     });
 
-    icon.title = "Double-click to open terminal";
-
     makeIconDraggable();
+
+    // Restore from localStorage
+    if (localStorage.getItem('terminal-closed') === 'true') {
+        windowWrapper.style.display = 'none';
+        icon.style.display = 'inline-block';
+    }
+
+    if (localStorage.getItem('terminal-minimised') === 'true') {
+        terminalWrapper.style.display = 'none';
+        minimizeBtn.classList.add('hidden');
+        maximizeBtn.classList.remove('hidden');
+    }
 }
 
 function makeIconDraggable() {
