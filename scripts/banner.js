@@ -13,7 +13,7 @@ export async function loadBanner() {
     container.appendChild(promptRow);
 
 
-    const response = await fetch('miku.txt');
+    const response = await fetch('images/miku.txt');
     const asciiText = await response.text();
     const asciiLines = asciiText.trim().split('\n');
 
