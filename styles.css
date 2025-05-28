@@ -409,7 +409,7 @@ header {
 
 #terminal-wrapper {
   padding: 0.5rem;
-  overflow-y: auto;
+  overflow: visible;
   flex: 1;
 }
 
