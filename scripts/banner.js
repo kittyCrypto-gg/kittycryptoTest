@@ -203,29 +203,37 @@ export async function setupTerminalWindow() {
 
     const floatBtn = document.createElement('span');
     floatBtn.classList.add('btn', 'float');
-    floatBtn.textContent = '🟠';
+    floatBtn.textContent = '🟢';
 
     floatBtn.addEventListener('click', () => {
         const isFloating = windowWrapper.classList.toggle('floating');
         if (isFloating) {
-            floatBtn.textContent = '🟢';
             windowWrapper.style.position = 'absolute';
-            windowWrapper.style.width = '50%';
-            windowWrapper.style.resize = isFloating ? 'both' : 'none';
+            windowWrapper.style.zIndex = '9999';
+            windowWrapper.style.width = localStorage.getItem('terminal-width') || '50%';
+            windowWrapper.style.height = localStorage.getItem('terminal-height') || '';
+            windowWrapper.style.resize = 'both';
             windowWrapper.style.overflow = 'auto';
-            makeTermDragWPrnt(windowWrapper, document.getElementById('banner-wrapper'));
+
+            const savedX = localStorage.getItem('term-icon-x') || '10px';
+            const savedY = localStorage.getItem('term-icon-y') || '10px';
+            windowWrapper.style.left = savedX;
+            windowWrapper.style.top = savedY;
+
+            makeTermDragWPrnt(windowWrapper, document.body);
             localStorage.setItem('terminal-floating', 'true');
         } else {
-            floatBtn.textContent = '🟠';
-            windowWrapper.style.position = 'relative';
-            windowWrapper.style.width = '100%';
-            windowWrapper.style.resize = '';
-            windowWrapper.style.left = '';
-            windowWrapper.style.top = '';
-            windowWrapper.style.transform = '';
+            Object.assign(windowWrapper.style, {
+                position: 'relative',
+                zIndex: '',
+                width: '100%',
+                height: '',
+                resize: '',
+                overflow: '',
+                left: '',
+                top: '',
+            });
             localStorage.removeItem('terminal-floating');
-            localStorage.removeItem('terminal-x');
-            localStorage.removeItem('terminal-y');
         }
     });
 
@@ -235,21 +243,14 @@ export async function setupTerminalWindow() {
     if (shouldFloat) {
         windowWrapper.classList.add('floating');
         windowWrapper.style.position = 'absolute';
-        windowWrapper.style.width = '50%';
+        windowWrapper.style.zIndex = '9999';
+        windowWrapper.style.width = localStorage.getItem('terminal-width') || '50%';
+        windowWrapper.style.height = localStorage.getItem('terminal-height') || '';
         windowWrapper.style.resize = 'both';
         windowWrapper.style.overflow = 'auto';
-        makeTermDragWPrnt(windowWrapper, document.getElementById('banner-wrapper'));
-        floatBtn.textContent = '🟢';
-
-        const savedX = localStorage.getItem('terminal-x');
-        const savedY = localStorage.getItem('terminal-y');
-        const savedWidth = localStorage.getItem('terminal-width');
-        const savedHeight = localStorage.getItem('terminal-height');
-
-        windowWrapper.style.width = savedWidth || '50%';
-        windowWrapper.style.height = savedHeight || '';
-        windowWrapper.style.left = savedX || '10px';
-        windowWrapper.style.top = savedY || '10px';
+        windowWrapper.style.left = localStorage.getItem('term-icon-x') || '10px';
+        windowWrapper.style.top = localStorage.getItem('term-icon-y') || '10px';
+        makeTermDragWPrnt(windowWrapper, document.body);
     } else {
         windowWrapper.style.position = 'relative';
         windowWrapper.style.width = '100%';
@@ -378,27 +379,17 @@ function makeTermDragWPrnt(el, parent) {
     });
 
     document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-
-        const newX = e.clientX - startX;
-        const newY = e.clientY - startY;
-
-        // Boundaries
-        const parentRect = parent.getBoundingClientRect();
-        const elRect = el.getBoundingClientRect();
-
-        const maxX = parentRect.width - el.offsetWidth;
-        const maxY = parentRect.height - el.offsetHeight;
-
-        const clampedX = Math.max(0, Math.min(newX, maxX));
-        const clampedY = Math.max(0, Math.min(newY, maxY));
-
-        el.style.left = `${clampedX}px`;
-        el.style.top = `${clampedY}px`;
+        const x = e.clientX - startX;
+        const y = e.clientY - startY;
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
         el.style.transform = 'none';
 
+        // Save position for both terminal and icon
         localStorage.setItem('terminal-x', el.style.left);
         localStorage.setItem('terminal-y', el.style.top);
+        localStorage.setItem('term-icon-x', el.style.left);
+        localStorage.setItem('term-icon-y', el.style.top);
     });
 
     document.addEventListener('mouseup', () => {
