@@ -4,6 +4,9 @@ const params = new URLSearchParams(window.location.search);
 const storyPath = params.get("story");
 let chapter = parseInt(params.get("chapter") || "1");
 
+const fallback = document.getElementById('js-content-fallback');
+if (fallback) fallback.style.display = 'none';
+
 const chapterCacheKey = `chapterCache_${storyPath}`;
 let lastKnownChapter = parseInt(localStorage.getItem(chapterCacheKey) || "0");
 
