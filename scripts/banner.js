@@ -68,7 +68,6 @@ export async function loadBanner() {
     container.appendChild(terminalDiv);
     
     const term = new TerminalUI(terminalDiv, loadBanner);
-    term.init();  
 
     await waitForElementHeight(container);
     observeThemeChange();

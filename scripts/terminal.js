@@ -97,7 +97,7 @@ export class TerminalUI {
         if (!termContainer) return;
 
         termContainer.addEventListener('click', () => {
-            const inputs = termContainer.querySelectorAll('.input[contenteditable="true"]');
+            const inputs = termContainer.querySelectorAll('.input');
             const lastInput = inputs[inputs.length - 1];
             if (lastInput) lastInput.focus();
             console.log('Terminal container clicked, focusing last input');
