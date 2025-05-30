@@ -74,7 +74,10 @@ export async function loadBanner() {
     await waitForElementHeight(container);
     observeThemeChange();
 
-    const term = new TerminalUI(infoBlock, loadBanner);
+    const termContainer = document.getElementById('terminal');
+    
+    const term = new TerminalUI(termContainer, loadBanner);
+    cursorRow.remove();
     term.init();
 }
 
