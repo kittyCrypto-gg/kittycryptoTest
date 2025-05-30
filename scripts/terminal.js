@@ -159,42 +159,28 @@ export class TerminalUI {
 
     addInputLine(promptHTML = '<span class="green">kitty@kittycrypto</span><span class="blue">:~</span><span class="teal">$</span>') {
         if (this.sshSessionActive) return;
-
         const line = document.createElement('div');
         line.classList.add('input-line');
-
         const prompt = document.createElement('span');
         prompt.classList.add('prompt');
         prompt.innerHTML = promptHTML;
-
         const input = document.createElement('div');
         input.classList.add('input');
         input.contentEditable = 'true';
         input.spellcheck = false;
-
         line.appendChild(prompt);
         line.appendChild(input);
         this.emu.appendChild(line);
         input.focus();
-        // Move cursor after input content on every input
-        const updateCursorPosition = () => {
-            input.after(cursor);
-        };
-        input.addEventListener('input', updateCursorPosition);
-        updateCursorPosition();
-
         const handler = async (e) => {
             if (e.key === 'ArrowUp') {
                 const prev = this.getPreviousCommand();
                 if (prev) input.innerText = prev;
-                updateCursorPosition();
                 return;
             }
-
             if (e.key === 'ArrowDown') {
                 const next = this.getNextCommand();
                 input.innerText = next || '';
-                updateCursorPosition();
                 return;
             }
             if (e.key !== 'Enter') return;
@@ -208,9 +194,7 @@ export class TerminalUI {
             this.historyIndex = this.history.length;
             this.printLine(`${prompt.textContent} ${raw}`);
             input.removeEventListener('keydown', handler);
-            input.removeEventListener('input', updateCursorPosition);
             input.contentEditable = 'false';
-            cursor.remove();
             const [cmd, ...args] = raw.split(' ');
             const command = this.commands[cmd];
             if (!command) {
