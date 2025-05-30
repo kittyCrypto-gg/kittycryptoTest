@@ -78,7 +78,8 @@ export class TerminalUI {
         const cursor = await this.waitForBanner();
 
         // Create and insert the terminal element BEFORE removing the cursor
-        const terminalElem = document.createElement('terminal-emu');
+        const terminalElem = document.createElement('div');
+        terminalElem.id = 'terminal-emu'; 
         Object.assign(terminalElem.style, {
             display: 'block',
             whiteSpace: 'pre-wrap',
