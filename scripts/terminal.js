@@ -91,6 +91,15 @@ export class TerminalUI {
             }
         });
         this.addInputLine();
+
+        const scrollContainer = document.getElementById('terminal-scroll');
+        if (scrollContainer) {
+            scrollContainer.addEventListener('click', () => {
+                const inputs = scrollContainer.querySelectorAll('.input[contenteditable="true"]');
+                const lastInput = inputs[inputs.length - 1];
+                if (lastInput) lastInput.focus();
+            });
+        }
     }
 
     async waitForBanner() {
@@ -144,7 +153,7 @@ export class TerminalUI {
         return this.history[this.historyIndex] || '';
     }
 
-    printLine(text = '<span class="green">kitty@kittycrypto</span><span class="blue">:~</span><span class="teal">$</span>') {
+    printLine(text = '') {
         const lineContainer = document.createElement('div');
         lineContainer.innerHTML = text;
         this.emu.appendChild(lineContainer);
