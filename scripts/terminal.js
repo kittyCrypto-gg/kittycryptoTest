@@ -80,17 +80,6 @@ export class TerminalUI {
             return;
         }
         terminalElem.spellcheck = false;
-        Object.assign(terminalElem.style, {
-            display: 'inline-block',
-            whiteSpace: 'pre-wrap',
-            font: 'inherit',
-            color: 'inherit',
-            background: 'inherit',
-            outline: 'none',
-            caretColor: 'white',
-            overflowY: 'auto',
-            maxHeight: '100%'
-        });
         terminalElem.textContent = '';
         terminalElem.focus();
         terminalElem.addEventListener('keydown', (e) => {
@@ -185,7 +174,7 @@ export class TerminalUI {
 
         const cursor = document.createElement('div');
         cursor.classList.add('cursor');
-        cursor.textContent = '█'; 
+        cursor.textContent = '█';
 
         line.appendChild(prompt);
         line.appendChild(input);
