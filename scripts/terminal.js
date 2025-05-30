@@ -91,17 +91,6 @@ export class TerminalUI {
             }
         });
         this.addInputLine();
-
-        const termContainer = document.getElementById('terminal-wrapper');
-        console.log('Terminal wrapper:', termContainer);
-        if (!termContainer) return;
-
-        termContainer.addEventListener('click', () => {
-            const inputs = termContainer.querySelectorAll('.input');
-            const lastInput = inputs[inputs.length - 1];
-            if (lastInput) lastInput.focus();
-            console.log('Terminal container clicked, focusing last input');
-        });
     }
 
     async waitForBanner() {
@@ -182,7 +171,18 @@ export class TerminalUI {
         line.appendChild(prompt);
         line.appendChild(input);
         this.emu.appendChild(line);
+
         input.focus();
+
+        input.addEventListener('click', () => {
+            const range = document.createRange();
+            range.selectNodeContents(input);
+            range.collapse(false);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        });
+
         const handler = async (e) => {
             if (e.key === 'ArrowUp') {
                 const prev = this.getPreviousCommand();
@@ -217,6 +217,23 @@ export class TerminalUI {
             this.addInputLine();
         };
         input.addEventListener('keydown', handler);
+
+        this.emu.addEventListener('click', (e) => {
+            if (e.target.closest('.input')) return;
+            const inputs = this.emu.querySelectorAll('.input[contenteditable="true"]');
+            const last = inputs[inputs.length - 1];
+            
+            if (last) {
+                last.focus();
+                const range = document.createRange();
+                range.selectNodeContents(last);
+                range.collapse(false);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        });
+
     }
 
     async runSSH(args) {
