@@ -127,20 +127,20 @@ export class TerminalUI {
         });
 
         this.printLine('Loading xterm.js...');
-        await loadScript('https://unpkg.com/xterm/lib/xterm.js');
+        await loadScript('./ssh/xterm.js');
 
         this.printLine('Loading WASM runtime...');
-        await loadScript('https://cdn.jsdelivr.net/gh/golang/go@go1.21.9/misc/wasm/wasm_exec.js');
+        await loadScript('./ssh/wasm_exec.js');
 
         if (typeof Go === 'undefined') {
             this.printLine('Error: wasm_exec.js failed to initialise Go runtime');
             throw new Error('wasm_exec.js did not set Go constructor');
         }
 
-        window.go = new Go(); // ensure the Go WASM runtime is initialised
+        window.go = new Go(); // initialise the Go runtime
 
         this.printLine('Loading SSH terminal...');
-        await loadScript('https://cdn.jsdelivr.net/gh/c2FmZQ/sshterm@v0.7.5/docroot/ssh.js');
+        await loadScript('./ssh/ssh.js');
 
         this.printLine('Terminal emulator loaded successfully!');
         this.runClear();
