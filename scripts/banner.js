@@ -90,9 +90,10 @@ export async function loadBanner() {
     await waitForElementHeight(container);
     observeThemeChange();
 
-    const termContainer = document.getElementById('terminal');
+    //const termContainer = document.getElementById('terminal');
+    const lastRow = cursorRow;
 
-    const term = new TerminalUI(termContainer, loadBanner);
+    const term = new TerminalUI(lastRow, loadBanner);
     term.init();
 }
 

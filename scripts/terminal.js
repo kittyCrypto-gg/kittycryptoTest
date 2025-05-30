@@ -73,27 +73,46 @@ export class TerminalUI {
         };
     }
 
-    async init() {
-        await this.loadDependencies();
-        const cursor = await this.waitForBanner();
+    init() {
+        const cursor = this.container.querySelector('.cursor');
+        if (!cursor) {
+            console.error('Cursor not found');
+            return;
+        }
 
-        // Create and insert the terminal element BEFORE removing the cursor
+        // Replace the blinking cursor with the terminal emulator
         const terminalElem = document.createElement('div');
         terminalElem.id = 'terminal-emu';
+        terminalElem.setAttribute('contenteditable', 'true');
+        terminalElem.spellcheck = false;
+
         Object.assign(terminalElem.style, {
-            display: 'block',
+            display: 'inline-block',
             whiteSpace: 'pre-wrap',
             font: 'inherit',
             color: 'inherit',
             background: 'inherit',
+            outline: 'none',
+            caretColor: 'white',
             overflowY: 'auto',
             maxHeight: '100%'
         });
-        cursor.parentNode.insertBefore(terminalElem, cursor.nextSibling); // Insert after cursor
-        cursor.remove();
-        this.emu = terminalElem;
-        this.restoreHistory();
-        this.addInputLine();
+
+        terminalElem.textContent = '🟢 '; // Your green dot test
+
+        // Replace the cursor with this editable div
+        cursor.replaceWith(terminalElem);
+
+        terminalElem.focus();
+
+        terminalElem.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const input = terminalElem.textContent.replace('🟢 ', '').trim();
+                if (!input) return;
+                this.processCommand(input, terminalElem);
+            }
+        });
     }
 
     async loadDependencies() {
