@@ -165,6 +165,7 @@ export class TerminalUI {
     addInputLine() {
         if (this.sshSessionActive) return;
         const line = document.createElement('div');
+        line.innerText = '🟢 $ '
         Object.assign(line.style, {
             outline: 'none',
             font: 'inherit',
