@@ -74,6 +74,7 @@ export class TerminalUI {
     }
 
     async init() {
+        this.printLine('Loading terminal emulator...');
         await this.loadDependencies();
         const terminalElem = document.getElementById('terminal-emu');
         if (!terminalElem) {
@@ -91,6 +92,7 @@ export class TerminalUI {
                 this.processCommand(input, terminalElem);
             }
         });
+        this.restoreHistory();
         this.addInputLine();
     }
 
@@ -113,6 +115,17 @@ export class TerminalUI {
     }
 
     async loadDependencies() {
+        this.printLine('Loading dependencies...');
+        const loadScript = (src) => new Promise((resolve, reject) => {
+            if (document.querySelector(`script[src="${src}"]`)) return resolve();
+            const s = document.createElement('script');
+            s.src = src;
+            s.onload = () => resolve();
+            s.onerror = () => reject(new Error(`Failed loading ${src}`));
+            document.head.appendChild(s);
+        });
+
+        this.printLine('Loading xterm.js...');
         await new Promise(resolve => {
             const script = document.createElement('script');
             script.src = 'https://unpkg.com/xterm/lib/xterm.js';
@@ -120,12 +133,12 @@ export class TerminalUI {
             document.head.appendChild(script);
         });
 
-        await new Promise(resolve => {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/gh/isontheline/pro.webssh/ssh.min.js';
-            script.onload = resolve;
-            document.head.appendChild(script);
-        });
+        this.printLine('Loading WASM...');
+        await loadScript('https://raw.githubusercontent.com/golang/go/go1.21.9/misc/wasm/wasm_exec.js');
+        this.printLine('Loading SSH terminal...');
+        await loadScript('https://cdn.jsdelivr.net/gh/c2FmZQ/sshterm@v0.7.5/docroot/ssh.js');
+        this.printLine('Terminal emulator loaded successfully!');
+        await this.clear();
     }
 
     restoreHistory() {
@@ -243,40 +256,77 @@ export class TerminalUI {
             this.printLine('Usage: ssh user@host[:port]');
             return;
         }
+
         const [userHost, portStr] = userAtPort.split(':');
-        const [user, host] = userHost?.split('@') || [];
-        if (!user || !host) {
+        const [user, host] = (userHost || '').split('@');
+        const port = portStr ? parseInt(portStr, 10) : 22;
+
+        if (!user || !host || isNaN(port)) {
             this.printLine('Usage: ssh user@host[:port]');
             return;
         }
-        const port = portStr ? parseInt(portStr, 10) : 22;
-        if (isNaN(port)) {
-            this.printLine(`Invalid port: ${portStr}`);
+
+        if (this.sshSessionActive) {
+            this.printLine('An SSH session is already running.');
             return;
         }
+
+        this.sshSessionActive = true;
+
+        const overlay = document.createElement('div');
+        overlay.id = 'ssh-overlay';
+        overlay.style.position = 'fixed';
+        overlay.style.inset = '0';
+        overlay.style.background = 'black'; // or transparent, your choice
+        overlay.style.zIndex = '9999';
+        document.body.appendChild(overlay);
+
         try {
-            this.sshSessionActive = true;
-            this.printLine(`Connecting to ${user}@${host} on port ${port}...`);
-            await SSH.connect({
-                term: {
-                    write: (text) => {
-                        text.split('\n').forEach(line => this.printLine(line));
-                    }
-                },
+            await window.sshApp.ready;
+        } catch (err) {
+            this.printLine('sshterm failed to initialise.');
+            document.body.removeChild(overlay);
+            this.sshSessionActive = false;
+            return;
+        }
+
+        const term = new window.Terminal({
+            cols: 80,
+            rows: 24,
+            cursorBlink: true,
+            theme: {
+                background: '#000000',
+                foreground: '#ffffff',
+            }
+        });
+        term.open(overlay);
+
+        try {
+            const cfg = {
+                term,
+                endpoint: `wss://${host}/${host}`,
                 user,
-                host,
                 port,
-                onclose: () => {
-                    this.sshSessionActive = false;
-                    this.printLine('[Session closed]');
-                    this.addInputLine();
-                }
+            };
+
+            const session = await window.sshApp.start(cfg);
+            term.focus();
+            this.printLine(`Connected to ${user}@${host}:${port}`);
+
+            session.done.then(() => {
+                document.body.removeChild(overlay);
+                this.sshSessionActive = false;
+                this.printLine('[Session closed]');
+                this.addInputLine();
             });
         } catch (err) {
+            document.body.removeChild(overlay);
+            this.sshSessionActive = false;
             this.printLine('SSH connection failed:');
             this.printLine(err.message || String(err));
         }
     }
+
 
     async runHelp(args) {
         if (args.length === 0) {
@@ -366,11 +416,5 @@ export class TerminalUI {
             this.printLine('Error fetching file list or commit info.');
             this.printLine(err.message || String(err));
         }
-    }
-
-    async runNeofetch() {
-        this.clear();
-        await this.loadBanner();
-        this.printLine();
     }
 }
