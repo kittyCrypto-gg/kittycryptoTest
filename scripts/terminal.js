@@ -76,10 +76,10 @@ export class TerminalUI {
     async init() {
         await this.loadDependencies();
         const cursor = await this.waitForBanner();
-        cursor.remove();
 
-        this.emu = document.createElement('terminal-emu');
-        Object.assign(this.emu.style, {
+        // Create and insert the terminal element BEFORE removing the cursor
+        const terminalElem = document.createElement('terminal-emu');
+        Object.assign(terminalElem.style, {
             display: 'block',
             whiteSpace: 'pre-wrap',
             font: 'inherit',
@@ -88,8 +88,9 @@ export class TerminalUI {
             overflowY: 'auto',
             maxHeight: '100%'
         });
-        cursor.parentNode.appendChild(this.emu);
-
+        cursor.parentNode.insertBefore(terminalElem, cursor.nextSibling); // Insert after cursor
+        cursor.remove();
+        this.emu = terminalElem;
         this.restoreHistory();
         this.addInputLine();
     }
