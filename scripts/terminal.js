@@ -73,7 +73,8 @@ export class TerminalUI {
         };
     }
 
-    init() {
+    async init() {
+        await this.loadDependencies();
         const terminalElem = document.getElementById('terminal-emu');
         if (!terminalElem) {
             console.error('Terminal emulator container (#terminal-emu) not found');
@@ -92,6 +93,7 @@ export class TerminalUI {
         });
         this.addInputLine();
     }
+
 
     async waitForBanner() {
         return new Promise(resolve => {

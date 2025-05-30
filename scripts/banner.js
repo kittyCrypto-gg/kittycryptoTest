@@ -72,7 +72,7 @@ export async function loadBanner() {
     await waitForElementHeight(container);
     observeThemeChange();
 
-    term.init();
+    await term.init();
 }
 
 function isMobileDevice() {
