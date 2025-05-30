@@ -102,7 +102,6 @@ export class TerminalUI {
                 this.processCommand(input, terminalElem);
             }
         });
-        this.printLine();
         this.addInputLine();
     }
 
@@ -170,71 +169,73 @@ export class TerminalUI {
         localStorage.setItem('terminal-output', JSON.stringify(history));
     }
 
-    addInputLine() {
+    addInputLine(promptHTML = '<span class="green">kitty@kittycrypto</span><span class="blue">:~</span><span class="teal">$</span>') {
         if (this.sshSessionActive) return;
         const line = document.createElement('div');
-        
+        line.classList.add('input-line');
         Object.assign(line.style, {
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%'
+        });
+        // Prompt is NOT editable
+        const prompt = document.createElement('span');
+        prompt.classList.add('prompt');
+        prompt.innerHTML = promptHTML;
+        prompt.style.flex = 'none';
+        prompt.style.marginRight = '0.5em';
+        // Editable input area
+        const input = document.createElement('div');
+        input.classList.add('input');
+        input.contentEditable = 'true';
+        input.spellcheck = false;
+        Object.assign(input.style, {
+            flex: '1',
             outline: 'none',
             font: 'inherit',
             color: 'inherit',
             background: 'inherit',
-            display: 'inline-block',
-            width: '100%'
+            whiteSpace: 'pre-wrap',
+            caretColor: 'white'
         });
-
-        line.contentEditable = true;
-        line.spellcheck = false;
-        line.innerText = '$ ';
+        line.appendChild(prompt);
+        line.appendChild(input);
         this.emu.appendChild(line);
-        line.focus();
-
+        input.focus();
         const handler = async (e) => {
             if (e.key === 'ArrowUp') {
-                if (document.activeElement === line) {
-                    const prev = this.getPreviousCommand();
-                    if (prev) line.innerText = `$ ${prev}`;
-                }
+                const prev = this.getPreviousCommand();
+                if (prev) input.innerText = prev;
                 return;
             }
-
             if (e.key === 'ArrowDown') {
-                if (document.activeElement === line) {
-                    const next = this.getNextCommand();
-                    line.innerText = `$ ${next || ''}`;
-                }
+                const next = this.getNextCommand();
+                input.innerText = next || '';
                 return;
             }
-
             if (e.key !== 'Enter') return;
-
             e.preventDefault();
-            const full = line.innerText;
-            const input = full.replace(/^\$\s*/, '').trim();
-            if (input !== this.history[this.history.length - 1]) {
-                this.history.push(input);
+            const raw = input.innerText.trim();
+            if (!raw) return;
+            if (raw !== this.history[this.history.length - 1]) {
+                this.history.push(raw);
                 if (this.history.length > MAX_HISTORY) this.history.shift();
             }
             this.historyIndex = this.history.length;
-
-            this.printLine(`$ ${input}`);
-            line.removeEventListener('keydown', handler);
-            line.contentEditable = false;
-
-            const [cmd, ...args] = input.split(' ');
+            this.printLine(`${prompt.textContent} ${raw}`);
+            input.removeEventListener('keydown', handler);
+            input.contentEditable = 'false';
+            const [cmd, ...args] = raw.split(' ');
             const command = this.commands[cmd];
-
             if (!command) {
                 this.printLine('Unknown command');
                 this.addInputLine();
                 return;
             }
-
             await command.run(args);
             this.addInputLine();
         };
-
-        line.addEventListener('keydown', handler);
+        input.addEventListener('keydown', handler);
     }
 
     async runSSH(args) {
