@@ -79,7 +79,6 @@ export class TerminalUI {
             console.error('Terminal emulator container (#terminal-emu) not found');
             return;
         }
-        terminalElem.setAttribute('contenteditable', 'true');
         terminalElem.spellcheck = false;
         Object.assign(terminalElem.style, {
             display: 'inline-block',
@@ -171,46 +170,47 @@ export class TerminalUI {
 
     addInputLine(promptHTML = '<span class="green">kitty@kittycrypto</span><span class="blue">:~</span><span class="teal">$</span>') {
         if (this.sshSessionActive) return;
+
         const line = document.createElement('div');
         line.classList.add('input-line');
-        Object.assign(line.style, {
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%'
-        });
-        // Prompt is NOT editable
+
         const prompt = document.createElement('span');
         prompt.classList.add('prompt');
         prompt.innerHTML = promptHTML;
-        prompt.style.flex = 'none';
-        prompt.style.marginRight = '0.5em';
-        // Editable input area
+
         const input = document.createElement('div');
         input.classList.add('input');
         input.contentEditable = 'true';
         input.spellcheck = false;
-        Object.assign(input.style, {
-            flex: '1',
-            outline: 'none',
-            font: 'inherit',
-            color: 'inherit',
-            background: 'inherit',
-            whiteSpace: 'pre-wrap',
-            caretColor: 'white'
-        });
+
+        const cursor = document.createElement('div');
+        cursor.classList.add('cursor');
+        cursor.textContent = '█'; 
+
         line.appendChild(prompt);
         line.appendChild(input);
+        line.appendChild(cursor);
         this.emu.appendChild(line);
         input.focus();
+        // Move cursor after input content on every input
+        const updateCursorPosition = () => {
+            input.after(cursor);
+        };
+        input.addEventListener('input', updateCursorPosition);
+        updateCursorPosition();
+
         const handler = async (e) => {
             if (e.key === 'ArrowUp') {
                 const prev = this.getPreviousCommand();
                 if (prev) input.innerText = prev;
+                updateCursorPosition();
                 return;
             }
+
             if (e.key === 'ArrowDown') {
                 const next = this.getNextCommand();
                 input.innerText = next || '';
+                updateCursorPosition();
                 return;
             }
             if (e.key !== 'Enter') return;
@@ -224,7 +224,9 @@ export class TerminalUI {
             this.historyIndex = this.history.length;
             this.printLine(`${prompt.textContent} ${raw}`);
             input.removeEventListener('keydown', handler);
+            input.removeEventListener('input', updateCursorPosition);
             input.contentEditable = 'false';
+            cursor.remove();
             const [cmd, ...args] = raw.split(' ');
             const command = this.commands[cmd];
             if (!command) {

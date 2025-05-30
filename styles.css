@@ -457,6 +457,35 @@ header {
   z-index: 1;
 }
 
+#terminal-emu {
+  display: block;
+  min-height: 200px; /* or however tall you want the terminal to be */
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font: inherit;
+  color: inherit;
+  background: inherit;
+  outline: none;
+  caret-color: white;
+}
+
+.input-line {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  flex: 1 1 auto;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  background: inherit;
+  white-space: pre-wrap;
+  caret-color: white;
+  min-height: 1em; /* ensures the box is not 0-height */
+}
+
 .window-controls {
   display: flex;
   gap: 6px;
@@ -1283,7 +1312,7 @@ body.dark-mode .tategaki-container svg text {
 }
 
 /* =========================================
-   Image-nav overlay
+  Image-nav overlay
 ========================================= */
 .image-nav {
   position: absolute;
