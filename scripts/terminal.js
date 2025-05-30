@@ -93,13 +93,14 @@ export class TerminalUI {
         this.addInputLine();
 
         const scrollContainer = document.getElementById('terminal-scroll');
-        if (scrollContainer) {
-            scrollContainer.addEventListener('click', () => {
-                const inputs = scrollContainer.querySelectorAll('.input[contenteditable="true"]');
-                const lastInput = inputs[inputs.length - 1];
-                if (lastInput) lastInput.focus();
-            });
-        }
+        if (!scrollContainer) return;
+
+        scrollContainer.addEventListener('click', () => {
+            const inputs = scrollContainer.querySelectorAll('.input[contenteditable="true"]');
+            const lastInput = inputs[inputs.length - 1];
+            if (lastInput) lastInput.focus();
+            console.log('Scroll container clicked, focusing last input');
+        });
     }
 
     async waitForBanner() {
