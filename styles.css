@@ -445,7 +445,7 @@ header {
 
 #terminal-emu {
   display: block;
-  min-height: 200px; /* or however tall you want the terminal to be */
+  height: auto;
   overflow-y: auto;
   white-space: pre-wrap;
   font: inherit;

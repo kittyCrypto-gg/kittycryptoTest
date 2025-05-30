@@ -92,8 +92,8 @@ export class TerminalUI {
         });
         this.addInputLine();
 
-        const termContainer = document.getElementById('terminal-window');
-        console.log('Terminal Window:', termContainer);
+        const termContainer = document.getElementById('terminal-wrapper');
+        console.log('Terminal wrapper:', termContainer);
         if (!termContainer) return;
 
         termContainer.addEventListener('click', () => {
