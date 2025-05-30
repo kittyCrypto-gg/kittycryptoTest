@@ -143,7 +143,7 @@ export class TerminalUI {
         await loadScript('https://cdn.jsdelivr.net/gh/c2FmZQ/sshterm@v0.7.5/docroot/ssh.js');
 
         this.printLine('Terminal emulator loaded successfully!');
-        await this.clear();
+        this.runClear();
     }
 
     restoreHistory() {
