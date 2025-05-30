@@ -357,6 +357,7 @@ header {
     transparent 1px,
     transparent 2px
   );
+  pointer-events: none; 
 }
 
 .banner-scaler {
@@ -449,10 +450,12 @@ header {
   overflow-y: auto;
   white-space: pre-wrap;
   font: inherit;
+  font-family: inherit;
   color: inherit;
   background: inherit;
   outline: none;
-  caret-color: white;
+  caret: none;
+  user-select: text;
 }
 
 .input-line {
@@ -477,10 +480,11 @@ header {
   flex: 1 1 auto;
   outline: none;
   font: inherit;
+  font-family: inherit;
   color: inherit;
   background: inherit;
   white-space: pre-wrap;
-  caret-color: white;
+  caret: none;
   min-height: 1em;
 }
 
