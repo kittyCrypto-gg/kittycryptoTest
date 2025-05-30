@@ -453,6 +453,7 @@ header {
   white-space: pre-wrap;
   font: inherit;
   font-family: inherit;
+  font-size: inherit;
   color: inherit;
   background: inherit;
   outline: none;
@@ -485,6 +486,7 @@ header {
   font: inherit;
   font-family: inherit;
   color: inherit;
+  font-size: inherit;
   background: inherit;
   white-space: pre-wrap;
   caret: none;
