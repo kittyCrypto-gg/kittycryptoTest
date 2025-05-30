@@ -116,6 +116,7 @@ export class TerminalUI {
 
     async loadDependencies() {
         this.printLine('Loading dependencies...');
+
         const loadScript = (src) => new Promise((resolve, reject) => {
             if (document.querySelector(`script[src="${src}"]`)) return resolve();
             const s = document.createElement('script');
@@ -126,17 +127,21 @@ export class TerminalUI {
         });
 
         this.printLine('Loading xterm.js...');
-        await new Promise(resolve => {
-            const script = document.createElement('script');
-            script.src = 'https://unpkg.com/xterm/lib/xterm.js';
-            script.onload = resolve;
-            document.head.appendChild(script);
-        });
+        await loadScript('https://unpkg.com/xterm/lib/xterm.js');
 
-        this.printLine('Loading WASM...');
-        await loadScript('https://raw.githubusercontent.com/golang/go/go1.21.9/misc/wasm/wasm_exec.js');
+        this.printLine('Loading WASM runtime...');
+        await loadScript('https://cdn.jsdelivr.net/gh/golang/go@go1.21.9/misc/wasm/wasm_exec.js');
+
+        if (typeof Go === 'undefined') {
+            this.printLine('Error: wasm_exec.js failed to initialise Go runtime');
+            throw new Error('wasm_exec.js did not set Go constructor');
+        }
+
+        window.go = new Go(); // ensure the Go WASM runtime is initialised
+
         this.printLine('Loading SSH terminal...');
         await loadScript('https://cdn.jsdelivr.net/gh/c2FmZQ/sshterm@v0.7.5/docroot/ssh.js');
+
         this.printLine('Terminal emulator loaded successfully!');
         await this.clear();
     }
