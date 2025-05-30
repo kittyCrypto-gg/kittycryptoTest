@@ -203,7 +203,7 @@ export class TerminalUI {
                 if (this.history.length > MAX_HISTORY) this.history.shift();
             }
             this.historyIndex = this.history.length;
-            this.printLine(`${prompt.textContent} ${raw}`);
+            //this.printLine(`${prompt.textContent} ${raw}`);
             input.removeEventListener('keydown', handler);
             input.contentEditable = 'false';
             const [cmd, ...args] = raw.split(' ');
@@ -222,7 +222,7 @@ export class TerminalUI {
             if (e.target.closest('.input')) return;
             const inputs = this.emu.querySelectorAll('.input[contenteditable="true"]');
             const last = inputs[inputs.length - 1];
-            
+
             if (last) {
                 last.focus();
                 const range = document.createRange();
@@ -233,7 +233,6 @@ export class TerminalUI {
                 sel.addRange(range);
             }
         });
-
     }
 
     async runSSH(args) {
