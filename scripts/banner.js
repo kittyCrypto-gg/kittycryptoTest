@@ -65,17 +65,33 @@ export async function loadBanner() {
 
     const cursorRow = document.createElement('div');
     cursorRow.classList.add('row');
+
+    const commandLineRow = document.createElement('div'); // This is the key change — make it a DIV not SPAN
+    commandLineRow.classList.add('command-line');
+    const promptGreen = document.createElement('span');
+    promptGreen.classList.add('green');
+    promptGreen.textContent = 'kitty@kittycrypto';
+    const promptBlue = document.createElement('span');
+    promptBlue.classList.add('blue');
+    promptBlue.textContent = ':~';
+    const promptTeal = document.createElement('span');
+    promptTeal.classList.add('teal');
+    promptTeal.textContent = '$';
     const cursor = document.createElement('span');
-    cursor.classList.add('command-line');
-    cursor.innerHTML = '<span class="green">kitty@kittycrypto</span><span class="blue">:~</span><span class="teal">$ </span><span class="cursor">█</span>';
-    cursorRow.appendChild(cursor);
+    cursor.classList.add('cursor');
+    cursor.textContent = '█';
+    commandLineRow.appendChild(promptGreen);
+    commandLineRow.appendChild(promptBlue);
+    commandLineRow.appendChild(promptTeal);
+    commandLineRow.appendChild(cursor);
+    cursorRow.appendChild(commandLineRow);
     container.appendChild(cursorRow);
 
     await waitForElementHeight(container);
     observeThemeChange();
 
     const termContainer = document.getElementById('terminal');
-    
+
     const term = new TerminalUI(termContainer, loadBanner);
     term.init();
 }
