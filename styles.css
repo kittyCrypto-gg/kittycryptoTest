@@ -341,6 +341,7 @@ header {
   height: auto;
   width: 100%;
   overflow: visible;
+  position: relative;
 }
 
 #banner-wrapper::after {
@@ -357,7 +358,8 @@ header {
     transparent 1px,
     transparent 2px
   );
-  pointer-events: none; 
+  pointer-events: none;
+  z-index: -1;
 }
 
 .banner-scaler {
@@ -455,6 +457,7 @@ header {
   background: inherit;
   outline: none;
   caret: none;
+  caret-color: var(--tern-background);
   user-select: text;
 }
 
@@ -485,6 +488,7 @@ header {
   background: inherit;
   white-space: pre-wrap;
   caret: none;
+  caret-color: var(--tern-background);
   min-height: 1em;
 }
 
