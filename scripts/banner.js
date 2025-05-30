@@ -77,7 +77,6 @@ export async function loadBanner() {
     const termContainer = document.getElementById('terminal');
     
     const term = new TerminalUI(termContainer, loadBanner);
-    cursorRow.remove();
     term.init();
 }
 
