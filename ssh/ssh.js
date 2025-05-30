@@ -36,7 +36,7 @@ window.sshApp.ready = new Promise(resolve => {
 
 const go = new Go();
 const isTest = window.location.pathname.indexOf('tests.html') !== -1;
-const wasmFile = isTest ? 'tests.wasm' : 'ssh.wasm';
+const wasmFile = isTest ? './ssh/tests.wasm' : './ssh/ssh.wasm';
 WebAssembly.instantiateStreaming(fetch(wasmFile), go.importObject)
   .then(r => go.run(r.instance));
 
@@ -99,7 +99,7 @@ function createTerminal(elem, setTitle, onBell) {
   if (isTest) {
     sshApp.term = term;
   }
-  return {term,cleanup};
+  return { term, cleanup };
 }
 
 let buttons;
@@ -153,7 +153,7 @@ async function addScreen() {
   parent.appendChild(e);
 
   const b = document.createElement('button');
-  b.id = 'button-'+id;
+  b.id = 'button-' + id;
   b.title = 'sshterm';
   b.style.fontFamily = 'monospace';
   b.addEventListener('click', () => {
@@ -162,7 +162,7 @@ async function addScreen() {
   b.textContent = '' + id;
   buttons.insertBefore(b, buttons.lastChild);
 
-  screens[b.id] = {e,b};
+  screens[b.id] = { e, b };
   screens[b.id].title = 'sshterm';
 
   const setTitle = title => {
@@ -185,43 +185,43 @@ async function addScreen() {
     setTimeout(() => e.removeChild(msg), 3000);
   };
 
-  const {term,cleanup} = createTerminal(e, setTitle, onBell);
+  const { term, cleanup } = createTerminal(e, setTitle, onBell);
   screens[b.id].term = term;
   selectScreen(b.id);
 
   const cfg = await fetch('config.json')
-  .then(r => {
-    if (r.ok) return r.json();
-    return {};
-  })
-  .catch(e => {
-    term.writeln('\x1b[31mError reading config.json:\x1b[0m');
-    term.writeln('\x1b[31m'+e.message+'\x1b[0m');
-    term.writeln('');
-    return {};
-  });
+    .then(r => {
+      if (r.ok) return r.json();
+      return {};
+    })
+    .catch(e => {
+      term.writeln('\x1b[31mError reading config.json:\x1b[0m');
+      term.writeln('\x1b[31m' + e.message + '\x1b[0m');
+      term.writeln('');
+      return {};
+    });
   cfg.term = term;
 
   const app = await sshApp.start(cfg);
   screens[b.id].close = app.close;
 
   app.done
-  .then(done => {
-    cleanup(done);
-    if (isTest) return;
-    const wasSelected = screens[b.id].selected;
-    delete screens[b.id];
-    parent.removeChild(e);
-    buttons.removeChild(b);
-    if (wasSelected && buttons.firstChild.id in screens) {
-      selectScreen(buttons.firstChild.id);
-    }
-  })
-  .catch(e => {
-    console.log('SSH ERROR', e);
-    term.writeln(e.message);
-    cleanup(e.message);
-  });
+    .then(done => {
+      cleanup(done);
+      if (isTest) return;
+      const wasSelected = screens[b.id].selected;
+      delete screens[b.id];
+      parent.removeChild(e);
+      buttons.removeChild(b);
+      if (wasSelected && buttons.firstChild.id in screens) {
+        selectScreen(buttons.firstChild.id);
+      }
+    })
+    .catch(e => {
+      console.log('SSH ERROR', e);
+      term.writeln(e.message);
+      cleanup(e.message);
+    });
 }
 
 window.addEventListener('load', addScreen);
