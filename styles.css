@@ -404,11 +404,11 @@ header {
   border: 1px solid rgba(0, 0, 0, 0.3);
   display: inline-block;
   position: relative;
-  overflow: hidden; /* no scroll here */
+  overflow: hidden;
 }
 
 #terminal-scroll {
-  max-height: 600px; /* or any max you prefer */
+  max-height: 550px;
   overflow-y: auto;
   overflow-x: auto;
   padding: 0.5rem;
