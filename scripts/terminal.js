@@ -174,7 +174,6 @@ export class TerminalUI {
 
         line.appendChild(prompt);
         line.appendChild(input);
-        line.appendChild(cursor);
         this.emu.appendChild(line);
         input.focus();
         // Move cursor after input content on every input
