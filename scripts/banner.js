@@ -63,39 +63,16 @@ export async function loadBanner() {
     contentRow.appendChild(infoBlock);
     container.appendChild(contentRow);
 
-    const cursorRow = document.createElement('div');
-    cursorRow.classList.add('row');
-
-    const commandLineRow = document.createElement('div');
-    commandLineRow.classList.add('command-line');
-    const promptGreen = document.createElement('span');
-    promptGreen.classList.add('green');
-    promptGreen.textContent = 'kitty@kittycrypto';
-    const promptBlue = document.createElement('span');
-    promptBlue.classList.add('blue');
-    promptBlue.textContent = ':~';
-    const promptTeal = document.createElement('span');
-    promptTeal.classList.add('teal');
-    promptTeal.textContent = '$';
-    const cursor = document.createElement('span');
-    cursor.classList.add('cursor');
-    cursor.textContent = '█';
-    commandLineRow.appendChild(promptGreen);
-    commandLineRow.appendChild(promptBlue);
-    commandLineRow.appendChild(promptTeal);
-    commandLineRow.appendChild(cursor);
-    cursorRow.appendChild(commandLineRow);
-    container.appendChild(cursorRow);
+    const terminalDiv = document.createElement('div');
+    terminalDiv.id = 'terminal-emu';
+    container.appendChild(terminalDiv);
+    
+    const term = new TerminalUI(terminalDiv, loadBanner);
+    term.init();  
 
     await waitForElementHeight(container);
     observeThemeChange();
 
-    //const termContainer = document.getElementById('terminal');
-    const cursorElem = document.querySelector('.cursor');
-    if (!cursorElem) throw new Error('Cursor not found in DOM');
-    const terminalParent = cursorElem.closest('.command-line');
-
-    const term = new TerminalUI(terminalParent, loadBanner);
     term.init();
 }
 

@@ -74,15 +74,12 @@ export class TerminalUI {
     }
 
     init() {
-        const cursor = this.container.querySelector('.cursor');
-        if (!cursor) {
-            console.error('Cursor not found');
+        const terminalElem = document.getElementById('terminal-emu');
+        if (!terminalElem) {
+            console.error('Terminal emulator container (#terminal-emu) not found');
             return;
         }
 
-        // Replace the blinking cursor with the terminal emulator
-        const terminalElem = document.createElement('div');
-        terminalElem.id = 'terminal-emu';
         terminalElem.setAttribute('contenteditable', 'true');
         terminalElem.spellcheck = false;
 
@@ -98,20 +95,35 @@ export class TerminalUI {
             maxHeight: '100%'
         });
 
-        terminalElem.textContent = '🟢 '; // Your green dot test
-
-        // Replace the cursor with this editable div
-        cursor.replaceWith(terminalElem);
-
+        terminalElem.textContent = '';
         terminalElem.focus();
 
         terminalElem.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                const input = terminalElem.textContent.replace('🟢 ', '').trim();
+                const input = terminalElem.textContent.trim();
                 if (!input) return;
                 this.processCommand(input, terminalElem);
             }
+        });
+    }
+
+    async waitForBanner() {
+        return new Promise(resolve => {
+            const existing = document.getElementById('terminal-emu');
+            if (existing) return resolve(existing);
+
+            const observer = new MutationObserver((_, obs) => {
+                const termEmu = document.getElementById('terminal-emu');
+                if (!termEmu) return;
+                obs.disconnect();
+                resolve(termEmu);
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
         });
     }
 
@@ -128,25 +140,6 @@ export class TerminalUI {
             script.src = 'https://cdn.jsdelivr.net/gh/isontheline/pro.webssh/ssh.min.js';
             script.onload = resolve;
             document.head.appendChild(script);
-        });
-    }
-
-    async waitForBanner() {
-        return new Promise(resolve => {
-            const existing = document.querySelector('.cursor');
-            if (existing) return resolve(existing);
-
-            const observer = new MutationObserver((_, obs) => {
-                const cursor = document.querySelector('.cursor');
-                if (!cursor) return;
-                obs.disconnect();
-                resolve(cursor);
-            });
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
         });
     }
 
@@ -184,7 +177,7 @@ export class TerminalUI {
     addInputLine() {
         if (this.sshSessionActive) return;
         const line = document.createElement('div');
-        line.innerText = '🟢 $ '
+        
         Object.assign(line.style, {
             outline: 'none',
             font: 'inherit',
