@@ -66,7 +66,7 @@ export async function loadBanner() {
     const cursorRow = document.createElement('div');
     cursorRow.classList.add('row');
 
-    const commandLineRow = document.createElement('div'); // This is the key change — make it a DIV not SPAN
+    const commandLineRow = document.createElement('div');
     commandLineRow.classList.add('command-line');
     const promptGreen = document.createElement('span');
     promptGreen.classList.add('green');
@@ -91,9 +91,11 @@ export async function loadBanner() {
     observeThemeChange();
 
     //const termContainer = document.getElementById('terminal');
-    const lastRow = cursorRow;
+    const cursorElem = document.querySelector('.cursor');
+    if (!cursorElem) throw new Error('Cursor not found in DOM');
+    const terminalParent = cursorElem.closest('.command-line');
 
-    const term = new TerminalUI(lastRow, loadBanner);
+    const term = new TerminalUI(terminalParent, loadBanner);
     term.init();
 }
 
