@@ -79,7 +79,7 @@ export class TerminalUI {
 
         // Create and insert the terminal element BEFORE removing the cursor
         const terminalElem = document.createElement('div');
-        terminalElem.id = 'terminal-emu'; 
+        terminalElem.id = 'terminal-emu';
         Object.assign(terminalElem.style, {
             display: 'block',
             whiteSpace: 'pre-wrap',
@@ -114,11 +114,11 @@ export class TerminalUI {
 
     async waitForBanner() {
         return new Promise(resolve => {
-            const existing = document.querySelector('.am-cursor');
+            const existing = document.querySelector('.cursor');
             if (existing) return resolve(existing);
 
             const observer = new MutationObserver((_, obs) => {
-                const cursor = document.querySelector('.am-cursor');
+                const cursor = document.querySelector('.cursor');
                 if (!cursor) return;
                 obs.disconnect();
                 resolve(cursor);
