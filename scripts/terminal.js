@@ -172,10 +172,6 @@ export class TerminalUI {
         input.contentEditable = 'true';
         input.spellcheck = false;
 
-        const cursor = document.createElement('div');
-        cursor.classList.add('cursor');
-        cursor.textContent = '█';
-
         line.appendChild(prompt);
         line.appendChild(input);
         line.appendChild(cursor);

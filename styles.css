@@ -250,20 +250,6 @@ header {
   -webkit-font-smoothing: none;
 }
 
-.cursor {
-  animation: blink 1s steps(2, start) infinite;
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
 /* Row styles */
 
 .row {
@@ -472,7 +458,19 @@ header {
 .input-line {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: auto;
+}
+
+.input-line span.green {
+  color: var(--banner-green);
+}
+
+.input-line span.blue {
+  color: var(--banner-blue);
+}
+
+.input-line span.teal {
+  color: var(--banner-teal);
 }
 
 .input {
@@ -483,7 +481,23 @@ header {
   background: inherit;
   white-space: pre-wrap;
   caret-color: white;
-  min-height: 1em; /* ensures the box is not 0-height */
+  min-height: 1em;
+}
+
+.input:focus::after {
+  content: '█';
+  animation: blink 1s steps(2, start) infinite;
+  color: var(--banner-teal);
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .window-controls {
