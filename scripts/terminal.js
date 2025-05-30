@@ -79,10 +79,8 @@ export class TerminalUI {
             console.error('Terminal emulator container (#terminal-emu) not found');
             return;
         }
-
         terminalElem.setAttribute('contenteditable', 'true');
         terminalElem.spellcheck = false;
-
         Object.assign(terminalElem.style, {
             display: 'inline-block',
             whiteSpace: 'pre-wrap',
@@ -94,10 +92,8 @@ export class TerminalUI {
             overflowY: 'auto',
             maxHeight: '100%'
         });
-
         terminalElem.textContent = '';
         terminalElem.focus();
-
         terminalElem.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -106,20 +102,20 @@ export class TerminalUI {
                 this.processCommand(input, terminalElem);
             }
         });
+        this.printLine();
+        this.addInputLine();
     }
 
     async waitForBanner() {
         return new Promise(resolve => {
             const existing = document.getElementById('terminal-emu');
             if (existing) return resolve(existing);
-
             const observer = new MutationObserver((_, obs) => {
                 const termEmu = document.getElementById('terminal-emu');
                 if (!termEmu) return;
                 obs.disconnect();
                 resolve(termEmu);
             });
-
             observer.observe(document.body, {
                 childList: true,
                 subtree: true
