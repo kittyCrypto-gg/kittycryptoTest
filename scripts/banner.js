@@ -63,9 +63,6 @@ export async function loadBanner() {
     contentRow.appendChild(infoBlock);
     container.appendChild(contentRow);
 
-    const term = new TerminalUI(infoBlock, loadBanner);
-    term.init();
-
     const cursorRow = document.createElement('div');
     cursorRow.classList.add('row');
     const cursor = document.createElement('span');
@@ -76,6 +73,9 @@ export async function loadBanner() {
 
     await waitForElementHeight(container);
     observeThemeChange();
+
+    const term = new TerminalUI(infoBlock, loadBanner);
+    term.init();
 }
 
 function isMobileDevice() {
