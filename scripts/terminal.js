@@ -278,60 +278,45 @@ export class TerminalUI {
 
         this.sshSessionActive = true;
 
-        const overlay = document.createElement('div');
-        overlay.id = 'ssh-overlay';
-        overlay.style.position = 'fixed';
-        overlay.style.inset = '0';
-        overlay.style.background = 'black'; // or transparent, your choice
-        overlay.style.zIndex = '9999';
-        document.body.appendChild(overlay);
-
         try {
             await window.sshApp.ready;
         } catch (err) {
             this.printLine('sshterm failed to initialise.');
-            document.body.removeChild(overlay);
             this.sshSessionActive = false;
             return;
         }
 
-        const term = new window.Terminal({
-            cols: 80,
-            rows: 24,
-            cursorBlink: true,
-            theme: {
-                background: '#000000',
-                foreground: '#ffffff',
-            }
-        });
-        term.open(overlay);
+        // Define a fake "terminal" object with a `write()` method that outputs plain text
+        const term = {
+            write: (text) => {
+                const lines = text.split('\n');
+                for (const line of lines) this.printLine(line);
+            },
+            focus: () => { }
+        };
 
         try {
             const cfg = {
                 term,
                 endpoint: `wss://${host}/${host}`,
                 user,
-                port,
+                port
             };
 
             const session = await window.sshApp.start(cfg);
-            term.focus();
             this.printLine(`Connected to ${user}@${host}:${port}`);
 
-            session.done.then(() => {
-                document.body.removeChild(overlay);
-                this.sshSessionActive = false;
-                this.printLine('[Session closed]');
-                this.addInputLine();
-            });
+            await session.done;
+
+            this.printLine('[Session closed]');
+            this.sshSessionActive = false;
+            this.addInputLine();
         } catch (err) {
-            document.body.removeChild(overlay);
             this.sshSessionActive = false;
             this.printLine('SSH connection failed:');
             this.printLine(err.message || String(err));
         }
     }
-
 
     async runHelp(args) {
         if (args.length === 0) {
